@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35">
+  <g id="Down_arrow" data-name="Down arrow" transform="translate(-683 -602)">
+    <g id="Group_15" data-name="Group 15" transform="translate(-780.907)">
+      <g id="Group_6" data-name="Group 6" transform="translate(801.907)">
+        <circle id="Ellipse_1" data-name="Ellipse 1" cx="17.5" cy="17.5" r="17.5" transform="translate(662 602)" fill="#fff"/>
+        <path id="Icon_ion-ios-arrow-up" data-name="Icon ion-ios-arrow-up" d="M11.553,13.1l4.056,4.059a.767.767,0,0,0,1.083-1.086l-4.6-4.6a.765.765,0,0,0-1.057-.022L6.411,16.069a.767.767,0,0,0,1.083,1.086L11.553,13.1Z" transform="translate(691.099 635.126) rotate(180)"/>
+      </g>
+    </g>
+  </g>
+</svg>

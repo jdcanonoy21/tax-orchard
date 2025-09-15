@@ -8,10 +8,23 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        // You can add your custom font families here
-        // Example:
-        // 'display': ['FontName', 'sans-serif'],
-        // 'body': ['FontName', 'sans-serif'],
+        sans: ["system-ui", "sans-serif"],
+        schabo: ["SCHABO", "Arial", "sans-serif"],
+        proxima: ["Proxima Nova", "Arial", "sans-serif"],
+        "proxima-light": ["Proxima Nova Light", "Arial", "sans-serif"],
+        "proxima-regular": ["Proxima Nova Regular", "Arial", "sans-serif"],
+        "proxima-bold": ["Proxima Nova Bold", "Arial", "sans-serif"],
+        "proxima-extrabold": ["Proxima Nova Extrabold", "Arial", "sans-serif"],
+        "proxima-black": ["Proxima Nova Black", "Arial", "sans-serif"],
+        baskervville: ["Baskervville", "serif"],
+        "baskervville-semibold": ["Baskervville Semibold", "serif"],
+      },
+      colors: {
+        green: "#28AF4A",
+        blue: "#3974F6",
+        lightgrey: "#ADADAD",
+        black: "#040405",
+        midGrey: "#727272",
       },
     },
   },

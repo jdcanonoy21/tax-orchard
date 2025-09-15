@@ -11,7 +11,7 @@ export default function SectionFour() {
           But what if the weight of taxes <br /> could be turned into your{" "}
           <br /> foundation for{" "}
           <span className="text-blue font-proxima-regular font-extrabold">
-            future growth?{" "}
+            future growth?
           </span>
         </h2>
       </div>

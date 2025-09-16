@@ -10,6 +10,7 @@ import SectionSeven from "../components/SectionSeven";
 import SectionEight from "../components/SectionEight";
 import SectionNine from "../components/SectionNine";
 import SectionTen from "../components/SectionTen";
+import SectionEleven from "../components/SectionEleve";
 
 export default function Page() {
   return (
@@ -23,7 +24,8 @@ export default function Page() {
       <SectionSeven />
       <SectionEight />
       <SectionNine />
-      <SectionTen />
+      {/* <SectionTen /> */}
+      <SectionEleven />
     </main>
   );
 }

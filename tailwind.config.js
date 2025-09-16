@@ -13,7 +13,7 @@ module.exports = {
         proxima: ["Proxima Nova", "Arial", "sans-serif"],
         "proxima-light": ["Proxima Nova Light", "Arial", "sans-serif"],
         "proxima-regular": ["Proxima Nova Regular", "Arial", "sans-serif"],
-        "proxima-bold": ["Proxima Nova Bold", "Arial", "sans-serif"],
+        "proxima-bold": ["proximanova-bold", "Arial", "sans-serif"],
         "proxima-extrabold": ["Proxima Nova Extrabold", "Arial", "sans-serif"],
         "proxima-black": ["Proxima Nova Black", "Arial", "sans-serif"],
         baskervville: ["Baskervville", "serif"],

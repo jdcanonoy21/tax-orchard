@@ -27,7 +27,7 @@ export default function Hero() {
         style={{ position: "fixed" }}
       >
         <img
-          src="/images/tax-orchard-logo.svg"
+          src="/images/tax-orchard-logo-white.png"
           alt="Tax Orchard Logo"
           className="h-10"
         />

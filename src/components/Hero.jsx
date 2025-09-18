@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "motion/react";
 
 export default function Hero() {
   const { scrollY } = useScroll();
@@ -27,7 +27,7 @@ export default function Hero() {
         style={{ position: "fixed" }}
       >
         <img
-          src="/images/tax-orchard-logo-white.png"
+          src="/images/tax-orchard-logo.svg"
           alt="Tax Orchard Logo"
           className="h-10"
         />

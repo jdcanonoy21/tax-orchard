@@ -1,4 +1,5 @@
 import React from "react";
+import HTMLFlipBook from "react-pageflip";
 
 export default function SectionSix() {
   return (
@@ -27,7 +28,7 @@ export default function SectionSix() {
                       <p className="text-[40px] font-proxima-regular leading-none text-white">
                         At Tax Orchard, we help you turn what you owe into
                         something that grows—using a strategy no one else
-                        offers.{" "}
+                        offers.
                         <span className="font-proxima-bold">
                           We turn your tax liability into an assets.
                         </span>

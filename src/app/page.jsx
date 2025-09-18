@@ -20,7 +20,7 @@ export default function Page() {
       <SectionThree />
       <SectionFour />
       <SectionFive />
-      {/* <SectionSix /> */}
+      <SectionSix />
       <SectionSeven />
       <SectionEight />
       <SectionNine />

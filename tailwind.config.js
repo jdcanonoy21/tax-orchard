@@ -26,6 +26,7 @@ module.exports = {
         black: "#040405",
         midGrey: "#727272",
       },
+      safelist: [{ pattern: /rotate-y-\[-?\d+deg\]/ }],
     },
   },
   plugins: [],

@@ -19,7 +19,7 @@ export default function Hero() {
   }, [scrollY]);
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-between p-8 ">
+    <section className="relative min-h-screen flex flex-col justify-between p-8">
       <motion.div
         initial={{ opacity: 1, x: 0, y: 0 }}
         animate={{ opacity: 1, x: heroAnimation ? -250 : 0, y: 0 }}
@@ -35,7 +35,7 @@ export default function Hero() {
 
       <div className="relative z-20 text-center flex-grow flex flex-col justify-center items-center py-8">
         <motion.h2
-          className="text-6xl md:text-[218px] font-black tracking-normal leading-none font-schabo mb-6 cursor-pointer hover:opacity-80 transition-opacity duration-300 text-white"
+          className="text-6xl md:text-[218px] font-black tracking-wide leading-none font-schabo mb-6 cursor-pointer hover:opacity-80 transition-opacity duration-300 text-white"
           initial={{ y: 0, opacity: 1 }}
           animate={{ y: heroAnimation ? -280 : 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 180, damping: 18 }}

@@ -17,7 +17,7 @@ export default function SectionFive() {
   const [pathLine, setPathLine] = useState(0);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const newPathLine = latest > 0.6 ? 1 : scrollYProgress;
+    const newPathLine = latest > 0.8 ? 1 : scrollYProgress;
     setPathLine(newPathLine);
   });
 

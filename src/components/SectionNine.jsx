@@ -86,7 +86,7 @@ export default function SectionNine() {
 
       {!showSecondSection && (
         <section
-          className="bg-white min-h-screen flex items-center justify-center p-8 relative w-full"
+          className="bg-white min-h-screen flex items-center justify-center p-8 relative w-full overflow-hidden"
           key="section-two"
         >
           <div

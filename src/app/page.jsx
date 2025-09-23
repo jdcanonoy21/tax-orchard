@@ -1,12 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import {
-  useScroll,
-  useMotionValueEvent,
-  motion,
-  useTransform,
-} from "framer-motion";
+import React, { useRef, useEffect, useState } from "react";
 import LocomotiveScroll from "locomotive-scroll";
 
 import Hero from "../components/Hero";
@@ -23,19 +17,19 @@ import SectionEleven from "../components/SectionEleve";
 import SectionLast from "../components/SectionLast";
 
 export default function Page() {
-  const videoRef = useRef(null);
   const mainRef = useRef(null);
-  const scrollValueRef = useRef(0);
-
-  const { scrollYProgress } = useScroll({ target: mainRef });
-
-  const y = useTransform(scrollYProgress, [0, 1], [-50, 50]);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     const scroll = new LocomotiveScroll({
       el: mainRef.current,
       smooth: true,
     });
+
+    // scroll.on("scroll", (obj) => {
+    //   setScrollY(obj.scroll.y);
+    //   console.log("Scroll Y:", obj.scroll.y);
+    // });
 
     return () => {
       scroll.destroy();

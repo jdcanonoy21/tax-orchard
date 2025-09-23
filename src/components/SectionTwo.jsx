@@ -18,40 +18,64 @@ export default function SectionTwo() {
   const wordRevealRefTwo = useRef(null);
   const [highlight, setHighlight] = useState(false);
 
-  const { scrollYProgress } = useScroll({
-    target: wordRevealRef,
-    offset: ["start end", "end start"],
-  });
+  useEffect(() => {
+    function handleScroll() {
+      if (!sectionTwoRef.current) return;
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // Reveal first sentence up to its length
-    let idx = 0;
-    let idxTwo = 0;
-    const totalWords = revealWords.length + revealWordsTwo.length;
+      const rect = sectionTwoRef.current.getBoundingClientRect();
+      const windowHeight =
+        window.innerHeight || document.documentElement.clientHeight;
 
-    // Calculate total progress in words
-    const totalReveal = Math.floor(latest * totalWords);
+      // Calculate scroll progress: 0 when section bottom is at bottom of viewport,
+      // 1 when section top is at top of viewport (fully scrolled through)
+      let progress = 0;
+      if (rect.height > 0) {
+        const sectionStart = windowHeight - rect.top;
+        progress = sectionStart / (windowHeight + rect.height);
+        progress = Math.min(Math.max(progress, 0), 1); // Clamp between 0 and 1
+      }
 
-    if (totalReveal <= revealWords.length) {
-      idx = totalReveal;
-      idxTwo = 0;
-    } else {
-      idx = revealWords.length;
-      idxTwo = totalReveal - revealWords.length;
-      if (idxTwo > revealWordsTwo.length) idxTwo = revealWordsTwo.length;
+      // Log the normalized scroll progress value
+      console.log("SectionTwo normalized scroll progress:", progress);
+
+      let idx = 0;
+      let idxTwo = 0;
+      const totalWords = revealWords.length + revealWordsTwo.length;
+
+      // Start word reveal only if progress >= 0.2
+      if (progress >= 0.15) {
+        const revealProgress = (progress - 0.15) / 0.8; // Normalize from 0.2-1 to 0-1
+        // Double the reveal speed: reveal 2 words per step
+        const totalReveal = Math.floor(revealProgress * totalWords * 2);
+
+        if (totalReveal <= revealWords.length) {
+          idx = totalReveal;
+          idxTwo = 0;
+        } else {
+          idx = revealWords.length;
+          idxTwo = totalReveal - revealWords.length;
+          if (idxTwo > revealWordsTwo.length) idxTwo = revealWordsTwo.length;
+        }
+
+        // If scrolled past halfway, show all
+        if (progress >= 0.45) {
+          idx = revealWords.length;
+          idxTwo = revealWordsTwo.length;
+        }
+      } else {
+        idx = 0;
+        idxTwo = 0;
+      }
+
+      setRevealIndex(idx);
+      setRevealIndexTwo(idxTwo);
     }
 
-    // If scrolled past halfway, show all
-    if (latest >= 0.5) {
-      idx = revealWords.length;
-      idxTwo = revealWordsTwo.length;
-    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
 
-    setRevealIndex(idx);
-    setRevealIndexTwo(idxTwo);
-
-    console.log("Section 2 scroll:", latest);
-  });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [revealWords.length, revealWordsTwo.length]);
 
   useEffect(() => {
     if (revealIndexTwo === revealWordsTwo.length) {

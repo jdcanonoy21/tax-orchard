@@ -26,19 +26,15 @@ export default function Page() {
       smooth: true,
     });
 
-    // scroll.on("scroll", (obj) => {
-    //   setScrollY(obj.scroll.y);
-    //   console.log("Scroll Y:", obj.scroll.y);
-    // });
-
     return () => {
       scroll.destroy();
     };
   }, []);
 
   return (
-    <main ref={mainRef}>
-      {/* <div className="fixed w-full h-screen overflow-hidden -z-10 opacity-50">
+    <>
+      <main ref={mainRef} data-scroll-container>
+        {/* <div className="fixed w-full h-screen overflow-hidden -z-10 opacity-50">
         <video
           muted
           ref={videoRef}
@@ -50,18 +46,19 @@ export default function Page() {
           Your browser does not support the video tag.
         </video>
       </div> */}
-      <Hero />
-      <SectionTwo />
-      <SectionThree />
-      <SectionFour />
-      <SectionFive />
-      <SectionSix />
-      <SectionSeven />
-      <SectionEight />
-      {/* <SectionNine /> */}
-      {/* <SectionTen /> */}
-      <SectionEleven />
-      {/* <SectionLast /> */}
-    </main>
+        <Hero />
+        <SectionTwo />
+        <SectionThree />
+        <SectionFour />
+        <SectionFive />
+        <SectionSix />
+        <SectionSeven />
+        <SectionEight />
+        {/* <SectionNine /> */}
+        {/* <SectionTen /> */}
+        <SectionEleven />
+        {/* <SectionLast /> */}
+      </main>
+    </>
   );
 }

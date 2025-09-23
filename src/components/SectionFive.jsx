@@ -23,7 +23,7 @@ export default function SectionFive() {
         1
       );
 
-      console.log("Section scroll progress:", progress);
+      // console.log("Section scroll progress:", progress);
 
       // Start animation only if progress >= 0.7
       setPathLine(progress >= 0.7 ? (progress - 0.7) / 0.3 : 0);

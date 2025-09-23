@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useRef, useState, useEffect, use } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import HTMLFlipBook from "react-pageflip";
-import { useScroll, useMotionValueEvent } from "motion/react";
-import { div } from "framer-motion/client";
 import SectionEight from "./SectionEight";
 
 export default function SectionSeven() {
@@ -13,27 +11,31 @@ export default function SectionSeven() {
   const [flippedCalendar, setFlippedCalendar] = useState(false);
   const [isSticky, setIsSticky] = useState(true);
   const [removeSticky, setRemoveSticky] = useState(false);
+  const [scrolly, setScrolly] = useState(0);
 
-  // Framer Motion scroll progress
-  const { scrollYProgress } = useScroll({
-    target: sectionJourneyRef,
-    offset: ["start end", "end start"],
-  });
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionJourneyRef.current) {
+        const rect = sectionJourneyRef.current.getBoundingClientRect();
+        const sectionTop = window.scrollY + rect.top;
+        const sectionHeight = sectionJourneyRef.current.offsetHeight;
+        const scrollY = window.scrollY;
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // Flip to next page when scroll progress <= 0.5 and not already flippedJourney
-    // if (latest >= 0.65 && !flippedJourney) {
-    //   flipBookRef.current?.pageFlip().flipNext();
-    //   setFlippedJourney(true);
-    // }
-    // // Allow flipping back if user scrolls up
-    // if (latest < 0.45 && flippedJourney) {
-    //   flipBookRef.current?.pageFlip().flipPrev();
-    //   setFlippedJourney(false);
-    // }
+        // Calculate progress: 0 when top of section hits top of viewport, 1 when bottom hits top
+        const progress = (scrollY - sectionTop) / (sectionHeight || 1);
 
-    console.log("Section 7 scroll progress:", latest);
-  });
+        // Clamp between 0 and 1
+        const clamped = Math.max(0, Math.min(1, progress));
+        setScrolly(clamped);
+        // console.log("sectionJourneyRef scrolly value ", clamped);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     if (!flipBookRef.current) return;
@@ -79,12 +81,8 @@ export default function SectionSeven() {
 
   return (
     <>
-      <div
-        className={`overflow-hidden ${
-          removeSticky ? "" : "sticky"
-        }  top-0 z-[100]`}
-      >
-        <section
+      <section className={`overflow-hidden sticky top-0 z-[100]`}>
+        <div
           className="min-h-screen bg-black w-screen  relative"
           ref={sectionJourneyRef}
         >
@@ -102,7 +100,6 @@ export default function SectionSeven() {
             mobileScrollSupport={true}
             usePortrait={true}
             startPage={0}
-            animationDuration={1500}
             className="shadow-lg !min-h-screen "
           >
             <div className="min-h-screen bg-black !w-full flex items-center justify-center relative z-50"></div>
@@ -328,9 +325,8 @@ export default function SectionSeven() {
                             FEB
                           </span>
                         </div>
-                        <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                          <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                          <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold  text-blue ">
+                        <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
+                          <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                             MAR
                           </span>
                         </div>
@@ -916,8 +912,8 @@ export default function SectionSeven() {
               </div>
             </div>
           </HTMLFlipBook>
-        </section>
-      </div>
+        </div>
+      </section>
       <SectionEight
         setFlippedJourney={setFlippedJourney}
         setFlippedCalendar={setFlippedCalendar}

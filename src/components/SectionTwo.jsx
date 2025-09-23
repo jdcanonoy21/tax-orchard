@@ -36,7 +36,7 @@ export default function SectionTwo() {
       }
 
       // Log the normalized scroll progress value
-      console.log("SectionTwo normalized scroll progress:", progress);
+      // console.log("SectionTwo normalized scroll progress:", progress);
 
       let idx = 0;
       let idxTwo = 0;

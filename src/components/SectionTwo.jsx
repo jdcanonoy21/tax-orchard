@@ -1,93 +1,113 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { TypeAnimation } from "react-type-animation";
-import { useInView } from "react-intersection-observer";
 import { useScroll, useMotionValueEvent } from "framer-motion";
 
 export default function SectionTwo() {
-  const [startTypingAnim, setStartTypingAnim] = useState(false);
-  const [startWordAnim, setStartWordAnim] = useState(false);
-  const [wordIndex, setWordIndex] = useState(0);
-  const fullText =
+  const revealText =
     "landed a major contract or are a high wage earner, you could be facing a";
-  const colorText = "tax bill that takes up to half of your earnings.";
-  const colorWords = colorText.split(" ");
-  const [forceComplete, setForceComplete] = useState(false);
-  const [colorDone, setColorDone] = useState(false);
-  const { ref: inViewRef, inView } = useInView({ threshold: 0.3 });
+  const revealWords = revealText.split(" ");
+  const revealTextTwo = "tax bill that takes up to half of your earnings.";
+  const revealWordsTwo = revealTextTwo.split(" ");
 
-  // Create a ref for the section to use with framer-motion
-  const sectionRef = useRef(null);
+  const [revealIndex, setRevealIndex] = useState(0);
+  const [revealIndexTwo, setRevealIndexTwo] = useState(0);
 
-  // Use scrollYProgress from framer-motion
+  const sectionTwoRef = useRef(null);
+  const wordRevealRef = useRef(null);
+  const wordRevealRefTwo = useRef(null);
+  const [highlight, setHighlight] = useState(false);
+
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: wordRevealRef,
     offset: ["start end", "end start"],
   });
 
-  // Use useMotionValueEvent to finish animation if scrollYProgress >= 0.6
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v < 0.2) {
-      setStartTypingAnim(false);
-      setStartWordAnim(false);
-      setWordIndex(0);
-      setForceComplete(false);
-      setColorDone(false);
-    } else if (v > 0.45 && !forceComplete) {
-      setForceComplete(true);
-      setStartTypingAnim(true);
-      setStartWordAnim(true);
-      setWordIndex(colorWords.length);
-      setColorDone(true);
-    } else if (v > 0.3 && !startTypingAnim) {
-      setStartTypingAnim(true);
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    // Reveal first sentence up to its length
+    let idx = 0;
+    let idxTwo = 0;
+    const totalWords = revealWords.length + revealWordsTwo.length;
+
+    // Calculate total progress in words
+    const totalReveal = Math.floor(latest * totalWords);
+
+    if (totalReveal <= revealWords.length) {
+      idx = totalReveal;
+      idxTwo = 0;
+    } else {
+      idx = revealWords.length;
+      idxTwo = totalReveal - revealWords.length;
+      if (idxTwo > revealWordsTwo.length) idxTwo = revealWordsTwo.length;
     }
-    // console.log("Section 2 scroll:", v);
+
+    // If scrolled past halfway, show all
+    if (latest >= 0.5) {
+      idx = revealWords.length;
+      idxTwo = revealWordsTwo.length;
+    }
+
+    setRevealIndex(idx);
+    setRevealIndexTwo(idxTwo);
+
+    console.log("Section 2 scroll:", latest);
   });
 
-  // Combine refs for both inView and framer-motion
-  function setRefs(node) {
-    inViewRef(node);
-    sectionRef.current = node;
-  }
+  useEffect(() => {
+    if (revealIndexTwo === revealWordsTwo.length) {
+      const timeout = setTimeout(() => setHighlight(true), 500);
+      return () => clearTimeout(timeout);
+    } else {
+      setHighlight(false);
+    }
+  }, [revealIndexTwo, revealWordsTwo.length]);
 
   return (
     <section
-      id="section-two"
       className="min-h-screen flex items-center justify-center p-8 "
-      ref={setRefs}
+      ref={sectionTwoRef}
     >
       <div className="text-center max-w-4xl">
         <h2 className="text-5xl font-proxima-regular leading-tight text-white">
           <span>If you’ve just sold a business,</span>
-          {forceComplete ? (
-            // Instantly show the full sentence if forceComplete is true
-            <span>{fullText} </span>
-          ) : (
-            // Otherwise, animate the sentence
-            startTypingAnim && (
-              <TypeAnimation
-                sequence={[
-                  "landed a major contract or are a high wage earner, you could be facing a ",
-                  () => setStartWordAnim(true),
-                ]}
-                wrapper="span"
-                speed={50}
-                cursor={false}
-                repeat={0}
-              />
-            )
-          )}
           <span
-            id="colorChange"
-            className={
-              colorDone
-                ? "text-green font-bold transition-all duration-500"
-                : "transition-all duration-500"
-            }
+            ref={wordRevealRef}
+            style={{ display: "inline-block", minWidth: "1px" }}
           >
-            {startWordAnim ? colorWords.slice(0, wordIndex).join(" ") : ""}
+            {revealWords.map((word, i) => (
+              <span
+                key={i}
+                style={{
+                  display: "inline-block",
+                  opacity: i < revealIndex ? 1 : 0,
+                  transition: "opacity 0.3s",
+                  marginRight: "0.25em",
+                  minWidth: "1ch", // ensures each word reserves space
+                }}
+              >
+                {word}
+              </span>
+            ))}
+          </span>{" "}
+          <span
+            ref={wordRevealRefTwo}
+            style={{ display: "inline-block", minWidth: "1px" }}
+          >
+            {revealWordsTwo.map((word, i) => (
+              <span
+                key={i}
+                className={highlight ? "text-green font-bold" : undefined}
+                style={{
+                  display: "inline-block",
+                  opacity: i < revealIndexTwo ? 1 : 0,
+                  transition: "opacity 0.3s",
+                  marginRight: "0.25em",
+                  minWidth: "1ch",
+                }}
+              >
+                {word}
+              </span>
+            ))}
           </span>
         </h2>
       </div>

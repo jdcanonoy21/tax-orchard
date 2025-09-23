@@ -12,6 +12,7 @@
     "clsx": "^2.1.1",
     "expo-linear-gradient": "^15.0.7",
     "framer-motion": "^12.23.12",
+    "locomotive-scroll": "^4.1.4",
     "motion": "^12.23.13",
     "next": "15.5.3",
     "react": "19.1.0",
@@ -22,7 +23,10 @@
     "react-native-page-flipper": "^1.0.1",
     "react-native-reanimated": "^4.1.0",
     "react-pageflip": "^2.0.3",
+    "react-smooth-scrollbar": "^8.0.6",
     "react-type-animation": "^3.2.0",
+    "rolly": "^0.0.1",
+    "smooth-scrollbar": "^8.8.4",
     "yarn": "^1.22.22"
   },
   "devDependencies": {

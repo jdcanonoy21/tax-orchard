@@ -30,7 +30,7 @@ export default function SectionThree() {
   return (
     <section
       id="section-three"
-      className="min-h-screen flex items-center justify-center px-8 py-4"
+      className="min-h-screen flex items-center justify-center px-8 py-4 scroll-smooth"
     >
       <div className="text-center max-w-4xl text-white" ref={ref}>
         <motion.h3

@@ -8,6 +8,7 @@ export default function SectionEight({
   setFlippedJourney = () => {},
   setFlippedCalendar = () => {},
   setIsSticky = () => {},
+  setFlipToBlankPage = () => {},
 }) {
   const sectionCalendarRef = useRef(null);
   // const flipBookRef = useRef(null);
@@ -24,17 +25,21 @@ export default function SectionEight({
       setFlippedJourney(true);
     }
 
-    if (latest < 0.3) {
-      setFlippedJourney(false);
+    if (latest >= 0.4) {
+      setFlipToBlankPage(true);
     }
 
-    if (latest >= 0.8) {
-      setFlippedCalendar(true);
-    }
+    // if (latest < 0.3) {
+    //   setFlippedJourney(false);
+    // }
 
-    if (latest >= 1) {
-      setIsSticky(false);
-    }
+    // if (latest >= 0.8) {
+    //   setFlippedCalendar(true);
+    // }
+
+    // if (latest >= 1) {
+    //   setIsSticky(false);
+    // }
   });
 
   return (

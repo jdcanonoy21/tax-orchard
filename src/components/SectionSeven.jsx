@@ -12,6 +12,11 @@ export default function SectionSeven() {
   const [isSticky, setIsSticky] = useState(true);
   const [removeSticky, setRemoveSticky] = useState(false);
   const [scrolly, setScrolly] = useState(0);
+  const [flipFirst, setFlipFirst] = useState(false);
+  const page2Ref = useRef(null);
+  const page3Ref = useRef(null);
+  const blankPageRef = useRef(null);
+  const [flipToBlankPage, setFlipToBlankPage] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -79,9 +84,25 @@ export default function SectionSeven() {
     }
   }, [flippedJourney, flippedCalendar, isSticky]);
 
+  useEffect(() => {
+    if (!flipBookRef.current || !blankPageRef.current || !flipToBlankPage)
+      return;
+    const pageFlip = flipBookRef.current.pageFlip?.();
+    if (!pageFlip) return;
+    const pages = pageFlip.getPages();
+    const index = pages.findIndex((p) => p === blankPageRef.current);
+    if (index !== -1) {
+      pageFlip.flip(index);
+    }
+  }, [flipToBlankPage]);
+
   return (
     <>
-      <section className={`overflow-hidden sticky top-0 z-[100]`}>
+      <section
+        className={`overflow-hidden ${
+          removeSticky ? "" : "sticky"
+        }  top-0 z-[100]`}
+      >
         <div
           className="min-h-screen bg-black w-screen  relative"
           ref={sectionJourneyRef}
@@ -121,8 +142,8 @@ export default function SectionSeven() {
 
             {/* Page 2 */}
             <div
-              id="calendar-section-1"
               className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+              ref={page2Ref}
             >
               <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden -ml-[45%]">
                 <div className="relative">
@@ -263,11 +284,38 @@ export default function SectionSeven() {
             </div>
 
             {/* back */}
-            <div className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"></div>
+            <div
+              className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+              ref={blankPageRef}
+            ></div>
+            <div
+              className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+              ref={blankPageRef}
+            ></div>
+            <div
+              className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+              ref={blankPageRef}
+            ></div>
+            <div
+              className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+              ref={blankPageRef}
+            ></div>
+            <div
+              className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+              ref={blankPageRef}
+            ></div>
+            <div
+              className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+              ref={blankPageRef}
+            ></div>
+            <div
+              className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+              ref={blankPageRef}
+            ></div>
 
             {/* Page 3 */}
             <div
-              id="calendar-section-1"
+              ref={page3Ref}
               className="calendar-section min-h-screen bg-white !w-full  flex items-center justify-center relative z-50 "
             >
               <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden -ml-[45%]">
@@ -389,10 +437,14 @@ export default function SectionSeven() {
             </div>
 
             {/* back */}
-            <div
-              id="calendar-section-3"
-              className="calendar-section min-h-screen bg-white !w-full  flex items-center justify-center relative z-50 "
-            ></div>
+            <div className="calendar-section min-h-screen bg-white !w-full  flex items-center justify-center relative z-50 "></div>
+            <div className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"></div>
+            <div className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"></div>
+            <div className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"></div>
+            <div className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"></div>
+            <div className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"></div>
+            <div className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"></div>
+            <div className="calendar-section min-h-screen bg-white !w-full flex items-center justify-center relative z-50"></div>
 
             {/* Page 4 */}
             <div
@@ -918,6 +970,7 @@ export default function SectionSeven() {
         setFlippedJourney={setFlippedJourney}
         setFlippedCalendar={setFlippedCalendar}
         setIsSticky={setIsSticky}
+        setFlipToBlankPage={setFlipToBlankPage}
       />
     </>
   );

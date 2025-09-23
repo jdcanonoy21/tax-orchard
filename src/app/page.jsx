@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import LocomotiveScroll from "locomotive-scroll";
+import Lenis from "@studio-freight/lenis";
 
 import Hero from "../components/Hero";
 import SectionTwo from "../components/SectionTwo";
@@ -18,22 +18,28 @@ import SectionLast from "../components/SectionLast";
 
 export default function Page() {
   const mainRef = useRef(null);
-  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const scroll = new LocomotiveScroll({
-      el: mainRef.current,
+    const lenis = new Lenis({
       smooth: true,
+      lerp: 0.18,
+      // duration: 1.2,
     });
 
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
     return () => {
-      scroll.destroy();
+      lenis.destroy();
     };
   }, []);
 
   return (
     <>
-      <main ref={mainRef} data-scroll-container>
+      <main ref={mainRef}>
         {/* <div className="fixed w-full h-screen overflow-hidden -z-10 opacity-50">
         <video
           muted

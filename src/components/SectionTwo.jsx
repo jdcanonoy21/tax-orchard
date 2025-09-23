@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import { useScroll, useMotionValueEvent } from "framer-motion";
 
 export default function SectionTwo() {
@@ -17,78 +17,69 @@ export default function SectionTwo() {
   const wordRevealRef = useRef(null);
   const wordRevealRefTwo = useRef(null);
   const [highlight, setHighlight] = useState(false);
+  const [sticky, setIsSticky] = useState(false);
 
-  useEffect(() => {
-    function handleScroll() {
-      if (!sectionTwoRef.current) return;
+  const { scrollYProgress } = useScroll({
+    target: sectionTwoRef,
+    offset: ["start end", "end start"],
+  });
 
-      const rect = sectionTwoRef.current.getBoundingClientRect();
-      const windowHeight =
-        window.innerHeight || document.documentElement.clientHeight;
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    console.log("Section 2 scroll:", progress);
 
-      // Calculate scroll progress: 0 when section bottom is at bottom of viewport,
-      // 1 when section top is at top of viewport (fully scrolled through)
-      let progress = 0;
-      if (rect.height > 0) {
-        const sectionStart = windowHeight - rect.top;
-        progress = sectionStart / (windowHeight + rect.height);
-        progress = Math.min(Math.max(progress, 0), 1); // Clamp between 0 and 1
-      }
+    let idx = 0;
+    let idxTwo = 0;
+    const totalWords = revealWords.length + revealWordsTwo.length;
 
-      // Log the normalized scroll progress value
-      // console.log("SectionTwo normalized scroll progress:", progress);
+    // Reveal words between 0.15 and 0.45 progress (now normalized to 0-1)
+    if (progress >= 0.15 && progress <= 0.45) {
+      const revealProgress = (progress - 0.15) / 0.7; // Normalize 0.15-0.85 to 0-1
+      const totalReveal = Math.floor(revealProgress * totalWords);
 
-      let idx = 0;
-      let idxTwo = 0;
-      const totalWords = revealWords.length + revealWordsTwo.length;
-
-      // Start word reveal only if progress >= 0.2
-      if (progress >= 0.15) {
-        const revealProgress = (progress - 0.15) / 0.8; // Normalize from 0.2-1 to 0-1
-        // Double the reveal speed: reveal 2 words per step
-        const totalReveal = Math.floor(revealProgress * totalWords * 2);
-
-        if (totalReveal <= revealWords.length) {
-          idx = totalReveal;
-          idxTwo = 0;
-        } else {
-          idx = revealWords.length;
-          idxTwo = totalReveal - revealWords.length;
-          if (idxTwo > revealWordsTwo.length) idxTwo = revealWordsTwo.length;
-        }
-
-        // If scrolled past halfway, show all
-        if (progress >= 0.45) {
-          idx = revealWords.length;
-          idxTwo = revealWordsTwo.length;
-        }
-      } else {
-        idx = 0;
+      if (totalReveal <= revealWords.length) {
+        idx = totalReveal;
         idxTwo = 0;
+      } else {
+        idx = revealWords.length;
+        idxTwo = totalReveal - revealWords.length;
+        if (idxTwo > revealWordsTwo.length) idxTwo = revealWordsTwo.length;
       }
-
-      setRevealIndex(idx);
-      setRevealIndexTwo(idxTwo);
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial check
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [revealWords.length, revealWordsTwo.length]);
-
-  useEffect(() => {
-    if (revealIndexTwo === revealWordsTwo.length) {
-      const timeout = setTimeout(() => setHighlight(true), 500);
-      return () => clearTimeout(timeout);
+    } else if (progress > 0.45) {
+      // Fully reveal all words after 0.85
+      idx = revealWords.length;
+      idxTwo = revealWordsTwo.length;
     } else {
-      setHighlight(false);
+      // Hide all words before 0.15
+      idx = 0;
+      idxTwo = 0;
     }
-  }, [revealIndexTwo, revealWordsTwo.length]);
+
+    // Highlight when progress > 0.55
+    if (progress > 0.5) {
+      if (!highlight) setHighlight(true);
+    } else {
+      if (highlight) setHighlight(false);
+    }
+
+    // Sticky when progress > 0.5, remove when < 0.9
+    // if (progress > 0.5 && !sticky) {
+    //   setIsSticky(true);
+    // }
+    // if (progress > 0.9 && sticky) {
+    //   setIsSticky(false);
+    // }
+
+    console.log("Section 2 scroll:", progress);
+
+    setRevealIndex(idx);
+    setRevealIndexTwo(idxTwo);
+  });
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center p-8 "
+      className={`min-h-screen flex items-center justify-center p-8 ${
+        sticky ? "sticky" : ""
+      } top-0 bg-black`}
       ref={sectionTwoRef}
     >
       <div className="text-center max-w-4xl">

@@ -19,7 +19,7 @@ export default function Hero() {
   }, [scrollY]);
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-between p-8">
+    <section className="relative min-h-screen flex flex-col justify-between p-8 bg-black">
       <motion.div
         initial={{ opacity: 1, x: 0, y: 0 }}
         animate={{ opacity: 1, x: heroAnimation ? -250 : 0, y: 0 }}

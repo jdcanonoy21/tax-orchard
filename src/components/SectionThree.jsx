@@ -26,7 +26,7 @@ export default function SectionThree() {
   return (
     <section
       id="section-three"
-      className="min-h-screen flex items-center justify-center px-8 py-4 scroll-smooth"
+      className="min-h-screen flex items-center justify-center px-8 py-4 scroll-smooth bg-black"
       ref={sectionRef}
     >
       <div className="text-center max-w-4xl text-white">

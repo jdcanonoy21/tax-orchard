@@ -1,91 +1,210 @@
-import React from "react";
+"user client";
+
+import React, { useState, useEffect, useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 
 export default function SectionLast() {
+  const sectionRef = useRef(null);
+  const treesRef = useRef(null);
+  const tree1Ref = useRef(null);
+  const tree2Ref = useRef(null);
+  const tree3Ref = useRef(null);
+  const treesTextOneRef = useRef(null);
+  const treesTextTwoRef = useRef(null);
+
+  const stickyThreshold = 1; // When scrollYProgress reaches 1, make sticky
+
+  const [isSticky, setIsSticky] = useState(false);
+
+  // Animate when section center hits viewport center
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["center center", "end start"],
+  });
+
+  const x = useTransform(scrollYProgress, [0, 1], ["0vw", "-100vw"]);
+  const treesTextOpacity = useTransform(scrollYProgress, [0.97, 1], [0, 1]);
+
+  const treesTextOneX = useTransform(
+    scrollYProgress,
+    [0.95, 1, 1.05],
+    ["100vw", "0vw", "-100vw"]
+  );
+  const treesTextOneOpacity = useTransform(
+    scrollYProgress,
+    [0.97, 1, 1.05],
+    [1, 1, 0]
+  );
+
+  // Animate treesTextTwoRef: slide in from right after treesTextOneRef exits
+  const treesTextTwoX = useTransform(
+    scrollYProgress,
+    [1, 1.05],
+    ["100vw", "0vw"]
+  );
+  const treesTextTwoOpacity = useTransform(scrollYProgress, [1, 1.05], [0, 1]);
+
+  useEffect(() => {
+    const treeRefs = [tree1Ref, tree2Ref, tree3Ref];
+    treeRefs.forEach((imgRef) => {
+      let svgDoc;
+      fetch("/images/year-ten-tree.svg")
+        .then((response) => response.text())
+        .then((svgContent) => {
+          const parser = new DOMParser();
+          svgDoc = parser.parseFromString(svgContent, "image/svg+xml");
+          // Set initial opacity to 0.15 for all ellipses
+          for (let i = 25; i <= 55; i++) {
+            const ellipse = svgDoc.getElementById(`Ellipse_${i}-3`);
+            if (ellipse) {
+              ellipse.setAttribute("opacity", "0.15");
+              ellipse.style.transition = "opacity 0.5s ease-in-out";
+            }
+          }
+          const serializer = new XMLSerializer();
+          const newSvgContent = serializer.serializeToString(svgDoc);
+          if (imgRef.current) {
+            imgRef.current.src =
+              "data:image/svg+xml;base64," + btoa(newSvgContent);
+          }
+        });
+
+      // Animate ellipses opacity on scroll
+      const unsubscribe = treesTextOpacity.on("change", (latest) => {
+        if (svgDoc) {
+          const animatedOpacity = 0.15 + latest * (1 - 0.15);
+          for (let i = 25; i <= 55; i++) {
+            const ellipse = svgDoc.getElementById(`Ellipse_${i}-3`);
+            if (ellipse) {
+              ellipse.setAttribute("opacity", animatedOpacity);
+            }
+          }
+          const serializer = new XMLSerializer();
+          const newSvgContent = serializer.serializeToString(svgDoc);
+          if (imgRef.current) {
+            imgRef.current.src =
+              "data:image/svg+xml;base64," + btoa(newSvgContent);
+          }
+        }
+      });
+
+      return () => unsubscribe();
+    });
+  }, [treesTextOpacity]);
+
+  // useEffect(() => {
+  //   const unsubscribe = scrollYProgress.on("change", (latest) => {
+  //     setIsSticky(latest >= stickyThreshold);
+  //   });
+  //   return () => unsubscribe();
+  // }, [scrollYProgress]);
+
   return (
     <>
-      <section className="flex flex-col relative ">
-        <div className="min-h-screen  flex items-center justify-center p-8 absolute w-full">
-          <div className="text-center mx-auto w-full">
-            <h2
-              className="text-[183px] font-proxima-bold leading-none font-black  mx-auto w-full mix-blend-difference text-white"
-              id="theHarvest"
-            >
-              The Harvest
-            </h2>
-          </div>
-        </div>
-        <div className="min-h-screen bg-black flex items-center justify-center p-8"></div>
-        <div
-          className="min-h-screen  bg-white flex items-center justify-center p-8"
-          id="section-white"
-        ></div>
-      </section>
-
-      <section
-        className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full "
-        id="yearTenTres"
-      >
-        <div className="text-center max-w-2xl">
-          <div className="h-[200px] flex items-end">
-            <div
-              className="text-[40px] font-proxima-regular leading-tight text-black"
-              id="yearTen"
-            >
-              <span className="font-proxima-bold text-green">Year Ten:</span>{" "}
-              You receive your full $500,000 back, possibly more.
-            </div>
-            <p
-              className="text-[40px] font-proxima-regular leading-tight text-black "
-              id="origitalTax"
-            >
-              Your original tax bill?{" "}
-              <span className="font-proxima-bold text-blue">Gone.</span> Fully
-              eliminated through the growth and credits cultivated from your
-              investment.
-            </p>
-          </div>
-
-          <div
-            className="flex justify-center items-end relative"
-            id="threeTrees"
+      <motion.section className="relative bg-black min-h-screen overflow-x-clip">
+        <div className="sticky top-0 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
+          <motion.h2
+            style={{ x }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="mix-blend-difference text-white text-[183px] font-proxima-bold leading-none text-center"
           >
-            <img
-              src="/images/year-ten-tree.svg"
-              alt="Year 10"
-              className="w-full  h-[370px]"
-              id="tree1"
-            />
-            <img
-              src="/images/year-ten-tree.svg"
-              alt="Year 10"
-              className="w-full h-[430px] relative !z-50"
-              id="tree2"
-            />
-            <img
-              src="/images/tree-behind.svg"
-              alt="Year 10"
-              className="w-full h-[430px] absolute top-[34px] z-10"
-              id="tree2a"
-            />
-            <img
-              src="/images/year-ten-tree.svg"
-              alt="Year 10"
-              className="w-full  h-[370px]"
-              id="tree3"
-            />
-          </div>
+            The Harvest
+          </motion.h2>
         </div>
+        <motion.div
+          ref={sectionRef}
+          className="min-h-screen bg-white flex items-center justify-center p-80"
+        ></motion.div>
 
+        <motion.div
+          ref={treesRef}
+          className=" bg-white flex items-center justify-center p-8 w-full z-20 sticky top-0 h-screen"
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
+          <div className={`text-center max-w-2xl `}>
+            <div className="h-[200px] flex items-end w-full">
+              <motion.div
+                ref={treesTextOneRef}
+                className="w-full text-[40px] font-proxima-regular leading-tight text-black"
+                style={{
+                  x: treesTextOneX,
+                  opacity: treesTextOneOpacity,
+                  position: "relative",
+                }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+              >
+                <span className="font-proxima-bold text-green">Year Ten:</span>{" "}
+                You receive your full $500,000 back, possibly more.
+              </motion.div>
+              {/* <motion.p
+                className="w-full text-[40px] font-proxima-regular leading-tight text-black"
+                ref={treesTextTwoRef}
+                style={{
+                  x: treesTextTwoX,
+                  opacity: treesTextTwoOpacity,
+                  position: "relative",
+                }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+              >
+                Your original tax bill?{" "}
+                <span className="font-proxima-bold text-blue">Gone.</span> Fully
+                eliminated through the growth and credits cultivated from your
+                investment.
+              </motion.p> */}
+            </div>
+            <div
+              className="flex justify-center items-end relative"
+              id="threeTrees"
+            >
+              <img
+                ref={tree1Ref}
+                alt="Year 10"
+                className="w-full  h-[370px]"
+                id="tree1"
+              />
+              <img
+                ref={tree2Ref}
+                alt="Year 10"
+                className="w-full h-[430px] relative !z-50"
+                id="tree2"
+              />
+              <img
+                src="/images/tree-behind.svg"
+                alt="Year 10"
+                className="w-full h-[430px] absolute top-[34px] z-10"
+                id="tree2a"
+              />
+              <img
+                ref={tree3Ref}
+                alt="Year 10"
+                className="w-full  h-[370px]"
+                id="tree3"
+              />
+            </div>
+          </div>
+        </motion.div>
+      </motion.section>
+
+      {/* Move trees section OUTSIDE the moving parent */}
+
+      <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50">
+        {" "}
         <div className="text-center max-w-3xl relative z-30" id="letsGrow">
           <div className="h-[200px] flex flex-col items-center justify-center">
             <h2
-              className="text-[80px] font-proxima-bold leading-tight font-black text-black hidden"
+              className="text-[80px] font-proxima-bold leading-tight font-black text-black "
               id="letsgrowtitle"
             >
               Let's Grow
             </h2>
             <p
-              className="text-[40px] font-proxima-regular leading-tight text-black hidden"
+              className="text-[40px] font-proxima-regular leading-tight text-black "
               id="letsgrosubtitle"
             >
               So, now what may have felt like being buried can actually become
@@ -155,7 +274,9 @@ export default function SectionLast() {
             </svg>
           </div>
         </div>
+      </section>
 
+      <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50">
         <div
           id="contact"
           className="min-h-screen bg-white flex flex-col items-center justify-center p-8 relative  z-20"
@@ -309,16 +430,14 @@ export default function SectionLast() {
         </div>
       </section>
 
-      <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section>
-      <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section>
-      <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section>
+      {/* <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section>
       <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section>
       <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section>
 
       <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section>
       <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section>
       <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section>
-      <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section>
+      <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50"></section> */}
     </>
   );
 }

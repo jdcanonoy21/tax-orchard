@@ -2,49 +2,62 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import HTMLFlipBook from "react-pageflip";
-import { useScroll, useMotionValueEvent } from "motion/react";
+import { useScroll, useMotionValueEvent, useInView } from "motion/react";
 
 export default function SectionEight({
   setFlippedJourney = () => {},
   setFlippedCalendar = () => {},
   setIsSticky = () => {},
   setFlipToBlankPage = () => {},
+  setFlipFirst = () => {},
+  setRemoveSticky = () => {},
+  currentPage,
 }) {
   const sectionCalendarRef = useRef(null);
-  // const flipBookRef = useRef(null);
-  // Framer Motion scroll progress
-  const { scrollYProgress } = useScroll({
-    target: sectionCalendarRef,
-    offset: ["start end", "end start"],
-  });
+  const isInView = useInView(sectionCalendarRef, { amount: 0.2 });
+  const [journeyTriggered, setJourneyTriggered] = useState(false);
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    console.log("Section 8 scroll:", latest);
-
-    if (latest >= 0.3) {
+  useEffect(() => {
+    if (isInView && !journeyTriggered) {
       setFlippedJourney(true);
+      setJourneyTriggered(true);
     }
-
-    if (latest >= 0.4) {
-      setFlipToBlankPage(true);
+    if (!isInView && journeyTriggered) {
+      setJourneyTriggered(false); // Reset when out of view
     }
+  }, [isInView, journeyTriggered, setFlippedJourney]);
 
-    // if (latest < 0.3) {
-    //   setFlippedJourney(false);
-    // }
+  useEffect(() => {
+    if (journeyTriggered) {
+      const handleScroll = () => {
+        if (sectionCalendarRef.current) {
+          const rect = sectionCalendarRef.current.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 0.2) {
+            setFlipFirst(true);
+            window.removeEventListener("scroll", handleScroll);
+          }
 
-    // if (latest >= 0.8) {
-    //   setFlippedCalendar(true);
-    // }
-
-    // if (latest >= 1) {
-    //   setIsSticky(false);
-    // }
-  });
+          if (rect.bottom < 0) {
+            setRemoveSticky(true);
+          }
+        }
+      };
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
+  }, [journeyTriggered, setFlipFirst, setRemoveSticky]);
 
   return (
-    <div className={`overflow-hidden `} ref={sectionCalendarRef}>
-      <div className="min-h-screen bg-white w-screen flex justify-center items-center relative"></div>
-    </div>
+    <>
+      <div
+        className={`overflow-hidden min-h-screen bg-black`}
+        ref={sectionCalendarRef}
+      >
+        <div className="  w-screen flex justify-center items-center relative"></div>
+      </div>
+      <div className={`overflow-hidden min-h-screen bg-black`}>
+        <div className="  w-screen flex justify-center items-center relative"></div>
+      </div>
+    </>
   );
 }

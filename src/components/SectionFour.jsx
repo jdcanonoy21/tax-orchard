@@ -4,7 +4,7 @@ export default function SectionFour() {
   return (
     <section
       id="section-four"
-      className="min-h-screen flex items-center justify-center p-8 "
+      className="min-h-screen flex items-center justify-center p-8 bg-black"
     >
       <div className="text-center max-w-4xl">
         <h2 className="text-[45px] font-proxima-regular leading-snug text-white">

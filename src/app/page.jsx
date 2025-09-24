@@ -22,7 +22,7 @@ export default function Page() {
   useEffect(() => {
     const lenis = new Lenis({
       smooth: true,
-      lerp: 0.18,
+      lerp: 0.09,
       // duration: 1.2,
     });
 
@@ -59,11 +59,11 @@ export default function Page() {
         <SectionFive />
         <SectionSix />
         <SectionSeven />
-        <SectionEight />
+        {/* <SectionEight /> */}
         {/* <SectionNine /> */}
         {/* <SectionTen /> */}
-        <SectionEleven />
-        {/* <SectionLast /> */}
+        {/* <SectionEleven /> */}
+        <SectionLast />
       </main>
     </>
   );

@@ -37,7 +37,7 @@ export default function SectionFive() {
 
   return (
     <section
-      className="h-screen flex items-center overflow-hidden"
+      className="h-screen flex items-center overflow-hidden bg-black"
       ref={sectionRef}
     >
       <div className="w-full">

@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   yearTenTres.style.transform = "translate(100%, -50%) scale(0.8)";
   yearTenTres.style.transition =
     "opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
+  yearTenTres.style.display = "none";
 
   // Initially hide and position yearTen off-screen to the right with transition
   yearTen.style.opacity = "0";
@@ -88,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // Move threeTrees to center with zoom and fade effect
           yearTenTres.style.transform = `translate(0%, -50%) scale(1)`;
           yearTenTres.style.opacity = "1";
+          yearTenTres.style.display = "flex";
 
           // Get the scroll position relative to when trees become visible
           const scrollAfterTrees =

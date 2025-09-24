@@ -111,7 +111,11 @@ export default function SectionTwo() {
             {revealWordsTwo.map((word, i) => (
               <span
                 key={i}
-                className={highlight ? "text-green font-bold" : undefined}
+                className={
+                  highlight
+                    ? "text-green !font-proxima-extrabold !font-extrabold"
+                    : undefined
+                }
                 style={{
                   display: "inline-block",
                   opacity: i < revealIndexTwo ? 1 : 0,

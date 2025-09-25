@@ -952,6 +952,7 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
+
     <motion.section
       className="relative bg-black min-h-screen overflow-x-clip z-30"
       key={9}
@@ -1048,7 +1049,7 @@ export default function SectionSeven() {
         className="relative w-full"
         ref={containerRef}
         style={{
-          visibility: hideContainer ? "hidden" : "visible",
+          display: hideContainer ? "none" : undefined,
         }}
       >
         <div className="flipbook-container sticky top-0 z-50 w-full h-screen pointer-events-none overflow-hidden">

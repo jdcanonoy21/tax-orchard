@@ -142,7 +142,7 @@ export default function SectionHarvest({ hideContainer }) {
       <motion.section
         className="relative bg-black min-h-screen overflow-x-clip z-50"
         ref={sectionContainerRef}
-        // style={{ x: sectionX }}
+        style={{ x: sectionX }}
       >
         <div className="sticky top-0 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
           <motion.h2

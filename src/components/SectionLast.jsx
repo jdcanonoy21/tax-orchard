@@ -107,7 +107,7 @@ export default function SectionLast() {
 
   return (
     <>
-      <motion.section className="relative bg-black min-h-screen overflow-x-clip">
+      <motion.section className="relative bg-black min-h-screen overflow-x-clip z-30">
         <div className="sticky top-0 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
           <motion.h2
             style={{ x }}
@@ -121,28 +121,30 @@ export default function SectionLast() {
           ref={sectionRef}
           className="min-h-screen bg-white flex items-center justify-center p-80"
         ></motion.div>
+      </motion.section>
 
-        <motion.div
-          ref={treesRef}
-          className=" bg-white flex items-center justify-center p-8 w-full z-20 sticky top-0 h-screen"
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-        >
-          <div className={`text-center max-w-2xl `}>
-            <div className="h-[200px] flex items-end w-full">
-              <motion.div
-                ref={treesTextOneRef}
-                className="w-full text-[40px] font-proxima-regular leading-tight text-black"
-                style={{
-                  x: treesTextOneX,
-                  opacity: treesTextOneOpacity,
-                  position: "relative",
-                }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              >
-                <span className="font-proxima-bold text-green">Year Ten:</span>{" "}
-                You receive your full $500,000 back, possibly more.
-              </motion.div>
-              {/* <motion.p
+      {/* Move trees section OUTSIDE the moving parent */}
+      <motion.section
+        ref={treesRef}
+        className=" bg-white flex items-center justify-center p-8 w-full z-20 sticky top-0 overflow-visible"
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+      >
+        <div className={`text-center max-w-2xl `}>
+          <div className="h-[200px] flex items-end w-full">
+            <motion.div
+              ref={treesTextOneRef}
+              className="w-full text-[40px] font-proxima-regular leading-tight text-black"
+              style={{
+                x: treesTextOneX,
+                opacity: treesTextOneOpacity,
+                position: "relative",
+              }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
+              <span className="font-proxima-bold text-green">Year Ten:</span>{" "}
+              You receive your full $500,000 back, possibly more.
+            </motion.div>
+            {/* <motion.p
                 className="w-full text-[40px] font-proxima-regular leading-tight text-black"
                 ref={treesTextTwoRef}
                 style={{
@@ -157,41 +159,38 @@ export default function SectionLast() {
                 eliminated through the growth and credits cultivated from your
                 investment.
               </motion.p> */}
-            </div>
-            <div
-              className="flex justify-center items-end relative"
-              id="threeTrees"
-            >
-              <img
-                ref={tree1Ref}
-                alt="Year 10"
-                className="w-full  h-[370px]"
-                id="tree1"
-              />
-              <img
-                ref={tree2Ref}
-                alt="Year 10"
-                className="w-full h-[430px] relative !z-50"
-                id="tree2"
-              />
-              <img
-                src="/images/tree-behind.svg"
-                alt="Year 10"
-                className="w-full h-[430px] absolute top-[34px] z-10"
-                id="tree2a"
-              />
-              <img
-                ref={tree3Ref}
-                alt="Year 10"
-                className="w-full  h-[370px]"
-                id="tree3"
-              />
-            </div>
           </div>
-        </motion.div>
+          <div
+            className="flex justify-center items-end relative"
+            id="threeTrees"
+          >
+            <img
+              ref={tree1Ref}
+              alt="Year 10"
+              className="w-full  h-[370px]"
+              id="tree1"
+            />
+            <img
+              ref={tree2Ref}
+              alt="Year 10"
+              className="w-full h-[430px] relative !z-50"
+              id="tree2"
+            />
+            <img
+              src="/images/tree-behind.svg"
+              alt="Year 10"
+              className="w-full h-[430px] absolute top-[34px] z-10"
+              id="tree2a"
+            />
+            <img
+              ref={tree3Ref}
+              alt="Year 10"
+              className="w-full  h-[370px]"
+              id="tree3"
+            />
+          </div>
+        </div>
       </motion.section>
-
-      {/* Move trees section OUTSIDE the moving parent */}
 
       <section className="min-h-screen bg-white flex items-center justify-center p-8 relative w-full -z-50">
         {" "}

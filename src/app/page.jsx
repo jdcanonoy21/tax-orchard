@@ -15,6 +15,7 @@ import SectionNine from "../components/SectionNine";
 import SectionTen from "../components/SectionTen";
 import SectionEleven from "../components/SectionEleve";
 import SectionLast from "../components/SectionLast";
+import SectionHarvest from "../components/SectionHarvest";
 
 export default function Page() {
   const mainRef = useRef(null);
@@ -59,11 +60,12 @@ export default function Page() {
         <SectionFive />
         <SectionSix />
         <SectionSeven />
+        {/* <SectionHarvest /> */}
         {/* <SectionEight /> */}
         {/* <SectionNine /> */}
         {/* <SectionTen /> */}
         {/* <SectionEleven /> */}
-        <SectionLast />
+        {/* <SectionLast /> */}
       </main>
     </>
   );

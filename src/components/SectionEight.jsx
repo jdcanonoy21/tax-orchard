@@ -55,9 +55,9 @@ export default function SectionEight({
       >
         <div className="  w-screen flex justify-center items-center relative"></div>
       </div>
-      <div className={`overflow-hidden min-h-screen bg-black`}>
+      {/* <div className={`overflow-hidden min-h-screen bg-black`}>
         <div className="  w-screen flex justify-center items-center relative"></div>
-      </div>
+      </div> */}
     </>
   );
 }

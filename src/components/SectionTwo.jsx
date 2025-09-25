@@ -61,16 +61,6 @@ export default function SectionTwo() {
       if (highlight) setHighlight(false);
     }
 
-    // Sticky when progress > 0.5, remove when < 0.9
-    // if (progress > 0.5 && !sticky) {
-    //   setIsSticky(true);
-    // }
-    // if (progress > 0.9 && sticky) {
-    //   setIsSticky(false);
-    // }
-
-    console.log("Section 2 scroll:", progress);
-
     setRevealIndex(idx);
     setRevealIndexTwo(idxTwo);
   });
@@ -106,16 +96,13 @@ export default function SectionTwo() {
           </span>{" "}
           <span
             ref={wordRevealRefTwo}
-            style={{ display: "inline-block", minWidth: "1px" }}
+            style={{ display: "inline-block ", minWidth: "1px" }}
+            className="!font-proxima-extrabold !font-extrabold"
           >
             {revealWordsTwo.map((word, i) => (
               <span
                 key={i}
-                className={
-                  highlight
-                    ? "text-green !font-proxima-extrabold !font-extrabold"
-                    : undefined
-                }
+                className={highlight ? "text-green " : undefined}
                 style={{
                   display: "inline-block",
                   opacity: i < revealIndexTwo ? 1 : 0,

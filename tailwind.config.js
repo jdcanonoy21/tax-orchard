@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        giant: "120px",
+      },
       animation: {
         twinkle: "twinkle 4s ease-in-out infinite",
         "bounce-slow": "bounce 2s infinite",

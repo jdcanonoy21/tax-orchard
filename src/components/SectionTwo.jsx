@@ -25,7 +25,7 @@ export default function SectionTwo() {
   });
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    console.log("Section 2 scroll:", progress);
+    // console.log("Section 2 scroll:", progress);
 
     let idx = 0;
     let idxTwo = 0;

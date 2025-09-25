@@ -8,9 +8,11 @@ import SectionHarvest from "./SectionHarvest";
 export default function SectionSeven() {
   const flipBook = useRef();
   const scrollContainerRef = useRef(null);
+  const containerRef = useRef(null);
   const [flipDirection, setFlipDirection] = useState(null);
   const [windowSize, setWindowSize] = useState({ width: 600, height: 600 });
   const [currentPage, setCurrentPage] = useState(0);
+  const [hideContainer, setHideContainer] = useState(false);
 
   const pageElements = [
     <div key={1} className=" ">
@@ -950,22 +952,17 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    <div className=" top-0 w-full h-screen z-30" key="9">
-      <motion.section className="relative bg-black min-h-screen overflow-x-clip z-30">
-        <div className="sticky top-0 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
-          <motion.h2 className="mix-blend-difference text-white text-[183px] font-proxima-bold leading-none text-center">
-            The Harvest
-          </motion.h2>
-        </div>
-        <motion.div
-          className="min-h-screen bg-white flex items-center justify-center p-80"
-          style={{
-            overflowY: "auto", // Enable vertical scroll
-            maxHeight: "80vh", // Limit height so content can scroll
-          }}
-        ></motion.div>
-      </motion.section>
-    </div>,
+    <motion.section
+      className="relative bg-black min-h-screen overflow-x-clip z-30"
+      key={9}
+    >
+      <div className="sticky top-0 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
+        <motion.h2 className="mix-blend-difference text-white text-[183px] font-proxima-bold leading-none text-center">
+          The Harvest
+        </motion.h2>
+      </div>
+      <motion.div className="min-h-screen bg-white flex items-center justify-center p-80"></motion.div>
+    </motion.section>,
   ];
   /**
    * Handles the page flipping state change event
@@ -1020,10 +1017,10 @@ export default function SectionSeven() {
     // Flip to next page at each breakpoint if not already there
     if (flipBook.current && flipBook.current.pageFlip) {
       if (page > currentPage) {
-        flipBook.current.pageFlip().flipNext();
+        flipBook?.current?.pageFlip().flipNext();
         setCurrentPage(page);
       } else if (page < currentPage) {
-        flipBook.current.pageFlip().flipPrev();
+        flipBook?.current?.pageFlip().flipPrev();
         setCurrentPage(page);
       }
     }
@@ -1035,42 +1032,62 @@ export default function SectionSeven() {
     // );
   });
 
+  useEffect(() => {
+    let timeout;
+    if (currentPage === pageElements.length - 1) {
+      timeout = setTimeout(() => setHideContainer(true), 600); // 600ms delay
+    } else {
+      setHideContainer(false);
+    }
+    return () => clearTimeout(timeout);
+  }, [currentPage, pageElements.length]);
+
   return (
-    <div className="relative w-full">
-      <div className="flipbook-container sticky top-0 z-50 w-full h-screen pointer-events-none overflow-hidden">
-        <HTMLFlipBook
-          onChangeState={flipping}
-          ref={flipBook}
-          width={windowSize.width}
-          height={windowSize.height}
-          minWidth={315}
-          maxWidth={500}
-          minHeight={420}
-          maxHeight={windowSize.height}
-          showCover={false}
-          flippingTime={500}
-          usePortrait={true}
-          startZIndex={0}
-          startPage={currentPage}
-          autoSize={true}
-          maxShadowOpacity={0.1}
-          disableFlipByClick={false}
-          className={`flipbook ${
-            flipDirection === 0
-              ? "flipping-next"
-              : flipDirection === 1
-              ? "flipping-prev"
-              : ""
-          } min-h-screen w-full pointer-events-auto`}
-        >
-          {pageElements}
-        </HTMLFlipBook>
+    <>
+      <div
+        className="relative w-full"
+        ref={containerRef}
+        style={{
+          visibility: hideContainer ? "hidden" : "visible",
+        }}
+      >
+        <div className="flipbook-container sticky top-0 z-50 w-full h-screen pointer-events-none overflow-hidden">
+          <HTMLFlipBook
+            onChangeState={flipping}
+            ref={flipBook}
+            width={windowSize.width}
+            height={windowSize.height}
+            minWidth={315}
+            maxWidth={500}
+            minHeight={420}
+            maxHeight={windowSize.height}
+            showCover={false}
+            flippingTime={500}
+            usePortrait={true}
+            startZIndex={0}
+            startPage={currentPage}
+            autoSize={true}
+            maxShadowOpacity={0.1}
+            disableFlipByClick={false}
+            className={`flipbook ${
+              flipDirection === 0
+                ? "flipping-next"
+                : flipDirection === 1
+                ? "flipping-prev"
+                : ""
+            } min-h-screen w-full pointer-events-auto`}
+          >
+            {pageElements}
+          </HTMLFlipBook>
+        </div>
+
+        <div
+          style={{ height: `${pageElements.length * 100 + 100}vh` }}
+          ref={scrollContainerRef}
+        />
       </div>
 
-      <div
-        style={{ height: `${pageElements.length * 100 + 100}vh` }}
-        ref={scrollContainerRef}
-      />
-    </div>
+      <SectionHarvest hideContainer={hideContainer} />
+    </>
   );
 }

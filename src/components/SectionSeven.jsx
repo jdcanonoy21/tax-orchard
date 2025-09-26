@@ -1,18 +1,36 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo, useLayoutEffect } from "react";
 import HTMLFlipBook from "react-pageflip";
-import { useScroll, useMotionValueEvent, motion } from "motion/react";
+import { useScroll, useMotionValueEvent, motion, useSpring, useTransform } from "motion/react";
 import SectionHarvest from "./SectionHarvest";
 
 export default function SectionSeven() {
   const flipBook = useRef();
   const scrollContainerRef = useRef(null);
   const containerRef = useRef(null);
+  const harvestRef = useRef(null);
   const [flipDirection, setFlipDirection] = useState(null);
   const [windowSize, setWindowSize] = useState({ width: 600, height: 600 });
   const [currentPage, setCurrentPage] = useState(0);
-  const [hideContainer, setHideContainer] = useState(false);
+  const [hideContainer, setHideContainer] = useState(true);
+  const { scrollYProgress } = useScroll({
+    target: scrollContainerRef,
+    offset: ["start end", "end start"],
+  });
+
+  /**
+   * Calculate y for the flipbook last page harvest section
+   */
+  const harvestStart = 0.74; // adjust as needed - Where the animation will start
+  const harvestEnd = 0.99; // adjust as needed - Where the animation will end
+  const springY = useSpring(scrollYProgress, { stiffness: 120, damping: 20 });
+  const y = useTransform(
+    springY,
+    [harvestStart, harvestEnd],
+    ["100%", "0%"],
+    { clamp: true }
+  );
 
   const pageElements = [
     <div key={1} className=" ">
@@ -954,17 +972,39 @@ export default function SectionSeven() {
     </div>,
 
     <motion.section
+      ref={harvestRef}
       className="relative bg-black min-h-screen overflow-x-clip z-30"
       key={9}
     >
       <div className="sticky top-0 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
         <motion.h2 className="mix-blend-difference text-white text-[183px] font-proxima-bold leading-none text-center">
-          The Harvest
+          The Harvest 
         </motion.h2>
+        {JSON.stringify(scrollYProgress?.current)}
       </div>
-      <motion.div className="min-h-screen bg-white flex items-center justify-center p-80"></motion.div>
+
+      <motion.div
+        style={{
+          y: scrollYProgress?.current < harvestStart ? "100%" : y,
+        }}
+        className="min-h-screen bg-white flex items-center justify-center p-80 absolute bottom-0 z-20 w-full left-0"
+      />
     </motion.section>,
   ];
+
+
+  /* ===== COMPUTED ==== */
+ 
+  /**
+   * Calculates the total number of pages, including two additional pages (e.g., for first and last).
+   *
+   * @type {number}
+   * @constant
+   * @see pageElements
+   * @description Uses the length of `pageElements` array and adds 2 to account for extra pages.
+   */
+  const totalPages = useMemo(() => pageElements?.length + 1, [pageElements])
+
   /**
    * Handles the page flipping state change event
    * @param {Object} e - The event object from react-pageflip
@@ -1006,14 +1046,14 @@ export default function SectionSeven() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: scrollContainerRef,
-    offset: ["start end", "end start"],
-  });
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    const totalPages = pageElements.length;
-    const page = Math.min(totalPages - 1, Math.floor(progress * totalPages));
+    
+
+    const totalPagesL = totalPages;
+    const page = Math.min(totalPagesL - 1, Math.floor(progress * totalPagesL));
+
+    console.log('progress', page, progress)
 
     // Flip to next page at each breakpoint if not already there
     if (flipBook.current && flipBook.current.pageFlip) {
@@ -1025,32 +1065,24 @@ export default function SectionSeven() {
         setCurrentPage(page);
       }
     }
-
-    // console.log(
-    //   `Section Calendar scroll: progress=${progress}, page=${
-    //     page + 1
-    //   }/${totalPages}`
-    // );
   });
 
-  useEffect(() => {
-    let timeout;
-    if (currentPage === pageElements.length - 1) {
-      timeout = setTimeout(() => setHideContainer(true), 600); // 600ms delay
-    } else {
-      setHideContainer(false);
-    }
-    return () => clearTimeout(timeout);
-  }, [currentPage, pageElements.length]);
+  // useEffect(() => {
+  //   let timeout;
+  //   if (currentPage === totalPages - 1) {
+  //     timeout = setTimeout(() => setHideContainer(true), 600); // 600ms delay
+  //   } else {
+  //     setHideContainer(false);
+  //   }
+  //   return () => clearTimeout(timeout);
+  // }, [currentPage, totalPages]);
 
   return (
     <>
       <div
         className="relative w-full"
         ref={containerRef}
-        style={{
-          display: hideContainer ? "none" : undefined,
-        }}
+        
       >
         <div className="flipbook-container sticky top-0 z-50 w-full h-screen pointer-events-none overflow-hidden">
           <HTMLFlipBook
@@ -1083,12 +1115,13 @@ export default function SectionSeven() {
         </div>
 
         <div
-          style={{ height: `${pageElements.length * 100 + 100}vh` }}
+          style={{ height: `${(totalPages) * 100 + 100}vh` }}
           ref={scrollContainerRef}
         />
       </div>
 
-      <SectionHarvest hideContainer={hideContainer} />
+      <SectionHarvest hideContainer={true}/>
+
     </>
   );
 }

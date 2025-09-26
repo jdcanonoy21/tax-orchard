@@ -38,7 +38,7 @@ export default function SectionHarvest({ hideContainer }) {
     ["0vw", "-100vw"]
   );
 
-  const treesOpacity = useTransform(scrollYProgress, [0.25, 0.26], [0, 1]);
+  const treesOpacity = useTransform(scrollYProgress, [0, 0.26], [0, 1]);
   const treesTextOneX = useTransform(
     scrollYProgress,
     [0.28, 0.33, 0.4, 0.45],
@@ -139,7 +139,7 @@ export default function SectionHarvest({ hideContainer }) {
 
   return (
     <div className="relative w-full  z-20 " ref={sectionRef}>
-      <motion.section
+      {/* <motion.section
         className="relative bg-black min-h-screen overflow-x-clip z-50"
         ref={sectionContainerRef}
         style={{ x: sectionX }}
@@ -158,7 +158,7 @@ export default function SectionHarvest({ hideContainer }) {
             showWhiteDiv ? "block" : "hidden"
           }`}
         ></motion.div>
-      </motion.section>
+      </motion.section> */}
 
       <motion.section
         ref={treesRef}

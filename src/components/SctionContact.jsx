@@ -48,6 +48,7 @@ export default function SectionContact() {
     message: "",
   });
   const inputRef = useRef(null);
+  const [isFocused, setIsFocused] = useState(null);
 
   // Focus input on step change
   useEffect(() => {
@@ -125,7 +126,7 @@ export default function SectionContact() {
                     <textarea
                       id={steps[currentStep].id}
                       ref={inputRef}
-                      className="w-full text-6xl font-medium bg-transparent overflow-hidden outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-extrabold placeholder:font-extrabold h-14 text-blue placeholder:text-center text-center resize-none"
+                      className="w-full text-6xl font-medium bg-transparent overflow-hidden outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-14 text-blue placeholder:text-center text-center resize-none focus:placeholder-transparent"
                       placeholder={steps[currentStep].placeholder}
                       rows={3}
                       value={formData[steps[currentStep].id]}
@@ -137,7 +138,7 @@ export default function SectionContact() {
                       type={steps[currentStep].type}
                       id={steps[currentStep].id}
                       ref={inputRef}
-                      className="w-full text-6xl font-medium bg-transparent outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-extrabold placeholder:font-extrabold h-14 text-blue placeholder:text-center text-center"
+                      className="w-full text-6xl font-medium bg-transparent outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-14 text-blue placeholder:text-center text-center focus:placeholder-transparent"
                       placeholder={steps[currentStep].placeholder}
                       value={formData[steps[currentStep].id]}
                       onChange={handleChange}

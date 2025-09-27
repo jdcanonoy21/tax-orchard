@@ -953,17 +953,10 @@ export default function SectionSeven() {
       </div>
     </div>,
 
-    <motion.section
-      className="relative bg-black min-h-screen overflow-x-clip z-30"
+    <div
+      className="min-h-screen bg-transparent !w-full flex items-center justify-center relative z-50"
       key={9}
-    >
-      <div className="sticky top-0 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
-        <motion.h2 className="mix-blend-difference text-white text-[183px] font-proxima-bold leading-none text-center">
-          The Harvest
-        </motion.h2>
-      </div>
-      <motion.div className="min-h-screen bg-white flex items-center justify-center p-80"></motion.div>
-    </motion.section>,
+    ></div>,
   ];
   /**
    * Handles the page flipping state change event
@@ -1018,7 +1011,7 @@ export default function SectionSeven() {
     // Flip to next page at each breakpoint if not already there
     if (flipBook.current && flipBook.current.pageFlip) {
       if (page > currentPage) {
-        flipBook?.current?.pageFlip().flipNext();
+        flipBook?.current?.pageFlip()?.flipNext();
         setCurrentPage(page);
       } else if (page < currentPage) {
         flipBook?.current?.pageFlip().flipPrev();
@@ -1026,69 +1019,82 @@ export default function SectionSeven() {
       }
     }
 
-    // console.log(
-    //   `Section Calendar scroll: progress=${progress}, page=${
-    //     page + 1
-    //   }/${totalPages}`
-    // );
+    // Move containerRef to the left out of the screen if progress is between 0.88 and 0.9
+    if (containerRef.current) {
+      if (progress >= 0.88 && progress <= 0.1) {
+        containerRef.current.style.opacity = "0";
+        containerRef.current.style.transform = "translateX(-100vw)";
+        // containerRef.current.style.transition =
+        //   "opacity 0.5s cubic-bezier(0.4,0,0.2,1), transform 0.5s cubic-bezier(0.4,0,0.2,1)";
+      } else {
+        containerRef.current.style.opacity = "";
+        containerRef.current.style.transform = "";
+        containerRef.current.style.transition = "";
+      }
+    }
+
+    console.log(
+      `Section Calendar scroll: progress=${progress}, page=${
+        page + 1
+      }/${totalPages}`
+    );
   });
 
-  useEffect(() => {
-    let timeout;
-    if (currentPage === pageElements.length - 1) {
-      timeout = setTimeout(() => setHideContainer(true), 600); // 600ms delay
-    } else {
-      setHideContainer(false);
-    }
-    return () => clearTimeout(timeout);
-  }, [currentPage, pageElements.length]);
+  // useEffect(() => {
+  //   let timeout;
+  //   if (currentPage === pageElements.length - 1) {
+  //     timeout = setTimeout(() => setHideContainer(true), 600); // 600ms delay
+  //   } else {
+  //     setHideContainer(false);
+  //   }
+  //   return () => clearTimeout(timeout);
+  // }, [currentPage, pageElements.length]);
 
   return (
-    <>
-      <div
-        className="relative w-full"
-        ref={containerRef}
-        style={{
-          display: hideContainer ? "none" : undefined,
-        }}
-      >
-        <div className="flipbook-container sticky top-0 z-50 w-full h-screen pointer-events-none overflow-hidden">
-          <HTMLFlipBook
-            onChangeState={flipping}
-            ref={flipBook}
-            width={windowSize.width}
-            height={windowSize.height}
-            minWidth={315}
-            maxWidth={500}
-            minHeight={420}
-            maxHeight={windowSize.height}
-            showCover={false}
-            flippingTime={500}
-            usePortrait={true}
-            startZIndex={0}
-            startPage={currentPage}
-            autoSize={true}
-            maxShadowOpacity={0.1}
-            disableFlipByClick={false}
-            className={`flipbook ${
-              flipDirection === 0
-                ? "flipping-next"
-                : flipDirection === 1
-                ? "flipping-prev"
-                : ""
-            } min-h-screen w-full pointer-events-auto`}
-          >
-            {pageElements}
-          </HTMLFlipBook>
-        </div>
-
-        <div
-          style={{ height: `${pageElements.length * 100 + 100}vh` }}
-          ref={scrollContainerRef}
-        />
+    <div
+      className="relative w-full !z-50"
+      ref={containerRef}
+      style={{
+        display: hideContainer ? "none" : undefined,
+      }}
+    >
+      <div className="flipbook-container sticky top-0 !z-50 w-full h-screen overflow-hidden">
+        <HTMLFlipBook
+          onChangeState={flipping}
+          ref={flipBook}
+          width={windowSize.width}
+          height={windowSize.height}
+          minWidth={315}
+          maxWidth={500}
+          minHeight={420}
+          maxHeight={windowSize.height}
+          showCover={false}
+          flippingTime={500}
+          usePortrait={true}
+          startZIndex={0}
+          startPage={currentPage}
+          autoSize={true}
+          maxShadowOpacity={0.1}
+          disableFlipByClick={false}
+          useMouseEvents={false}
+          useKeyboard={false}
+          useTouch={false}
+          className={`flipbook ${
+            flipDirection === 0
+              ? "flipping-next"
+              : flipDirection === 1
+              ? "flipping-prev"
+              : ""
+          } min-h-screen w-full pointer-events-auto`}
+        >
+          {pageElements}
+        </HTMLFlipBook>
       </div>
 
-      <SectionHarvest hideContainer={hideContainer} />
-    </>
+      <div
+        style={{ height: `${pageElements.length * 100 + 100}vh` }}
+        ref={scrollContainerRef}
+      />
+    </div>
   );
 }

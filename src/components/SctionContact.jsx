@@ -48,11 +48,15 @@ export default function SectionContact() {
     message: "",
   });
   const inputRef = useRef(null);
-  const [isFocused, setIsFocused] = useState(null);
+  const didMount = useRef(false); // Add this line
 
-  // Focus input on step change
+  // Focus input on step change, but not on initial load
   useEffect(() => {
-    if (inputRef.current) inputRef.current.focus();
+    if (didMount.current) {
+      if (inputRef.current) inputRef.current.focus();
+    } else {
+      didMount.current = true;
+    }
   }, [currentStep]);
 
   const handleNext = () => {

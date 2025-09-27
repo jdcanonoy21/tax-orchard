@@ -60,7 +60,7 @@ export default function Page() {
         <SectionFive />
         <SectionSix />
         <SectionSeven />
-        {/* <SectionHarvest /> */}
+        <SectionHarvest />
         {/* <SectionEight /> */}
         {/* <SectionNine /> */}
         {/* <SectionTen /> */}

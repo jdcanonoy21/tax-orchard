@@ -40,14 +40,14 @@ export default function SectionHarvest({ hideContainer }) {
 
   const sectionX = useTransform(
     scrollYProgress,
-    [0.2, 0.22],
+    [0.3, 0.32],
     ["0vw", "-100vw"]
   );
 
-  const treesOpacity = useTransform(scrollYProgress, [0.22, 0.27], [0, 1]);
+  const treesOpacity = useTransform(scrollYProgress, [0.33, 0.34], [0, 1]);
   const treesTextOneX = useTransform(
     scrollYProgress,
-    [0.28, 0.34, 0.4, 0.45],
+    [0.35, 0.4, 0.45, 0.5],
     ["100vw", "0vw", "0vw", "-100vw"]
   );
 
@@ -155,18 +155,18 @@ export default function SectionHarvest({ hideContainer }) {
     return () => unsubscribe();
   }, [treesTextOneX, tree1Ref, tree2Ref, tree3Ref]);
 
-  useEffect(() => {
-    let timeout;
-    if (hideContainer && sectionRef.current) {
-      timeout = setTimeout(() => setShowWhiteDiv(true), 2000);
-    }
-    return () => clearTimeout(timeout);
-  }, [hideContainer]);
+  // useEffect(() => {
+  //   let timeout;
+  //   if (hideContainer && sectionRef.current) {
+  //     timeout = setTimeout(() => setShowWhiteDiv(true), 2000);
+  //   }
+  //   return () => clearTimeout(timeout);
+  // }, [hideContainer]);
 
   return (
-    <div className="relative w-full  z-20 " ref={sectionRef}>
+    <div className="-mt-[100vh] w-full  -z-10 " ref={sectionRef}>
       <motion.section
-        className="relative bg-black min-h-screen overflow-x-clip z-50"
+        className="relative bg-black min-h-screen overflow-x-clip z-30"
         ref={sectionContainerRef}
         style={{ x: sectionX }}
         transition={{ x: { type: "spring", stiffness: 60, damping: 24 } }}
@@ -180,21 +180,19 @@ export default function SectionHarvest({ hideContainer }) {
             The Harvest
           </motion.h2>
         </div>
+        <motion.div className={`min-h-screen  bg-black `}></motion.div>
+        <motion.div className={`min-h-screen  bg-white `}></motion.div>
         <motion.div
-          className={`min-h-screen  bg-white ${
-            showWhiteDiv ? "block" : "hidden"
-          }`}
+          className={`min-h-screen  bg-white `}
           ref={sectionWhiteDivRef}
         ></motion.div>
       </motion.section>
 
       <motion.section
         ref={treesRef}
-        style={{ opacity: treesOpacity }}
+        style={{ opacity: treesOpacity, marginTop: "-200vh" }}
         transition={{ opacity: { type: "spring", stiffness: 60, damping: 24 } }}
-        className={`bg-white min-h-screen sticky top-0 flex items-center justify-center p-8 w-full z-0  -mt-[600px] overflow-hidden ${
-          showWhiteDiv ? "block" : "hidden"
-        }`}
+        className={`bg-white min-h-screen sticky top-0 flex items-center justify-center p-8 w-full z-0   overflow-hidden`}
       >
         <motion.div
           className={`text-center max-w-2xl `}
@@ -361,10 +359,7 @@ export default function SectionHarvest({ hideContainer }) {
         </motion.div>
       </motion.section>
 
-      <div
-        style={{ height: `${400}vh` }}
-        className={` ${showWhiteDiv ? "block" : "hidden"}`}
-      ></div>
+      <div style={{ height: `${500}vh` }}></div>
     </div>
   );
 }

@@ -14,11 +14,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased relative`}>{children}</body>
-
-      {/* <script async src="/js/smooth-scroll.js"></script> */}
-      {/* <script async src="/js/scroll-reveal.js"></script> */}
-      {/* <script async src="/js/form-animation.js"></script> */}
-      {/* <script async src="/js/harvest-animation.js"></script> */}
     </html>
   );
 }

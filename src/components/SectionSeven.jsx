@@ -1024,8 +1024,6 @@ export default function SectionSeven() {
       if (progress >= 0.88 && progress <= 0.1) {
         containerRef.current.style.opacity = "0";
         containerRef.current.style.transform = "translateX(-100vw)";
-        // containerRef.current.style.transition =
-        //   "opacity 0.5s cubic-bezier(0.4,0,0.2,1), transform 0.5s cubic-bezier(0.4,0,0.2,1)";
       } else {
         containerRef.current.style.opacity = "";
         containerRef.current.style.transform = "";
@@ -1039,16 +1037,6 @@ export default function SectionSeven() {
       }/${totalPages}`
     );
   });
-
-  // useEffect(() => {
-  //   let timeout;
-  //   if (currentPage === pageElements.length - 1) {
-  //     timeout = setTimeout(() => setHideContainer(true), 600); // 600ms delay
-  //   } else {
-  //     setHideContainer(false);
-  //   }
-  //   return () => clearTimeout(timeout);
-  // }, [currentPage, pageElements.length]);
 
   return (
     <div

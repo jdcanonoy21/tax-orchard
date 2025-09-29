@@ -41,18 +41,6 @@ export default function Page() {
   return (
     <>
       <main ref={mainRef}>
-        {/* <div className="fixed w-full h-screen overflow-hidden -z-10 opacity-50">
-        <video
-          muted
-          ref={videoRef}
-          loop={false}
-          playsInline
-          className="absolute top-0 left-0 w-full h-full object-cover"
-        >
-          <source src="/images/vid_0.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div> */}
         <Hero />
         <SectionTwo />
         <SectionThree />

@@ -170,6 +170,22 @@ export default function SectionSeven() {
     <div
       className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
       key={3}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={4}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={5}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={6}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={7}
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -296,7 +312,23 @@ export default function SectionSeven() {
     </div>,
     <div
       className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={4}
+      key={8}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={9}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={10}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={11}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={12}
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -421,7 +453,23 @@ export default function SectionSeven() {
     </div>,
     <div
       className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={5}
+      key={13}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={14}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={15}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={16}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={17}
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -551,7 +599,23 @@ export default function SectionSeven() {
     </div>,
     <div
       className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={6}
+      key={18}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={19}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={20}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={21}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={22}
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -678,7 +742,23 @@ export default function SectionSeven() {
     </div>,
     <div
       className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={7}
+      key={23}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={24}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={25}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={26}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={27}
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -816,7 +896,23 @@ export default function SectionSeven() {
     </div>,
     <div
       className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={8}
+      key={28}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={29}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={30}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={31}
+    ></div>,
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
+      key={32}
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -955,9 +1051,10 @@ export default function SectionSeven() {
 
     <div
       className="min-h-screen bg-transparent !w-full flex items-center justify-center relative z-50"
-      key={9}
+      key={33}
     ></div>,
   ];
+
   /**
    * Handles the page flipping state change event
    * @param {Object} e - The event object from react-pageflip

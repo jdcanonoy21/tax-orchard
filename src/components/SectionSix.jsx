@@ -37,8 +37,8 @@ export default function SectionSix() {
     if (!videoRef.current) return;
     const video = videoRef.current;
     const unsubscribe = smoothProgress.on("change", (progress) => {
-      const clamped = Math.max(0, Math.min(0.5, progress));
-      const normalized = clamped / 0.5;
+      const clamped = Math.max(0, Math.min(0.9, progress));
+      const normalized = clamped / 0.9;
       if (video.duration) video.currentTime = normalized * video.duration;
     });
     return () => unsubscribe();
@@ -130,9 +130,15 @@ export default function SectionSix() {
     track.style.willChange = "transform";
     track.style.transform = "translate3d(0%,0%,0)";
 
-    function animate() {
+    function animate(progress) {
       rafId = requestAnimationFrame(() => {
-        const smoothing = 0.1;
+        // Smoothing increases with progress (faster as you scroll further)
+        // You can tweak the formula for your desired feel
+        const minSmoothing = 0.07;
+        const maxSmoothing = 0.25;
+        const smoothing =
+          minSmoothing + (maxSmoothing - minSmoothing) * progress;
+
         currentX += (targetX - currentX) * smoothing;
         currentY += (targetY - currentY) * smoothing;
         if (
@@ -143,7 +149,7 @@ export default function SectionSix() {
           currentY = targetY;
         }
         track.style.transform = `translate3d(${currentX}%,${currentY}%,0)`;
-        if (currentX !== targetX || currentY !== targetY) animate();
+        if (currentX !== targetX || currentY !== targetY) animate(progress);
         else rafId = null;
       });
     }
@@ -170,9 +176,8 @@ export default function SectionSix() {
         track.style.transform = `translate3d(${currentX}%,${currentY}%,0)`;
         return;
       }
-      if (!rafId) animate();
+      if (!rafId) animate(progress);
     }
-
     recalc();
     window.addEventListener("resize", recalc, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -201,7 +206,10 @@ export default function SectionSix() {
                   className="w-52 h-auto relative z-10"
                 />
                 <div className="relative w-[1500px] h-[900px]">
-                  <div className="w-full h-auto ml-[305px]" id="rootContainer">
+                  <div
+                    className="w-[1500] h-[900px] ml-[305px]"
+                    id="rootContainer"
+                  >
                     <motion.video
                       ref={videoRef}
                       src="/images/roots.mp4"

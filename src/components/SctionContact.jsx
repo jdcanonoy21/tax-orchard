@@ -32,7 +32,7 @@ const steps = [
     label: "Your Message",
     type: "textarea",
     id: "message",
-    placeholder: "Your Message",
+    placeholder: "how can we help?",
   },
 ];
 
@@ -40,6 +40,7 @@ const totalSteps = steps.length;
 
 export default function SectionContact() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [direction, setDirection] = useState(0);
   const [formData, setFormData] = useState({
     "first-name": "",
     "last-name": "",
@@ -48,7 +49,7 @@ export default function SectionContact() {
     message: "",
   });
   const inputRef = useRef(null);
-  const didMount = useRef(false); // Add this line
+  const didMount = useRef(false);
 
   // Focus input on step change, but not on initial load
   useEffect(() => {
@@ -61,17 +62,18 @@ export default function SectionContact() {
 
   const handleNext = () => {
     if (currentStep < totalSteps - 1) {
+      setDirection(1);
       setCurrentStep((prev) => prev + 1);
     } else {
       handleSubmit();
     }
   };
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.id]: e.target.value,
-    }));
+  const handlePrev = () => {
+    if (currentStep > 0) {
+      setDirection(-1);
+      setCurrentStep((prev) => prev - 1);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -91,6 +93,13 @@ export default function SectionContact() {
       message: "",
     });
     setCurrentStep(0);
+  };
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }));
   };
 
   return (
@@ -114,23 +123,34 @@ export default function SectionContact() {
         </div>
 
         <div className="space-y-8 min-h-[120px]">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={currentStep}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.4 }}
               className="form-step"
               data-step={currentStep + 1}
             >
               <div className="flex items-center justify-between">
+                {currentStep > 0 && (
+                  <button
+                    type="button"
+                    className=" p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:scale-110"
+                    onClick={handlePrev}
+                    aria-label="Previous"
+                  >
+                    <img
+                      src="/images/arrow-right.svg"
+                      alt="arrow-left"
+                      className="w-10 h-10 text-black"
+                      style={{ transform: "scaleX(-1)" }}
+                    />
+                  </button>
+                )}
                 <div className="flex-1 flex flex-col items-center">
                   {steps[currentStep].type === "textarea" ? (
                     <textarea
                       id={steps[currentStep].id}
                       ref={inputRef}
-                      className="w-full text-6xl font-medium bg-transparent overflow-hidden outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-14 text-blue placeholder:text-center text-center resize-none focus:placeholder-transparent"
+                      className="w-full text-6xl font-medium bg-transparent overflow-hidden outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-16 text-blue placeholder:text-center text-center resize-none focus:placeholder-transparent"
                       placeholder={steps[currentStep].placeholder}
                       rows={3}
                       value={formData[steps[currentStep].id]}
@@ -142,7 +162,7 @@ export default function SectionContact() {
                       type={steps[currentStep].type}
                       id={steps[currentStep].id}
                       ref={inputRef}
-                      className="w-full text-6xl font-medium bg-transparent outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-14 text-blue placeholder:text-center text-center focus:placeholder-transparent"
+                      className="w-full text-6xl font-medium bg-transparent outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-16 text-blue placeholder:text-center text-center focus:placeholder-transparent"
                       placeholder={steps[currentStep].placeholder}
                       value={formData[steps[currentStep].id]}
                       onChange={handleChange}
@@ -150,20 +170,22 @@ export default function SectionContact() {
                     />
                   )}
                 </div>
-                <button
-                  type="button"
-                  className="ml-4 p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:scale-110"
-                  onClick={handleNext}
-                  aria-label={
-                    currentStep === totalSteps - 1 ? "Submit" : "Next"
-                  }
-                >
-                  <img
-                    src="/images/arrow-right.svg"
-                    alt="arrow-right"
-                    className="w-10 h-10 text-black"
-                  />
-                </button>
+                <div className="flex flex-col gap-2">
+                  <button
+                    type="button"
+                    className="ml-4 p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:scale-110"
+                    onClick={handleNext}
+                    aria-label={
+                      currentStep === totalSteps - 1 ? "Submit" : "Next"
+                    }
+                  >
+                    <img
+                      src="/images/arrow-right.svg"
+                      alt="arrow-right"
+                      className="w-10 h-10 text-black"
+                    />
+                  </button>
+                </div>
               </div>
               <div className="border-b border-[#707070] mt-10 w-full h-1"></div>
             </motion.div>

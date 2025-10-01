@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, cloneElement } from "react";
 import HTMLFlipBook from "react-pageflip";
 import { useScroll, useMotionValueEvent, motion } from "motion/react";
 import SectionHarvest from "./SectionHarvest";
@@ -14,8 +14,15 @@ export default function SectionSeven() {
   const [currentPage, setCurrentPage] = useState(0);
   const [hideContainer, setHideContainer] = useState(false);
 
+  const blankPages = [
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"></div>,
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"></div>,
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"></div>,
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"></div>,
+  ];
+
   const pageElements = [
-    <div key={1} className=" ">
+    <div>
       <div className=" min-h-screen bg-black !w-full flex items-center justify-center relative z-50">
         <div className="w-full mx-auto flex flex-col items-center justify-center h-full overflow-hidden ">
           <h2 className="text-9xl font-proxima-bold leading-none font-black text-white text-center">
@@ -28,10 +35,7 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={2}
-    >
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
@@ -167,26 +171,8 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={3}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={4}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={5}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={6}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={7}
-    >
+    ...blankPages,
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
@@ -310,26 +296,8 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={8}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={9}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={10}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={11}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={12}
-    >
+    ...blankPages,
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
@@ -451,26 +419,8 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={13}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={14}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={15}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={16}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={17}
-    >
+    ...blankPages,
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
@@ -597,26 +547,8 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={18}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={19}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={20}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={21}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={22}
-    >
+    ...blankPages,
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
@@ -740,26 +672,8 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={23}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={24}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={25}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={26}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={27}
-    >
+    ...blankPages,
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
@@ -894,26 +808,8 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={28}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={29}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={30}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={31}
-    ></div>,
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50"
-      key={32}
-    >
+    ...blankPages,
+    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
@@ -1049,11 +945,14 @@ export default function SectionSeven() {
       </div>
     </div>,
 
-    <div
-      className="min-h-screen bg-transparent !w-full flex items-center justify-center relative z-50"
-      key={33}
-    ></div>,
+    <div className="min-h-screen bg-transparent !w-full flex items-center justify-center relative z-50"></div>,
   ];
+
+  const nonBlankPagesCount = pageElements.filter(
+    (el) => !el.props?.className?.includes("blankPage")
+  ).length;
+
+  console.log("nonBlankPagesCount", nonBlankPagesCount);
 
   /**
    * Handles the page flipping state change event
@@ -1108,6 +1007,103 @@ export default function SectionSeven() {
     // Flip to next page at each breakpoint if not already there
     if (flipBook.current && flipBook.current.pageFlip) {
       if (page > currentPage) {
+        // After page 2, flip (page - currentPage) times
+        if (currentPage === 1) {
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 100);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 200);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 300);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 400);
+        }
+
+        if (currentPage === 2) {
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 100);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 200);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 300);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 400);
+        }
+
+        if (currentPage === 3) {
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 100);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 200);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 300);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 400);
+        }
+
+        if (currentPage === 4) {
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 100);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 200);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 300);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 400);
+        }
+
+        if (currentPage === 5) {
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 100);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 200);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 300);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 400);
+        }
+
+        if (currentPage === 6) {
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 100);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 200);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 300);
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 400);
+        }
+
+        if (currentPage === 7) {
+          setTimeout(() => {
+            flipBook?.current?.pageFlip()?.flipNext();
+          }, 100);
+        }
+
         flipBook?.current?.pageFlip()?.flipNext();
         setCurrentPage(page);
       } else if (page < currentPage) {
@@ -1127,22 +1123,12 @@ export default function SectionSeven() {
         containerRef.current.style.transition = "";
       }
     }
-
-    console.log(
-      `Section Calendar scroll: progress=${progress}, page=${
-        page + 1
-      }/${totalPages}`
-    );
   });
 
+  console.log("currentPage", currentPage);
+
   return (
-    <div
-      className="relative w-full !z-50"
-      ref={containerRef}
-      style={{
-        display: hideContainer ? "none" : undefined,
-      }}
-    >
+    <motion.div className="relative w-full !z-0" ref={containerRef}>
       <div className="flipbook-container sticky top-0 !z-50 w-full h-screen overflow-hidden">
         <HTMLFlipBook
           onChangeState={flipping}
@@ -1172,7 +1158,7 @@ export default function SectionSeven() {
               : ""
           } min-h-screen w-full pointer-events-auto`}
         >
-          {pageElements}
+          {pageElements.map((el, idx) => cloneElement(el, { key: idx }))}
         </HTMLFlipBook>
       </div>
 
@@ -1180,6 +1166,11 @@ export default function SectionSeven() {
         style={{ height: `${pageElements.length * 100 + 100}vh` }}
         ref={scrollContainerRef}
       />
-    </div>
+
+      {/* <div
+        style={{ height: `${nonBlankPagesCount * 100 + 100}vh` }}
+        ref={scrollContainerRef}
+      /> */}
+    </motion.div>
   );
 }

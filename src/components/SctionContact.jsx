@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 const steps = [
   {
@@ -50,13 +52,12 @@ export default function SectionContact() {
   });
   const inputRef = useRef(null);
   const didMount = useRef(false);
+  const swiperRef = useRef(null);
 
   // Focus input on step change, but not on initial load
   useEffect(() => {
-    if (didMount.current) {
-      if (inputRef.current) inputRef.current.focus();
-    } else {
-      didMount.current = true;
+    if (swiperRef.current && swiperRef.current.slideTo) {
+      swiperRef.current.slideTo(currentStep);
     }
   }, [currentStep]);
 
@@ -66,6 +67,9 @@ export default function SectionContact() {
       setCurrentStep((prev) => prev + 1);
     } else {
       handleSubmit();
+      if (swiperRef.current && swiperRef.current.slideTo) {
+        swiperRef.current.slideTo(0);
+      }
     }
   };
 
@@ -112,7 +116,10 @@ export default function SectionContact() {
       </div>
 
       <div className="max-w-4xl w-full relative">
-        <div className="flex items-center justify-between mt-8 pt-4 absolute -bottom-14 gap-5">
+        <div
+          className="flex items-center justify-between mt-8 pt-4 absolute -bottom-14 gap-5"
+          style={{ marginLeft: "20px" }}
+        >
           <span className="text-midGrey text-3xl font-proxima-regular font-medium">
             Get in touch
           </span>
@@ -123,61 +130,62 @@ export default function SectionContact() {
         </div>
 
         <div className="space-y-8 min-h-[120px]">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={currentStep}
-              className="form-step"
-              data-step={currentStep + 1}
-            >
-              <div className="flex items-center justify-between">
-                {currentStep > 0 && (
-                  <button
-                    type="button"
-                    className=" p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:scale-110"
-                    onClick={handlePrev}
-                    aria-label="Previous"
-                  >
-                    <img
-                      src="/images/arrow-right.svg"
-                      alt="arrow-left"
-                      className="w-10 h-10 text-black"
-                      style={{ transform: "scaleX(-1)" }}
-                    />
-                  </button>
-                )}
-                <div className="flex-1 flex flex-col items-center">
-                  {steps[currentStep].type === "textarea" ? (
-                    <textarea
-                      id={steps[currentStep].id}
-                      ref={inputRef}
-                      className="w-full text-6xl font-medium bg-transparent overflow-hidden outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-16 text-blue placeholder:text-center text-center resize-none focus:placeholder-transparent"
-                      placeholder={steps[currentStep].placeholder}
-                      rows={3}
-                      value={formData[steps[currentStep].id]}
-                      onChange={handleChange}
-                      onKeyDown={handleKeyDown}
-                    />
-                  ) : (
-                    <input
-                      type={steps[currentStep].type}
-                      id={steps[currentStep].id}
-                      ref={inputRef}
-                      className="w-full text-6xl font-medium bg-transparent outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-16 text-blue placeholder:text-center text-center focus:placeholder-transparent"
-                      placeholder={steps[currentStep].placeholder}
-                      value={formData[steps[currentStep].id]}
-                      onChange={handleChange}
-                      onKeyDown={handleKeyDown}
-                    />
+          <Swiper
+            allowTouchMove={false}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            style={{ minHeight: "120px" }}
+          >
+            {steps.map((step, idx) => (
+              <SwiperSlide key={step.id}>
+                <div className="flex items-center justify-between relative  w-full">
+                  {idx > 0 && (
+                    <button
+                      type="button"
+                      className="p-2 absolute left-0"
+                      onClick={handlePrev}
+                      aria-label="Previous"
+                    >
+                      <img
+                        src="/images/arrow-right.svg"
+                        alt="arrow-left"
+                        className="w-10 h-10 text-black"
+                        style={{ transform: "scaleX(-1)" }}
+                      />
+                    </button>
                   )}
-                </div>
-                <div className="flex flex-col gap-2">
+                  <div className="flex-1 flex flex-col items-center">
+                    {step.type === "textarea" ? (
+                      <textarea
+                        id={step.id}
+                        ref={idx === currentStep ? inputRef : null}
+                        className="w-full text-6xl font-medium bg-transparent overflow-hidden outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-20 text-blue placeholder:text-center text-center resize-none focus:placeholder-transparent"
+                        placeholder={step.placeholder}
+                        rows={3}
+                        value={formData[step.id]}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                      />
+                    ) : (
+                      <input
+                        type={step.type}
+                        id={step.id}
+                        ref={idx === currentStep ? inputRef : null}
+                        className="w-full text-6xl font-medium bg-transparent outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-20 text-blue placeholder:text-center text-center focus:placeholder-transparent"
+                        placeholder={step.placeholder}
+                        value={formData[step.id]}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                      />
+                    )}
+                  </div>
                   <button
                     type="button"
-                    className="ml-4 p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:scale-110"
+                    className="p-2 absolute right-0"
                     onClick={handleNext}
-                    aria-label={
-                      currentStep === totalSteps - 1 ? "Submit" : "Next"
-                    }
+                    aria-label={idx === totalSteps - 1 ? "Submit" : "Next"}
+                    style={{ right: 0 }}
                   >
                     <img
                       src="/images/arrow-right.svg"
@@ -185,11 +193,19 @@ export default function SectionContact() {
                       className="w-10 h-10 text-black"
                     />
                   </button>
+                  <div
+                    className="absolute border-b border-[#707070] h-1"
+                    style={{
+                      top: "100px",
+                      width: "95%",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                    }}
+                  ></div>
                 </div>
-              </div>
-              <div className="border-b border-[#707070] mt-10 w-full h-1"></div>
-            </motion.div>
-          </AnimatePresence>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
     </>

@@ -41,7 +41,7 @@ export default function SectionSix() {
     const VIDEO_LENGTH = 4; // seconds
 
     if (video && latest > 0) {
-      const progress = Math.min(latest / 0.5, 1);
+      const progress = Math.min(latest / 0.7, 1);
       const targetTime = progress * VIDEO_LENGTH;
       targetVideoTimeRef.current = targetTime;
 

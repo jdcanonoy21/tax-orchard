@@ -240,8 +240,8 @@ export default function SectionSeven() {
                 Plant
               </p>
             </div>
-            <div className="flex justify-center  gap-36 absolute bottom-28 left-0 !w-full items-center">
-              <div className="w-[10rem] h-[10rem] flex flex-col items-center">
+            <div className="flex justify-center  gap-36 absolute bottom-20  left-0 !w-full items-center">
+              <div className="w-[8rem] h-[8rem] flex flex-col items-center">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
@@ -249,7 +249,7 @@ export default function SectionSeven() {
                 />
               </div>
 
-              <div className="w-[10rem] h-[10rem] flex flex-col items-center">
+              <div className="w-[8rem] h-[8rem] flex flex-col items-center">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
@@ -257,7 +257,7 @@ export default function SectionSeven() {
                 />
               </div>
 
-              <div className="w-[10rem] h-[10rem] flex flex-col items-center">
+              <div className="w-[8rem] h-[8rem] flex flex-col items-center">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
@@ -1906,15 +1906,15 @@ export default function SectionSeven() {
         flipBook?.current?.pageFlip()?.flipNext();
         setCurrentPage(page);
       } else if (page < currentPage) {
-        if (totalActualPages === 1) {
+        if (totalActualPages === 13) {
           for (let i = 12; i >= 2; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (12 - i) * 75); // 200ms initial, 75ms increment per flip
+            }, 200 + (12 - i) * 75);
           }
         }
 
-        if (totalActualPages === 13) {
+        if (totalActualPages === 25) {
           for (let i = 24; i >= 14; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
@@ -1922,7 +1922,7 @@ export default function SectionSeven() {
           }
         }
 
-        if (totalActualPages === 25) {
+        if (totalActualPages === 49) {
           for (let i = 48; i >= 26; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
@@ -1930,7 +1930,7 @@ export default function SectionSeven() {
           }
         }
 
-        if (totalActualPages === 49) {
+        if (totalActualPages === 73) {
           for (let i = 72; i >= 50; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
@@ -1938,7 +1938,7 @@ export default function SectionSeven() {
           }
         }
 
-        if (totalActualPages === 73) {
+        if (totalActualPages === 97) {
           for (let i = 96; i >= 74; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
@@ -1946,11 +1946,11 @@ export default function SectionSeven() {
           }
         }
 
-        if (totalActualPages === 97) {
-          for (let i = 108; i >= 98; i--) {
+        if (totalActualPages === 108) {
+          for (let i = 107; i >= 98; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (108 - i) * 75);
+            }, 200 + (107 - i) * 75);
           }
         }
 

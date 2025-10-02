@@ -16,23 +16,8 @@ export default function SectionSeven() {
 
   const blankPagesOneData = [
     {
-      highlightMonth: "FEB",
-      highlightIndex: 1,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "MAR",
-      highlightIndex: 2,
-      highlightColor: "blue",
-    },
-    {
       highlightMonth: "APR",
       highlightIndex: 3,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "MAY",
-      highlightIndex: 4,
       highlightColor: "blue",
     },
     {
@@ -40,94 +25,13 @@ export default function SectionSeven() {
       highlightIndex: 5,
       highlightColor: "blue",
     },
-    {
-      highlightMonth: "JUL",
-      highlightIndex: 6,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "AUG",
-      highlightIndex: 7,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "SEP",
-      highlightIndex: 8,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "OCT",
-      highlightIndex: 9,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "NOV",
-      highlightIndex: 10,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "DEC",
-      highlightIndex: 11,
-      highlightColor: "blue",
-    },
-  ];
 
-  const blankPagesOneYear = [
-    {
-      highlightMonth: "JAN",
-      highlightIndex: 0,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "FEB",
-      highlightIndex: 1,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "MAR",
-      highlightIndex: 2,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "APR",
-      highlightIndex: 3,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "MAY",
-      highlightIndex: 4,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "JUN",
-      highlightIndex: 5,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "JUL",
-      highlightIndex: 6,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "AUG",
-      highlightIndex: 7,
-      highlightColor: "blue",
-    },
-    {
-      highlightMonth: "SEP",
-      highlightIndex: 8,
-      highlightColor: "blue",
-    },
     {
       highlightMonth: "OCT",
       highlightIndex: 9,
       highlightColor: "blue",
     },
-    {
-      highlightMonth: "NOV",
-      highlightIndex: 10,
-      highlightColor: "blue",
-    },
+
     {
       highlightMonth: "DEC",
       highlightIndex: 11,
@@ -384,84 +288,6 @@ export default function SectionSeven() {
     </div>
   ));
 
-  const blankPagesThreeTwo = blankPagesOneYear.map((page, pageIdx) => (
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
-      key={pageIdx}
-    >
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
-        <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="absolute -left-24 top-32 opacity-60">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
-                Cultivate
-              </p>
-            </div>
-
-            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-16 left-0 !w-full items-center">
-              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
-                <img
-                  src="/images/TaxOrchard_Tree_2.svg"
-                  alt="Tree 1"
-                  className="opacity-100"
-                />
-              </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
-                <img
-                  src="/images/TaxOrchard_Tree_2.svg"
-                  alt="Tree 1"
-                  className="opacity-100"
-                />
-              </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
-                <img
-                  src="/images/TaxOrchard_Tree_2.svg"
-                  alt="Tree 1"
-                  className="opacity-100"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
-              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
-              <div className="flex flex-1 min-w-0 h-16">
-                {months.map((month, idx) => (
-                  <div
-                    key={month}
-                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
-                      month === page.highlightMonth ? "100px" : "60px"
-                    }] relative overflow-hidden`}
-                  >
-                    {idx === page.highlightIndex ? (
-                      <div
-                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
-                      ></div>
-                    ) : null}
-                    <span
-                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
-                        idx === page.highlightIndex
-                          ? "font-extrabold text-blue"
-                          : "font-medium text-black"
-                      }`}
-                    >
-                      {month}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
-                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
-                  YEAR 04
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  ));
-
   const blankPagesFour = blankPagesOneData.map((page, pageIdx) => (
     <div
       className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
@@ -540,84 +366,6 @@ export default function SectionSeven() {
     </div>
   ));
 
-  const blankPagesFourTwo = blankPagesOneYear.map((page, pageIdx) => (
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
-      key={pageIdx}
-    >
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
-        <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="absolute -left-24 top-32 opacity-60">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
-                Cultivate
-              </p>
-            </div>
-
-            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-28 left-0 !w-full items-center">
-              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
-                <img
-                  src="/images/TaxOrchard_Tree_3.svg"
-                  alt="Tree 1"
-                  className="opacity-100"
-                />
-              </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
-                <img
-                  src="/images/TaxOrchard_Tree_3.svg"
-                  alt="Tree 1"
-                  className="opacity-100"
-                />
-              </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
-                <img
-                  src="/images/TaxOrchard_Tree_3.svg"
-                  alt="Tree 1"
-                  className="opacity-100"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
-              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
-              <div className="flex flex-1 min-w-0 h-16">
-                {months.map((month, idx) => (
-                  <div
-                    key={month}
-                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
-                      month === page.highlightMonth ? "100px" : "60px"
-                    }] relative overflow-hidden`}
-                  >
-                    {idx === page.highlightIndex ? (
-                      <div
-                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
-                      ></div>
-                    ) : null}
-                    <span
-                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
-                        idx === page.highlightIndex
-                          ? "font-extrabold text-blue"
-                          : "font-medium text-black"
-                      }`}
-                    >
-                      {month}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
-                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
-                  YEAR 06
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  ));
-
   const blankPagesFive = blankPagesOneData.map((page, pageIdx) => (
     <div
       className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
@@ -687,84 +435,6 @@ export default function SectionSeven() {
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
                   YEAR 07
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  ));
-
-  const blankPagesFiveTwo = blankPagesOneYear.map((page, pageIdx) => (
-    <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
-      key={pageIdx}
-    >
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
-        <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="absolute -left-24 top-32 opacity-60">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
-                Cultivate
-              </p>
-            </div>
-
-            <div className="flex justify-center  gap-4  absolute bottom-14 left-0 !w-full items-center">
-              <div className="w-72 h-56 flex flex-col items-center">
-                <img
-                  src="/images/TaxOrchard_Tree_4.svg"
-                  alt="Tree 1"
-                  className="opacity-100 w-[600px] h-[600px] object-contain"
-                />
-              </div>
-              <div className="w-72 h-56 flex flex-col items-center">
-                <img
-                  src="/images/TaxOrchard_Tree_4.svg"
-                  alt="Tree 1"
-                  className="opacity-100 w-[300px] h-[300px] object-contain"
-                />
-              </div>
-              <div className="w-72 h-56 flex flex-col items-center">
-                <img
-                  src="/images/TaxOrchard_Tree_4.svg"
-                  alt="Tree 1"
-                  className="opacity-100 w-[300px] h-[300px] object-contain"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
-              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
-              <div className="flex flex-1 min-w-0 h-16">
-                {months.map((month, idx) => (
-                  <div
-                    key={month}
-                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
-                      month === page.highlightMonth ? "100px" : "60px"
-                    }] relative overflow-hidden`}
-                  >
-                    {idx === page.highlightIndex ? (
-                      <div
-                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
-                      ></div>
-                    ) : null}
-                    <span
-                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
-                        idx === page.highlightIndex
-                          ? "font-extrabold text-blue"
-                          : "font-medium text-black"
-                      }`}
-                    >
-                      {month}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
-                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
-                  YEAR 08
                 </span>
               </div>
             </div>
@@ -1259,7 +929,6 @@ export default function SectionSeven() {
       </div>
     </div>,
     ...blankPagesThree,
-    ...blankPagesThreeTwo,
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -1389,7 +1058,6 @@ export default function SectionSeven() {
       </div>
     </div>,
     ...blankPagesFour,
-    ...blankPagesFourTwo,
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -1518,7 +1186,6 @@ export default function SectionSeven() {
       </div>
     </div>,
     ...blankPagesFive,
-    ...blankPagesFiveTwo,
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -1856,101 +1523,101 @@ export default function SectionSeven() {
 
       if (page > currentPage) {
         if (totalActualPages === 1) {
-          for (let i = 2; i <= 12; i++) {
+          for (let i = 2; i <= 5; i++) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
             }, 200 + (i - 2) * 75); // 200ms initial, 75ms increment per flip
           }
         }
 
-        if (totalActualPages === 13) {
-          for (let i = 14; i <= 24; i++) {
+        if (totalActualPages === 6) {
+          for (let i = 7; i <= 10; i++) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 14) * 75); // 200ms initial, 75ms increment per flip
+            }, 200 + (i - 7) * 75); // 200ms initial, 75ms increment per flip
           }
         }
 
-        if (totalActualPages === 25) {
-          for (let i = 26; i <= 48; i++) {
+        if (totalActualPages === 11) {
+          for (let i = 12; i <= 15; i++) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 26) * 75); // 200ms initial, 75ms increment per flip
+            }, 200 + (i - 12) * 75); // 200ms initial, 75ms increment per flip
           }
         }
 
-        if (totalActualPages === 49) {
-          for (let i = 50; i <= 72; i++) {
+        if (totalActualPages === 16) {
+          for (let i = 17; i <= 20; i++) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 50) * 75); // 200ms initial, 75ms increment per flip
+            }, 200 + (i - 17) * 75); // 200ms initial, 75ms increment per flip
           }
         }
 
-        if (totalActualPages === 73) {
-          for (let i = 74; i <= 96; i++) {
+        if (totalActualPages === 21) {
+          for (let i = 22; i <= 25; i++) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 74) * 75); // 200ms initial, 75ms increment per flip
+            }, 200 + (i - 22) * 75); // 200ms initial, 75ms increment per flip
           }
         }
 
-        if (totalActualPages === 97) {
-          for (let i = 98; i <= 108; i++) {
+        if (totalActualPages === 26) {
+          for (let i = 27; i <= 30; i++) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 98) * 75); // 200ms initial, 75ms increment per flip
+            }, 200 + (i - 27) * 75); // 200ms initial, 75ms increment per flip
           }
         }
 
         flipBook?.current?.pageFlip()?.flipNext();
         setCurrentPage(page);
       } else if (page < currentPage) {
-        if (totalActualPages === 13) {
-          for (let i = 12; i >= 2; i--) {
+        if (totalActualPages === 6) {
+          for (let i = 5; i >= 2; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (12 - i) * 75);
+            }, 200 + (5 - i) * 75);
           }
         }
 
-        if (totalActualPages === 25) {
-          for (let i = 24; i >= 14; i--) {
+        if (totalActualPages === 11) {
+          for (let i = 10; i >= 7; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
             }, 200 + (24 - i) * 75);
           }
         }
 
-        if (totalActualPages === 49) {
-          for (let i = 48; i >= 26; i--) {
+        if (totalActualPages === 16) {
+          for (let i = 15; i >= 12; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (48 - i) * 75);
+            }, 200 + (15 - i) * 75);
           }
         }
 
-        if (totalActualPages === 73) {
-          for (let i = 72; i >= 50; i--) {
+        if (totalActualPages === 21) {
+          for (let i = 20; i >= 17; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (72 - i) * 75);
+            }, 200 + (20 - i) * 75);
           }
         }
 
-        if (totalActualPages === 97) {
-          for (let i = 96; i >= 74; i--) {
+        if (totalActualPages === 26) {
+          for (let i = 25; i >= 22; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (96 - i) * 75);
+            }, 200 + (25 - i) * 75);
           }
         }
 
-        if (totalActualPages === 108) {
-          for (let i = 107; i >= 98; i--) {
+        if (totalActualPages === 31) {
+          for (let i = 30; i >= 27; i--) {
             setTimeout(() => {
               flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (107 - i) * 75);
+            }, 200 + (30 - i) * 75);
           }
         }
 
@@ -1977,7 +1644,7 @@ export default function SectionSeven() {
 
   return (
     <motion.div
-      className="min-h-screen relative w-full !z-40 -mt-10"
+      className="min-h-screen relative w-full !z-40 "
       ref={containerRef}
     >
       <div className="flipbook-container sticky top-0 !z-50 w-full min-h-screen overflow-hidden">

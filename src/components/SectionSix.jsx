@@ -29,9 +29,9 @@ export default function SectionSix() {
   });
 
   // Smooth horizontal/vertical scroll transforms
-  const delayedProgress = useTransform(xyScrollYProgress, [0.3, 1], [0, 1]);
+  const delayedProgress = useTransform(xyScrollYProgress, [0.4, 1], [0, 1]);
 
-  const x = useTransform(delayedProgress, [0, 1], ["0%", "-195%"]);
+  const x = useTransform(delayedProgress, [0, 1], ["0%", "-145%"]);
   const y = useTransform(delayedProgress, [0, 1], ["0%", "-55%"]);
 
   const isRootTextInView = useInView(rootTextRef, { amount: 0.5, once: false });
@@ -99,10 +99,10 @@ export default function SectionSix() {
 
   return (
     <section
-      className="relative overflow-x-clip pb-28 bg-black  !z-50 "
+      className="relative overflow-x-clip  bg-black pt-80  !z-50 "
       ref={rootContainerRef}
     >
-      <div className="sticky top-0 flex items-center overflow-visible w-[1500px] h-[1200px]">
+      <div className="sticky top-0 flex items-center overflow-visible w-[1500px] h-[500px]">
         {/* Apply smooth scroll transforms to .track */}
         <motion.div
           className="track w-full"
@@ -122,7 +122,7 @@ export default function SectionSix() {
                 />
                 <div className="relative">
                   <div
-                    className="w-[1500] h-[1200px] bg-black"
+                    className="w-[1500] h-[1000px] bg-black"
                     id="rootContainer"
                   >
                     <video

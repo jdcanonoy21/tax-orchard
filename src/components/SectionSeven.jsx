@@ -12,14 +12,845 @@ export default function SectionSeven() {
   const [flipDirection, setFlipDirection] = useState(null);
   const [windowSize, setWindowSize] = useState({ width: 600, height: 600 });
   const [currentPage, setCurrentPage] = useState(0);
-  const [hideContainer, setHideContainer] = useState(false);
+  const [totalActualPages, setTotalActualPages] = useState(0);
 
-  const blankPages = [
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"></div>,
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"></div>,
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"></div>,
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"></div>,
+  const blankPagesOneData = [
+    {
+      highlightMonth: "FEB",
+      highlightIndex: 1,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "MAR",
+      highlightIndex: 2,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "APR",
+      highlightIndex: 3,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "MAY",
+      highlightIndex: 4,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "JUN",
+      highlightIndex: 5,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "JUL",
+      highlightIndex: 6,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "AUG",
+      highlightIndex: 7,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "SEP",
+      highlightIndex: 8,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "OCT",
+      highlightIndex: 9,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "NOV",
+      highlightIndex: 10,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "DEC",
+      highlightIndex: 11,
+      highlightColor: "blue",
+    },
   ];
+
+  const blankPagesOneYear = [
+    {
+      highlightMonth: "JAN",
+      highlightIndex: 0,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "FEB",
+      highlightIndex: 1,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "MAR",
+      highlightIndex: 2,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "APR",
+      highlightIndex: 3,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "MAY",
+      highlightIndex: 4,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "JUN",
+      highlightIndex: 5,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "JUL",
+      highlightIndex: 6,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "AUG",
+      highlightIndex: 7,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "SEP",
+      highlightIndex: 8,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "OCT",
+      highlightIndex: 9,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "NOV",
+      highlightIndex: 10,
+      highlightColor: "blue",
+    },
+    {
+      highlightMonth: "DEC",
+      highlightIndex: 11,
+      highlightColor: "blue",
+    },
+  ];
+
+  const months = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC",
+  ];
+
+  const blankPagesOne = blankPagesOneData.map((page, pageIdx) => (
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      key={pageIdx}
+    >
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+        <div className="relative">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-10 top-16 opacity-60">
+              <p className="text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+                Plant
+              </p>
+            </div>
+            <div className="flex justify-center gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-6 left-0 !w-full items-center">
+              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/calendar-tree-2.svg"
+                  alt="Tree 1"
+                  className="opacity-10"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/calendar-tree-1.svg"
+                  alt="Tree 1"
+                  className="opacity-10"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/calendar-tree-2.svg"
+                  alt="Tree 1"
+                  className="opacity-10"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
+              <div className="flex flex-1 min-w-0 h-16">
+                {months.map((month, idx) => (
+                  <div
+                    key={month}
+                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
+                      month === page.highlightMonth ? "100px" : "60px"
+                    }] relative overflow-hidden`}
+                  >
+                    {idx === page.highlightIndex ? (
+                      <div
+                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
+                      ></div>
+                    ) : null}
+                    <span
+                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
+                        idx === page.highlightIndex
+                          ? "font-extrabold text-blue"
+                          : "font-medium text-black"
+                      }`}
+                    >
+                      {month}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
+                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
+                  YEAR 01
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ));
+
+  const blankPagesTwo = blankPagesOneData.map((page, pageIdx) => (
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      key={pageIdx}
+    >
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+        <div className="relative">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-10 top-16 opacity-60">
+              <p className="text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+                Plant
+              </p>
+            </div>
+            <div className="flex justify-center  gap-36 absolute bottom-28 left-0 !w-full items-center">
+              <div className="w-[10rem] h-[10rem] flex flex-col items-center">
+                <img
+                  src="/images/calendar-tree-2.svg"
+                  alt="Tree 1"
+                  className="opacity-10 w-[1000px] h-[1600px] object-contain "
+                />
+              </div>
+
+              <div className="w-[10rem] h-[10rem] flex flex-col items-center">
+                <img
+                  src="/images/calendar-tree-2.svg"
+                  alt="Tree 1"
+                  className="opacity-10 w-[1000px] h-[1600px] object-contain "
+                />
+              </div>
+
+              <div className="w-[10rem] h-[10rem] flex flex-col items-center">
+                <img
+                  src="/images/calendar-tree-2.svg"
+                  alt="Tree 1"
+                  className="opacity-10 w-[1000px] h-[1600px] object-contain "
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
+              <div className="flex flex-1 min-w-0 h-16">
+                {months.map((month, idx) => (
+                  <div
+                    key={month}
+                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
+                      month === page.highlightMonth ? "100px" : "60px"
+                    }] relative overflow-hidden`}
+                  >
+                    {idx === page.highlightIndex ? (
+                      <div
+                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
+                      ></div>
+                    ) : null}
+                    <span
+                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
+                        idx === page.highlightIndex
+                          ? "font-extrabold text-blue"
+                          : "font-medium text-black"
+                      }`}
+                    >
+                      {month}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
+                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
+                  YEAR 02
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ));
+
+  const blankPagesThree = blankPagesOneData.map((page, pageIdx) => (
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      key={pageIdx}
+    >
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+        <div className="relative">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 top-32 opacity-60">
+              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+                Cultivate
+              </p>
+            </div>
+
+            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-16 left-0 !w-full items-center">
+              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_2.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_2.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_2.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
+              <div className="flex flex-1 min-w-0 h-16">
+                {months.map((month, idx) => (
+                  <div
+                    key={month}
+                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
+                      month === page.highlightMonth ? "100px" : "60px"
+                    }] relative overflow-hidden`}
+                  >
+                    {idx === page.highlightIndex ? (
+                      <div
+                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
+                      ></div>
+                    ) : null}
+                    <span
+                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
+                        idx === page.highlightIndex
+                          ? "font-extrabold text-blue"
+                          : "font-medium text-black"
+                      }`}
+                    >
+                      {month}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
+                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
+                  YEAR 03
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ));
+
+  const blankPagesThreeTwo = blankPagesOneYear.map((page, pageIdx) => (
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      key={pageIdx}
+    >
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+        <div className="relative">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 top-32 opacity-60">
+              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+                Cultivate
+              </p>
+            </div>
+
+            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-16 left-0 !w-full items-center">
+              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_2.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_2.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_2.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
+              <div className="flex flex-1 min-w-0 h-16">
+                {months.map((month, idx) => (
+                  <div
+                    key={month}
+                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
+                      month === page.highlightMonth ? "100px" : "60px"
+                    }] relative overflow-hidden`}
+                  >
+                    {idx === page.highlightIndex ? (
+                      <div
+                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
+                      ></div>
+                    ) : null}
+                    <span
+                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
+                        idx === page.highlightIndex
+                          ? "font-extrabold text-blue"
+                          : "font-medium text-black"
+                      }`}
+                    >
+                      {month}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
+                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
+                  YEAR 04
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ));
+
+  const blankPagesFour = blankPagesOneData.map((page, pageIdx) => (
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      key={pageIdx}
+    >
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+        <div className="relative">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 top-32 opacity-60">
+              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+                Cultivate
+              </p>
+            </div>
+
+            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-28 left-0 !w-full items-center">
+              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_3.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_3.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_3.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
+              <div className="flex flex-1 min-w-0 h-16">
+                {months.map((month, idx) => (
+                  <div
+                    key={month}
+                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
+                      month === page.highlightMonth ? "100px" : "60px"
+                    }] relative overflow-hidden`}
+                  >
+                    {idx === page.highlightIndex ? (
+                      <div
+                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
+                      ></div>
+                    ) : null}
+                    <span
+                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
+                        idx === page.highlightIndex
+                          ? "font-extrabold text-blue"
+                          : "font-medium text-black"
+                      }`}
+                    >
+                      {month}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
+                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
+                  YEAR 05
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ));
+
+  const blankPagesFourTwo = blankPagesOneYear.map((page, pageIdx) => (
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      key={pageIdx}
+    >
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+        <div className="relative">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 top-32 opacity-60">
+              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+                Cultivate
+              </p>
+            </div>
+
+            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-28 left-0 !w-full items-center">
+              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_3.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_3.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+                <img
+                  src="/images/TaxOrchard_Tree_3.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
+              <div className="flex flex-1 min-w-0 h-16">
+                {months.map((month, idx) => (
+                  <div
+                    key={month}
+                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
+                      month === page.highlightMonth ? "100px" : "60px"
+                    }] relative overflow-hidden`}
+                  >
+                    {idx === page.highlightIndex ? (
+                      <div
+                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
+                      ></div>
+                    ) : null}
+                    <span
+                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
+                        idx === page.highlightIndex
+                          ? "font-extrabold text-blue"
+                          : "font-medium text-black"
+                      }`}
+                    >
+                      {month}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
+                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
+                  YEAR 06
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ));
+
+  const blankPagesFive = blankPagesOneData.map((page, pageIdx) => (
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      key={pageIdx}
+    >
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+        <div className="relative">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 top-32 opacity-60">
+              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+                Cultivate
+              </p>
+            </div>
+
+            <div className="flex justify-center  gap-4  absolute bottom-14 left-0 !w-full items-center">
+              <div className="w-72 h-56 flex flex-col items-center">
+                <img
+                  src="/images/TaxOrchard_Tree_4.svg"
+                  alt="Tree 1"
+                  className="opacity-100 w-[600px] h-[600px] object-contain"
+                />
+              </div>
+              <div className="w-72 h-56 flex flex-col items-center">
+                <img
+                  src="/images/TaxOrchard_Tree_4.svg"
+                  alt="Tree 1"
+                  className="opacity-100 w-[300px] h-[300px] object-contain"
+                />
+              </div>
+              <div className="w-72 h-56 flex flex-col items-center">
+                <img
+                  src="/images/TaxOrchard_Tree_4.svg"
+                  alt="Tree 1"
+                  className="opacity-100 w-[300px] h-[300px] object-contain"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
+              <div className="flex flex-1 min-w-0 h-16">
+                {months.map((month, idx) => (
+                  <div
+                    key={month}
+                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
+                      month === page.highlightMonth ? "100px" : "60px"
+                    }] relative overflow-hidden`}
+                  >
+                    {idx === page.highlightIndex ? (
+                      <div
+                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
+                      ></div>
+                    ) : null}
+                    <span
+                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
+                        idx === page.highlightIndex
+                          ? "font-extrabold text-blue"
+                          : "font-medium text-black"
+                      }`}
+                    >
+                      {month}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
+                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
+                  YEAR 07
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ));
+
+  const blankPagesFiveTwo = blankPagesOneYear.map((page, pageIdx) => (
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      key={pageIdx}
+    >
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+        <div className="relative">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 top-32 opacity-60">
+              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+                Cultivate
+              </p>
+            </div>
+
+            <div className="flex justify-center  gap-4  absolute bottom-14 left-0 !w-full items-center">
+              <div className="w-72 h-56 flex flex-col items-center">
+                <img
+                  src="/images/TaxOrchard_Tree_4.svg"
+                  alt="Tree 1"
+                  className="opacity-100 w-[600px] h-[600px] object-contain"
+                />
+              </div>
+              <div className="w-72 h-56 flex flex-col items-center">
+                <img
+                  src="/images/TaxOrchard_Tree_4.svg"
+                  alt="Tree 1"
+                  className="opacity-100 w-[300px] h-[300px] object-contain"
+                />
+              </div>
+              <div className="w-72 h-56 flex flex-col items-center">
+                <img
+                  src="/images/TaxOrchard_Tree_4.svg"
+                  alt="Tree 1"
+                  className="opacity-100 w-[300px] h-[300px] object-contain"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
+              <div className="flex flex-1 min-w-0 h-16">
+                {months.map((month, idx) => (
+                  <div
+                    key={month}
+                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
+                      month === page.highlightMonth ? "100px" : "60px"
+                    }] relative overflow-hidden`}
+                  >
+                    {idx === page.highlightIndex ? (
+                      <div
+                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
+                      ></div>
+                    ) : null}
+                    <span
+                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
+                        idx === page.highlightIndex
+                          ? "font-extrabold text-blue"
+                          : "font-medium text-black"
+                      }`}
+                    >
+                      {month}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
+                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
+                  YEAR 08
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ));
+
+  const blankPagesSix = blankPagesOneData.map((page, pageIdx) => (
+    <div
+      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      key={pageIdx}
+    >
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+        <div className="relative">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 top-32 opacity-60">
+              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+                Cultivate
+              </p>
+            </div>
+
+            <div className="flex justify-center gap-4 absolute bottom-36 left-0 !w-full items-center">
+              <div className="w-[22rem] h-[12rem] flex flex-col items-center">
+                <img
+                  src="/images/TaxOrchard_Tree_5.svg"
+                  alt="Tree 1"
+                  className="opacity-100 w-[1200px] h-[1600px] object-contain"
+                />
+              </div>
+              <div className="w-[22rem] h-[12rem] flex flex-col items-center">
+                <img
+                  src="/images/TaxOrchard_Tree_5.svg"
+                  alt="Tree 1"
+                  className="opacity-100 w-[1200px] h-[1600px] object-contain"
+                />
+              </div>
+              <div className="w-[22rem] h-[12rem] flex flex-col items-center">
+                <img
+                  src="/images/TaxOrchard_Tree_5.svg"
+                  alt="Tree 1"
+                  className="opacity-100 w-[1200px] h-[1600px] object-contain"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+              <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
+              <div className="flex flex-1 min-w-0 h-16">
+                {months.map((month, idx) => (
+                  <div
+                    key={month}
+                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
+                      month === page.highlightMonth ? "100px" : "60px"
+                    }] relative overflow-hidden`}
+                  >
+                    {idx === page.highlightIndex ? (
+                      <div
+                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
+                      ></div>
+                    ) : null}
+                    <span
+                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
+                        idx === page.highlightIndex
+                          ? "font-extrabold text-blue"
+                          : "font-medium text-black"
+                      }`}
+                    >
+                      {month}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
+                <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
+                  YEAR 09
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ));
 
   const pageElements = [
     <div>
@@ -98,8 +929,9 @@ export default function SectionSeven() {
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
               <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
+                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold text-blue">
                     JAN
                   </span>
                 </div>
@@ -108,9 +940,8 @@ export default function SectionSeven() {
                     FEB
                   </span>
                 </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium  text-black ">
                     MAR
                   </span>
                 </div>
@@ -163,7 +994,7 @@ export default function SectionSeven() {
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
-                  YEAR 02
+                  YEAR 01
                 </span>
               </div>
             </div>
@@ -171,7 +1002,7 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    ...blankPages,
+    ...blankPagesOne,
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -222,11 +1053,14 @@ export default function SectionSeven() {
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
               <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
+                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
+
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold text-blue">
                     JAN
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     FEB
@@ -237,9 +1071,9 @@ export default function SectionSeven() {
                     MAR
                   </span>
                 </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
+
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black ">
                     APR
                   </span>
                 </div>
@@ -249,11 +1083,13 @@ export default function SectionSeven() {
                     MAY
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     JUN
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     JUL
@@ -296,7 +1132,7 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    ...blankPages,
+    ...blankPagesTwo,
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -343,11 +1179,13 @@ export default function SectionSeven() {
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
               <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
+                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold text-blue">
                     JAN
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     FEB
@@ -365,9 +1203,8 @@ export default function SectionSeven() {
                   </span>
                 </div>
 
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black ">
                     MAY
                   </span>
                 </div>
@@ -397,11 +1234,13 @@ export default function SectionSeven() {
                     OCT
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     NOV
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     DEC
@@ -411,7 +1250,7 @@ export default function SectionSeven() {
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
-                  YEAR 02
+                  YEAR 03
                 </span>
               </div>
             </div>
@@ -419,7 +1258,8 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    ...blankPages,
+    ...blankPagesThree,
+    ...blankPagesThreeTwo,
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -469,11 +1309,13 @@ export default function SectionSeven() {
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
               <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
+                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
                     JAN
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     FEB
@@ -497,9 +1339,8 @@ export default function SectionSeven() {
                   </span>
                 </div>
 
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     JUN
                   </span>
                 </div>
@@ -539,7 +1380,7 @@ export default function SectionSeven() {
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
-                  YEAR 02
+                  YEAR 05
                 </span>
               </div>
             </div>
@@ -547,7 +1388,8 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    ...blankPages,
+    ...blankPagesFour,
+    ...blankPagesFourTwo,
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -594,11 +1436,13 @@ export default function SectionSeven() {
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
               <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
+                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
                     JAN
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     FEB
@@ -628,9 +1472,8 @@ export default function SectionSeven() {
                   </span>
                 </div>
 
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     JUL
                   </span>
                 </div>
@@ -645,11 +1488,13 @@ export default function SectionSeven() {
                     SEP
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     OCT
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     NOV
@@ -664,7 +1509,7 @@ export default function SectionSeven() {
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
-                  YEAR 02
+                  YEAR 07
                 </span>
               </div>
             </div>
@@ -672,7 +1517,8 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    ...blankPages,
+    ...blankPagesFive,
+    ...blankPagesFiveTwo,
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -723,16 +1569,19 @@ export default function SectionSeven() {
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
               <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
+                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
                     JAN
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     FEB
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     MAR
@@ -765,13 +1614,6 @@ export default function SectionSeven() {
 
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUL
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
                     AUG
                   </span>
                 </div>
@@ -800,7 +1642,7 @@ export default function SectionSeven() {
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
-                  YEAR 02
+                  YEAR 09
                 </span>
               </div>
             </div>
@@ -808,7 +1650,7 @@ export default function SectionSeven() {
         </div>
       </div>
     </div>,
-    ...blankPages,
+    ...blankPagesSix,
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -858,11 +1700,13 @@ export default function SectionSeven() {
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
               <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
+                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
                     JAN
                   </span>
                 </div>
+
                 <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
                   <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     FEB
@@ -910,9 +1754,8 @@ export default function SectionSeven() {
                   </span>
                 </div>
 
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
+                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
+                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
                     SEP
                   </span>
                 </div>
@@ -936,7 +1779,7 @@ export default function SectionSeven() {
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
-                  YEAR 02
+                  YEAR 10
                 </span>
               </div>
             </div>
@@ -951,8 +1794,6 @@ export default function SectionSeven() {
   const nonBlankPagesCount = pageElements.filter(
     (el) => !el.props?.className?.includes("blankPage")
   ).length;
-
-  console.log("nonBlankPagesCount", nonBlankPagesCount);
 
   /**
    * Handles the page flipping state change event
@@ -1001,112 +1842,118 @@ export default function SectionSeven() {
   });
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    const totalPages = pageElements.length;
+    const totalPages = pageElements.filter(
+      (el) => !el.props?.className?.includes("blankPage")
+    ).length;
     const page = Math.min(totalPages - 1, Math.floor(progress * totalPages));
 
     // Flip to next page at each breakpoint if not already there
     if (flipBook.current && flipBook.current.pageFlip) {
+      if (progress <= 0) {
+        flipBook?.current?.pageFlip()?.flip(0);
+        setCurrentPage(0);
+      }
+
       if (page > currentPage) {
-        // After page 2, flip (page - currentPage) times
-        if (currentPage === 1) {
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 100);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 200);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 300);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 400);
+        if (totalActualPages === 1) {
+          for (let i = 2; i <= 12; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 2) * 75); // 200ms initial, 75ms increment per flip
+          }
         }
 
-        if (currentPage === 2) {
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 100);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 200);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 300);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 400);
+        if (totalActualPages === 13) {
+          for (let i = 14; i <= 24; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 14) * 75); // 200ms initial, 75ms increment per flip
+          }
         }
 
-        if (currentPage === 3) {
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 100);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 200);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 300);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 400);
+        if (totalActualPages === 25) {
+          for (let i = 26; i <= 48; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 26) * 75); // 200ms initial, 75ms increment per flip
+          }
         }
 
-        if (currentPage === 4) {
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 100);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 200);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 300);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 400);
+        if (totalActualPages === 49) {
+          for (let i = 50; i <= 72; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 50) * 75); // 200ms initial, 75ms increment per flip
+          }
         }
 
-        if (currentPage === 5) {
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 100);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 200);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 300);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 400);
+        if (totalActualPages === 73) {
+          for (let i = 74; i <= 96; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 74) * 75); // 200ms initial, 75ms increment per flip
+          }
         }
 
-        if (currentPage === 6) {
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 100);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 200);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 300);
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 400);
-        }
-
-        if (currentPage === 7) {
-          setTimeout(() => {
-            flipBook?.current?.pageFlip()?.flipNext();
-          }, 100);
+        if (totalActualPages === 97) {
+          for (let i = 98; i <= 108; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 98) * 75); // 200ms initial, 75ms increment per flip
+          }
         }
 
         flipBook?.current?.pageFlip()?.flipNext();
         setCurrentPage(page);
       } else if (page < currentPage) {
+        if (totalActualPages === 1) {
+          for (let i = 12; i >= 2; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (12 - i) * 75); // 200ms initial, 75ms increment per flip
+          }
+        }
+
+        if (totalActualPages === 13) {
+          for (let i = 24; i >= 14; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (24 - i) * 75);
+          }
+        }
+
+        if (totalActualPages === 25) {
+          for (let i = 48; i >= 26; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (48 - i) * 75);
+          }
+        }
+
+        if (totalActualPages === 49) {
+          for (let i = 72; i >= 50; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (72 - i) * 75);
+          }
+        }
+
+        if (totalActualPages === 73) {
+          for (let i = 96; i >= 74; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (96 - i) * 75);
+          }
+        }
+
+        if (totalActualPages === 97) {
+          for (let i = 108; i >= 98; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (108 - i) * 75);
+          }
+        }
+
         flipBook?.current?.pageFlip().flipPrev();
         setCurrentPage(page);
       }
@@ -1125,18 +1972,25 @@ export default function SectionSeven() {
     }
   });
 
-  console.log("currentPage", currentPage);
+  // console.log("currentPage", currentPage);
+  console.log("totalActualPages", totalActualPages);
 
   return (
-    <motion.div className="relative w-full !z-0" ref={containerRef}>
-      <div className="flipbook-container sticky top-0 !z-50 w-full h-screen overflow-hidden">
+    <motion.div
+      className="min-h-screen relative w-full !z-40 -mt-10"
+      ref={containerRef}
+    >
+      <div className="flipbook-container sticky top-0 !z-50 w-full min-h-screen overflow-hidden">
         <HTMLFlipBook
           onChangeState={flipping}
+          onFlip={(e) => {
+            setTotalActualPages(e.data);
+          }}
           ref={flipBook}
           width={windowSize.width}
           height={windowSize.height}
           minWidth={315}
-          maxWidth={500}
+          maxWidth={1500}
           minHeight={420}
           maxHeight={windowSize.height}
           showCover={false}
@@ -1163,14 +2017,9 @@ export default function SectionSeven() {
       </div>
 
       <div
-        style={{ height: `${pageElements.length * 100 + 100}vh` }}
-        ref={scrollContainerRef}
-      />
-
-      {/* <div
         style={{ height: `${nonBlankPagesCount * 100 + 100}vh` }}
         ref={scrollContainerRef}
-      /> */}
+      />
     </motion.div>
   );
 }

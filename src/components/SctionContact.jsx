@@ -115,23 +115,28 @@ export default function SectionContact() {
         </h2>
       </div>
 
-      <div className="max-w-4xl w-full relative">
-        <div
-          className="flex items-center justify-between mt-8 pt-4 absolute -bottom-14 gap-5"
-          style={{ marginLeft: "20px" }}
-        >
-          <span className="text-midGrey text-3xl font-proxima-regular font-medium">
-            Get in touch
-          </span>
-          <span className="text-midGrey text-2xl"> / </span>
-          <span className="text-midGrey text-2xl" id="progress-indicator">
-            {currentStep + 1} of {totalSteps}
-          </span>
+      <div className=" w-full relative ">
+        <div className="max-w-4xl mx-auto">
+          <div
+            className="flex items-center justify-between mt-8 pt-4 absolute -bottom-14 gap-5 w-full mx-auto"
+            style={{ marginLeft: "20px" }}
+          >
+            <div className="w-4xl ">
+              <span className="text-midGrey text-3xl font-proxima-regular font-medium">
+                Get in touch
+              </span>
+              <span className="text-midGrey text-2xl"> / </span>
+              <span className="text-midGrey text-2xl" id="progress-indicator">
+                {currentStep + 1} of {totalSteps}
+              </span>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-8 min-h-[120px]">
           <Swiper
             allowTouchMove={false}
+            speed={800}
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
             }}
@@ -139,7 +144,7 @@ export default function SectionContact() {
           >
             {steps.map((step, idx) => (
               <SwiperSlide key={step.id}>
-                <div className="flex items-center justify-between relative  w-full">
+                <div className="flex items-center justify-between relative  w-full  max-w-4xl mx-auto px-4">
                   {idx > 0 && (
                     <button
                       type="button"

@@ -164,7 +164,7 @@ export default function SectionHarvest({ hideContainer }) {
   // }, [hideContainer]);
 
   return (
-    <div className="-mt-[100vh] w-full  -z-10 " ref={sectionRef}>
+    <div className="-mt-[200vh] w-full  -z-10 " ref={sectionRef}>
       <motion.section
         className="relative bg-black min-h-screen overflow-x-clip z-30"
         ref={sectionContainerRef}
@@ -204,7 +204,7 @@ export default function SectionHarvest({ hideContainer }) {
               ref={treesTextOneRef}
               style={{ x: treesTextOneX }}
               transition={{ x: { type: "spring", stiffness: 60, damping: 24 } }}
-              className="w-full text-[40px] font-proxima-regular leading-tight text-black"
+              className="w-full text-[40px] font-proxima-regular leading-tight text-black pt-16"
             >
               <span className="font-proxima-bold text-green">Year Ten:</span>{" "}
               You receive your full $500,000 back, possibly more.
@@ -351,7 +351,7 @@ export default function SectionHarvest({ hideContainer }) {
         </motion.div>
 
         <motion.div
-          className="min-h-screen bg-white flex flex-col items-center justify-center p-8 absolute z-20 w-full "
+          className="min-h-screen bg-white flex flex-col items-center justify-center py-8 absolute z-20 w-full "
           ref={sectionContactRef}
           style={{ y: sectionContactY }}
         >

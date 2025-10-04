@@ -5,7 +5,7 @@ import HTMLFlipBook from "react-pageflip";
 import { useScroll, useMotionValueEvent, motion } from "motion/react";
 import SectionHarvest from "./SectionHarvest";
 
-export default function SectionSeven() {
+export default function SectionSeven({ hideFinalpage }) {
   const flipBook = useRef();
   const scrollContainerRef = useRef(null);
   const containerRef = useRef(null);
@@ -1455,7 +1455,25 @@ export default function SectionSeven() {
       </div>
     </div>,
 
-    <div className="min-h-screen bg-transparent !w-full flex items-center justify-center relative z-50"></div>,
+    <div
+      className={`min-h-screen !w-full flex items-center justify-center relative z-50 transition-colors duration-700 ${
+        hideFinalpage ? "bg-transparent" : "bg-black"
+      }`}
+    >
+      <div
+        className={` top-0 w-full h-screen fixed  items-center justify-center transition-opacity duration-700 ${
+          hideFinalpage ? " opacity-0" : "flex opacity-100"
+        }  z-0`}
+      >
+        <h2
+          className={`  text-[183px] font-proxima-bold  leading-none text-center  ${
+            hideFinalpage ? "" : "text-white"
+          } `}
+        >
+          The Harvest
+        </h2>
+      </div>
+    </div>,
   ];
 
   const nonBlankPagesCount = pageElements.filter(
@@ -1626,17 +1644,7 @@ export default function SectionSeven() {
       }
     }
 
-    // Move containerRef to the left out of the screen if progress is between 0.88 and 0.9
-    if (containerRef.current) {
-      if (progress >= 0.88 && progress <= 0.1) {
-        containerRef.current.style.opacity = "0";
-        containerRef.current.style.transform = "translateX(-100vw)";
-      } else {
-        containerRef.current.style.opacity = "";
-        containerRef.current.style.transform = "";
-        containerRef.current.style.transition = "";
-      }
-    }
+    console.log("scrollYProgress", progress);
   });
 
   // console.log("currentPage", currentPage);
@@ -1644,7 +1652,7 @@ export default function SectionSeven() {
 
   return (
     <motion.div
-      className="min-h-screen relative w-full !z-40 "
+      className="min-h-screen relative w-full !z-40"
       ref={containerRef}
     >
       <div className="flipbook-container sticky top-0 !z-50 w-full min-h-screen overflow-hidden">

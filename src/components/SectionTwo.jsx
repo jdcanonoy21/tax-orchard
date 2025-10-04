@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, use } from "react";
 import { useScroll, useMotionValueEvent } from "framer-motion";
+import { scroller } from "react-scroll";
 
 export default function SectionTwo() {
   const revealText =

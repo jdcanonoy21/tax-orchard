@@ -19,23 +19,48 @@ import SectionHarvest from "../components/SectionHarvest";
 
 export default function Page() {
   const mainRef = useRef(null);
+  const [hideFinalpage, setHideFinalpage] = useState(false);
 
   useEffect(() => {
-    const lenis = new Lenis({
-      smooth: true,
-      lerp: 0.09,
-      // duration: 1.2,
-    });
+    const isChrome =
+      /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-    function raf(time) {
-      lenis.raf(time);
+    if (isChrome) {
+      const lenis = new Lenis({
+        smooth: true,
+        lerp: 1,
+        duration: 0,
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
       requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
 
-    return () => {
-      lenis.destroy();
-    };
+      return () => {
+        lenis.destroy();
+      };
+    }
+
+    if (isSafari) {
+      const lenis = new Lenis({
+        smooth: true,
+        lerp: 0.09,
+        duration: 1.2,
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      return () => {
+        lenis.destroy();
+      };
+    }
   }, []);
 
   return (
@@ -47,8 +72,8 @@ export default function Page() {
         <SectionFour />
         <SectionFive />
         <SectionSix />
-        <SectionSeven />
-        <SectionHarvest />
+        <SectionSeven hideFinalpage={hideFinalpage} />
+        <SectionHarvest setHideFinalpage={setHideFinalpage} />
         {/* <SectionEight /> */}
         {/* <SectionNine /> */}
         {/* <SectionTen /> */}

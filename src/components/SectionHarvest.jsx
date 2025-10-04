@@ -12,7 +12,7 @@ import {
 } from "framer-motion";
 import SectionContact from "./SctionContact";
 
-export default function SectionHarvest({ hideContainer }) {
+export default function SectionHarvest({ setHideFinalpage }) {
   const sectionRef = useRef(null);
   const sectionContainerRef = useRef(null);
   const sectionWhiteDivRef = useRef(null);
@@ -26,7 +26,6 @@ export default function SectionHarvest({ hideContainer }) {
   const treesContentRef = useRef(null);
   const treesTextOneRef = useRef(null);
   const treesTextTwoRef = useRef(null);
-  const [showWhiteDiv, setShowWhiteDiv] = useState(false);
 
   // Animate when section center hits viewport center
   const { scrollYProgress } = useScroll({
@@ -36,18 +35,24 @@ export default function SectionHarvest({ hideContainer }) {
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
     console.log("Section Harvest scroll:", progress);
+
+    if (progress > 0.16) {
+      setHideFinalpage(true);
+    } else {
+      setHideFinalpage(false);
+    }
   });
 
   const sectionX = useTransform(
     scrollYProgress,
-    [0.3, 0.32],
+    [0.32, 0.33],
     ["0vw", "-100vw"]
   );
 
   const treesOpacity = useTransform(scrollYProgress, [0.33, 0.34], [0, 1]);
   const treesTextOneX = useTransform(
     scrollYProgress,
-    [0.35, 0.4, 0.45, 0.5],
+    [0.36, 0.4, 0.45, 0.5],
     ["100vw", "0vw", "0vw", "-100vw"]
   );
 
@@ -70,13 +75,13 @@ export default function SectionHarvest({ hideContainer }) {
 
   const treesContentY = useTransform(
     scrollYProgress,
-    [0.8, 0.9],
+    [0.83, 0.9],
     ["0%", "-120%"]
   );
 
   const sectionContactY = useTransform(
     scrollYProgress,
-    [0.9, 1],
+    [0.8, 0.9],
     ["100%", "0%"]
   );
 
@@ -164,23 +169,19 @@ export default function SectionHarvest({ hideContainer }) {
   // }, [hideContainer]);
 
   return (
-    <div className="-mt-[200vh] w-full  -z-10 " ref={sectionRef}>
+    <div className="-mt-[200vh] w-full  -z-10 overfl" ref={sectionRef}>
       <motion.section
         className="relative bg-black min-h-screen overflow-x-clip z-30"
         ref={sectionContainerRef}
         style={{ x: sectionX }}
         transition={{ x: { type: "spring", stiffness: 60, damping: 24 } }}
       >
-        <div className="sticky top-0 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
-          <motion.h2
-            // style={{ x }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="mix-blend-difference text-white text-[183px] font-proxima-bold leading-none text-center"
-          >
+        <div className="sticky -top-40 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
+          <motion.h2 className="mix-blend-difference text-white text-[183px] font-proxima-bold leading-none text-center">
             The Harvest
           </motion.h2>
         </div>
-        <motion.div className={`min-h-screen  bg-black `}></motion.div>
+        <motion.div className={`h-[120vh]  bg-black `}></motion.div>
         <motion.div className={`min-h-screen  bg-white `}></motion.div>
         <motion.div
           className={`min-h-screen  bg-white `}
@@ -351,7 +352,7 @@ export default function SectionHarvest({ hideContainer }) {
         </motion.div>
 
         <motion.div
-          className="min-h-screen bg-white flex flex-col items-center justify-center py-8 absolute z-20 w-full "
+          className="min-h-screen bg-transparent flex flex-col items-center justify-center pb-8 absolute z-0 w-full "
           ref={sectionContactRef}
           style={{ y: sectionContactY }}
         >

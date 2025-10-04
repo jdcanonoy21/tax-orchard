@@ -24,6 +24,7 @@
     "react-native-page-flipper": "^1.0.1",
     "react-native-reanimated": "^4.1.0",
     "react-pageflip": "^2.0.3",
+    "react-scroll": "^1.9.3",
     "react-smooth-scrollbar": "^8.0.6",
     "react-type-animation": "^3.2.0",
     "rolly": "^0.0.1",

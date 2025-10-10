@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 511 231">
+  <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #4c6fb6;
+        isolation: isolate;
+        opacity: 0;
+      }
+
+      .st1 {
+        fill: #fff;
+      }
+
+      .st2 {
+        stroke: #4c6fb6;
+        stroke-width: 2px;
+      }
+
+      .st2, .st3 {
+        fill: none;
+      }
+
+      .st3 {
+        stroke: #707071;
+        stroke-dasharray: 3 3;
+        stroke-width: .5px;
+      }
+
+      .st4 {
+        fill: #2aaf4a;
+      }
+    </style>
+  </defs>
+  <g id="Group_361">
+    <rect id="Rectangle_219-2" class="st1" width="511" height="231" rx="14" ry="14"/>
+    <g id="Group_360">
+      <g id="Group_359">
+        <g id="Group_355">
+          <path id="Path_1017" class="st3" d="M41,59.3v138.1"/>
+          <path id="Path_1018" class="st3" d="M102.7,59.3v138.1"/>
+        </g>
+        <g id="Group_358">
+          <path id="Path_1017-2" class="st3" d="M287.8,59.3v138.1"/>
+          <path id="Path_1018-2" class="st3" d="M349.5,59.3v138.1"/>
+        </g>
+        <g id="Group_356">
+          <path id="Path_1017-3" class="st3" d="M164.4,59.3v138.1"/>
+          <path id="Path_1018-3" class="st3" d="M226.1,59.3v138.1"/>
+        </g>
+        <g id="Group_357">
+          <path id="Path_1017-4" class="st3" d="M411.3,59.3v138.1"/>
+          <path id="Path_1018-4" class="st3" d="M473,59.3v138.1"/>
+        </g>
+        <rect id="Rectangle_218" class="st0" x="446.7" y="9.1" width="52.5" height="212.9" rx="10" ry="10"/>
+        <path id="Path_1019" class="st2" d="M41,182.3l62.8-10.7,60.4-35.1,62.3-57,61,23.5,63-32.4,62.3,8.9,62.8-25.7"/>
+      </g>
+      <g id="Group_365">
+        <circle id="Ellipse_17" class="st4" cx="40.5" cy="182.5" r="4.5"/>
+        <circle id="Ellipse_18" class="st4" cx="102.5" cy="171.5" r="4.5"/>
+        <ellipse id="Ellipse_19" class="st4" cx="165" cy="136.5" rx="4" ry="4.5"/>
+        <circle id="Ellipse_20" class="st4" cx="226.5" cy="80.5" r="4.5"/>
+        <circle id="Ellipse_21" class="st4" cx="287.5" cy="102.5" r="4.5"/>
+        <circle id="Ellipse_22" class="st4" cx="349.5" cy="71.5" r="4.5"/>
+        <ellipse id="Ellipse_23" class="st4" cx="411" cy="80.5" rx="4" ry="4.5"/>
+        <circle id="Ellipse_24" class="st4" cx="473.5" cy="54.5" r="4.5"/>
+      </g>
+    </g>
+  </g>
+</svg>

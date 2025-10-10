@@ -51,14 +51,31 @@ export default function Page() {
         duration: 1.2,
       });
 
+      window.lenis = lenis; // Make Lenis globally accessible
+
       function raf(time) {
         lenis.raf(time);
         requestAnimationFrame(raf);
       }
       requestAnimationFrame(raf);
 
+      // Observe body overflow changes
+      const observer = new MutationObserver(() => {
+        if (document.body.style.overflow === "hidden") {
+          lenis.stop();
+        } else {
+          lenis.start();
+        }
+      });
+      observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ["style"],
+      });
+
       return () => {
         lenis.destroy();
+        observer.disconnect();
+        window.lenis = undefined;
       };
     }
   }, []);
@@ -72,8 +89,8 @@ export default function Page() {
         <SectionFour />
         <SectionFive />
         <SectionSix />
-        <SectionSeven hideFinalpage={hideFinalpage} />
-        <SectionHarvest setHideFinalpage={setHideFinalpage} />
+        <SectionSeven />
+        {/* <SectionHarvest setHideFinalpage={setHideFinalpage} /> */}
         {/* <SectionEight /> */}
         {/* <SectionNine /> */}
         {/* <SectionTen /> */}

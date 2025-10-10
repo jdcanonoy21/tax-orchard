@@ -33,8 +33,9 @@ export default function SectionTwo() {
     const totalWords = revealWords.length + revealWordsTwo.length;
 
     // Reveal words between 0.15 and 0.45 progress (now normalized to 0-1)
-    if (progress >= 0.15 && progress <= 0.45) {
-      const revealProgress = (progress - 0.15) / 0.7; // Normalize 0.15-0.85 to 0-1
+    // ...existing code...
+    if (progress >= 0.1 && progress <= 0.49) {
+      const revealProgress = (progress - 0.25) / 0.2; // 0.15 to 0.5 range
       const totalReveal = Math.floor(revealProgress * totalWords);
 
       if (totalReveal <= revealWords.length) {
@@ -45,12 +46,12 @@ export default function SectionTwo() {
         idxTwo = totalReveal - revealWords.length;
         if (idxTwo > revealWordsTwo.length) idxTwo = revealWordsTwo.length;
       }
-    } else if (progress > 0.45) {
-      // Fully reveal all words after 0.85
+    } else if (progress > 0.49) {
+      // Instantly reveal all words after 0.5
       idx = revealWords.length;
       idxTwo = revealWordsTwo.length;
     } else {
-      // Hide all words before 0.15
+      // Hide all before 0.15
       idx = 0;
       idxTwo = 0;
     }
@@ -65,6 +66,29 @@ export default function SectionTwo() {
     setRevealIndex(idx);
     setRevealIndexTwo(idxTwo);
   });
+
+  // useEffect(() => {
+  //   function lockScroll() {
+  //     document.body.style.overflow = "hidden";
+  //   }
+
+  //   function unlockScroll() {
+  //     document.body.style.overflow = "";
+  //   }
+
+  //   const unsubscribe = scrollYProgress.on("change", (progress) => {
+  //     if (progress >= 0.5) {
+  //       lockScroll();
+  //     } else {
+  //       unlockScroll();
+  //     }
+  //   });
+
+  //   return () => {
+  //     unlockScroll();
+  //     unsubscribe();
+  //   };
+  // }, [scrollYProgress]);
 
   return (
     <section
@@ -88,7 +112,7 @@ export default function SectionTwo() {
                   opacity: i < revealIndex ? 1 : 0,
                   transition: "opacity 0.3s",
                   marginRight: "0.25em",
-                  minWidth: "1ch", // ensures each word reserves space
+                  minWidth: "1ch",
                 }}
               >
                 {word}

@@ -11,7 +11,6 @@ export default function SectionSix() {
   const rootContainerRef = useRef(null);
   const videoRef = useRef(null);
   const [lastProgress, setLastProgress] = useState(0);
-  const scrollTimeout = useRef(null);
   const rootTextRef = useRef(null);
   const animationFrameRef = useRef(null);
   const targetVideoTimeRef = useRef(0);
@@ -19,7 +18,7 @@ export default function SectionSix() {
   // Scroll progress for video: start when section enters viewport, end when it leaves
   const { scrollYProgress: videoScrollYProgress } = useScroll({
     target: rootContainerRef,
-    offset: ["start end", "end start"],
+    offset: ["start center", "end center"],
   });
 
   // Scroll progress for x/y: start at center, end at center
@@ -38,12 +37,15 @@ export default function SectionSix() {
 
   useMotionValueEvent(videoScrollYProgress, "change", (latest) => {
     const video = videoRef.current;
-    const VIDEO_LENGTH = 4; // seconds
+    const VIDEO_LENGTH = 5; // seconds
 
     if (video && latest > 0) {
-      const progress = Math.min(latest / 0.7, 1);
+      const progress = Math.min(latest / 1.2, 1);
       const targetTime = progress * VIDEO_LENGTH;
       targetVideoTimeRef.current = targetTime;
+
+      // Ensure video is paused (we're scrubbing, not playing)
+      if (!video.paused) video.pause();
 
       // Smoothly animate currentTime towards targetTime
       const animateVideo = () => {
@@ -53,14 +55,14 @@ export default function SectionSix() {
         const diff = target - current;
 
         // If close enough, snap to target and stop animating
-        if (Math.abs(diff) < 0.05) {
+        if (Math.abs(diff) < 0.02) {
           video.currentTime = target;
           animationFrameRef.current = null;
           return;
         }
 
-        // Move a smaller fraction toward the target for smoother effect
-        video.currentTime = current + diff * 0.08;
+        // Move a fraction toward the target for smoother effect
+        video.currentTime = current + diff * 0.5;
         animationFrameRef.current = requestAnimationFrame(animateVideo);
       };
 
@@ -68,21 +70,6 @@ export default function SectionSix() {
       if (!animationFrameRef.current) {
         animationFrameRef.current = requestAnimationFrame(animateVideo);
       }
-
-      // Play video while scrolling
-      if (video.paused) video.play();
-      video.playbackRate = 2;
-
-      // Clear previous timeout and set a new one to pause after 200ms of no scroll
-      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-      scrollTimeout.current = setTimeout(() => {
-        if (!video.paused) video.pause();
-        // Cancel animation frame after pausing
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
-          animationFrameRef.current = null;
-        }
-      }, 200);
 
       setLastProgress(latest);
     } else if (video && latest === 0) {
@@ -92,17 +79,17 @@ export default function SectionSix() {
         animationFrameRef.current = null;
       }
       video.currentTime = 0;
-      video.pause();
+      if (!video.paused) video.pause();
       setLastProgress(0);
     }
   });
 
   return (
     <section
-      className="relative overflow-x-clip  bg-black pt-80  !z-50 "
+      className="relative overflow-x-clip  bg-black pt-80  !z-40 "
       ref={rootContainerRef}
     >
-      <div className="sticky top-0 flex items-center overflow-visible w-[1500px] h-[500px]">
+      <div className="sticky top-0 flex items-center overflow-visible h-[500px]">
         {/* Apply smooth scroll transforms to .track */}
         <motion.div
           className="track w-full"
@@ -129,7 +116,7 @@ export default function SectionSix() {
                       ref={videoRef}
                       src="/images/roots.mp4"
                       muted
-                      className="absolute top-0 left-1/2 ml-[348px] -translate-x-1/2 w-[2000px] h-[1200px] object-cover object-top z-0 -mt-10"
+                      className="absolute top-0 left-1/2 ml-[308px] -translate-x-1/2 w-[2000px] h-[1200px] object-cover object-top z-0 "
                     />
                   </div>
                   {/* Fade-in-right animation for text */}
@@ -142,7 +129,8 @@ export default function SectionSix() {
                         : { x: 100, opacity: 0 }
                     }
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="absolute -right-[700px] top-[410px] transform -translate-y-1/2 max-w-3xl pr-20"
+                    className="absolute -right-[700px]  transform -translate-y-1/2 max-w-3xl pr-20"
+                    style={{ top: "390px" }}
                   >
                     <div className="flex flex-col gap-4 pr-10">
                       <p className="text-[40px] font-proxima-regular leading-none text-white">

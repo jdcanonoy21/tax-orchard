@@ -25,6 +25,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const [windowSize, setWindowSize] = useState({ width: 600, height: 600 });
   const [currentPage, setCurrentPage] = useState(0);
   const [totalActualPages, setTotalActualPages] = useState(0);
+
   const journeyRef = useRef(null);
   const pendingPageRef = useRef(null);
 
@@ -32,6 +33,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const [isFlipping, setIsFlipping] = useState(false);
   const [canStartFlipping, setCanStartFlipping] = useState(false);
   const flipDelayTimer = useRef(null);
+
 
   const blankPagesOneData = [
     {
@@ -542,6 +544,7 @@ export default function SectionSeven({ hideFinalpage }) {
   ));
 
   const pageElements = [
+
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -813,26 +816,129 @@ export default function SectionSeven({ hideFinalpage }) {
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
+            <div className="text-center w-3/4 justify-center items-start mb-40">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 Your seed account steadily
                 <br /> grows in value.
               </p>
             </div>
 
-            <div className="w-full flex justify-center items-center ">
-              <div className="w-1/2 absolute bottom-28  h-20 flex flex-col items-center justify-center ">
-                <img
-                  src="/images/financial-advisor.png"
-                  alt="financial advisor"
-                  className="w-full"
-                />
-                <div className="flex text-black justify-evenly !w-full -mt-6">
-                  <p className="text-midGrey text-[28px] font-medium">
-                    Financial Advisor
-                  </p>
-                  <p className="text-3xl text-green font-bold">Tax Orchard</p>
-                </div>
+            <div className="w-full flex justify-center items-center relative">
+              <div className="w-full -bottom-28 absolute   h-64 flex flex-col items-center justify-center">
+                <div className="w-full h-full  absolute top-0 left-0 z-10" ></div>
+                  <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 511 231" className="z-10">
+                  <defs>
+                    <style dangerouslySetInnerHTML={{__html: `
+                      .st0 {
+                        fill: #4c6fb6;
+                        opacity: 0;
+                      }
+
+                      .st1 {
+                        fill: #fff;
+                      }
+
+                      .st2 {
+                        stroke: #4c6fb6;
+                        stroke-width: 2px;
+                      }
+
+                      .st2, .st3 {
+                        fill: none;
+                      }
+
+                      .st3 {
+                        stroke: #707071;
+                        stroke-dasharray: 3 3;
+                        stroke-width: .5px;
+                      }
+
+                      .st4 {
+                        fill: #2aaf4a;
+                      }
+
+                      @keyframes drawLine {
+                        from {
+                          stroke-dashoffset: 1000;
+                        }
+                        to {
+                          stroke-dashoffset: 0;
+                        }
+                      }
+
+                      @keyframes fadeIn {
+                        from {
+                          opacity: 0;
+                        }
+                        to {
+                          opacity: 1;
+                        }
+                      }
+
+                      .animated-line {
+                        stroke-dasharray: 1000;
+                        stroke-dashoffset: 1000;
+                        animation: drawLine 2s ease-in-out 0.2s forwards;
+                      }
+
+                      .animated-circle {
+                        opacity: 0;
+                        animation: fadeIn 0.3s ease-out forwards;
+                      }
+
+                      .animated-circle-1 { animation-delay: 0.1s; }
+                      .animated-circle-2 { animation-delay: 0.2s; }
+                      .animated-circle-3 { animation-delay: 0.5s; }
+                      .animated-circle-4 { animation-delay: 0.7s; }
+                      .animated-circle-5 { animation-delay: 0.9s; }
+                      .animated-circle-6 { animation-delay: 1s; }
+                      .animated-circle-7 { animation-delay: 1.1s; }
+                      .animated-circle-8 { animation-delay: 1.2s; }
+                    `}} />
+                  </defs>
+                  <g id="Group_361">
+                    <rect id="Rectangle_219-2" className="st1" width="100%" height="100%" rx="14" ry="14" fill="#ffffff"/>
+                    <g id="Group_360">
+                      <g id="Group_359">
+                        <g id="Group_355">
+                          <path id="Path_1017" className="st3" d="M41,59.3v138.1"/>
+                          <path id="Path_1018" className="st3" d="M102.7,59.3v138.1"/>
+                        </g>
+                        <g id="Group_358">
+                          <path id="Path_1017-2" className="st3" d="M287.8,59.3v138.1"/>
+                          <path id="Path_1018-2" className="st3" d="M349.5,59.3v138.1"/>
+                        </g>
+                        <g id="Group_356">
+                          <path id="Path_1017-3" className="st3" d="M164.4,59.3v138.1"/>
+                          <path id="Path_1018-3" className="st3" d="M226.1,59.3v138.1"/>
+                        </g>
+                        <g id="Group_357">
+                          <path id="Path_1017-4" className="st3" d="M411.3,59.3v138.1"/>
+                          <path id="Path_1018-4" className="st3" d="M473,59.3v138.1"/>
+                        </g>
+                        <rect id="Rectangle_218" className="st0" x="446.7" y="9.1" width="52.5" height="212.9" rx="10" ry="10"/>
+                        <path 
+                          className="animated-line"
+                          d="M41,182.3l62.8-10.7,60.4-35.1,62.3-57,61,23.5,63-32.4,62.3,8.9,62.8-25.7"
+                          stroke="#4c6fb6"
+                          strokeWidth="2"
+                          fill="none"
+                        />
+
+                      </g>
+                      <g id="Group_365">
+                        <circle id="Ellipse_17" className="st4 animated-circle animated-circle-1" cx="40.5" cy="182.5" r="4.5"/>
+                        <circle id="Ellipse_18" className="st4 animated-circle animated-circle-2" cx="102.5" cy="171.5" r="4.5"/>
+                        <ellipse id="Ellipse_19" className="st4 animated-circle animated-circle-3" cx="165" cy="136.5" rx="4" ry="4.5"/>
+                        <circle id="Ellipse_20" className="st4 animated-circle animated-circle-4" cx="226.5" cy="80.5" r="4.5"/>
+                        <circle id="Ellipse_21" className="st4 animated-circle animated-circle-5" cx="287.5" cy="102.5" r="4.5"/>
+                         <circle id="Ellipse_22" className="st4 animated-circle animated-circle-6" cx="349.5" cy="71.5" r="4.5"/>
+                        <ellipse id="Ellipse_23" className="st4 animated-circle animated-circle-7" cx="411" cy="80.5" rx="4" ry="4.5"/>
+                        <circle id="Ellipse_24" className="st4 animated-circle animated-circle-8" cx="473.5" cy="54.5" r="4.5"/> 
+                      </g>
+                    </g>
+                  </g>
+                </svg>
               </div>
             </div>
 
@@ -1498,9 +1604,9 @@ export default function SectionSeven({ hideFinalpage }) {
     </div>,
   ];
 
-  // const nonBlankPagesCount = pageElements.filter(
-  //   (el) => !el.props?.className?.includes("blankPage")
-  // ).length;
+  const nonBlankPagesCount = pageElements.filter(
+    (el) => !el.props?.className?.includes("blankPage")
+  ).length;
 
   /**
    * Handles the page flipping state change event
@@ -1553,126 +1659,136 @@ export default function SectionSeven({ hideFinalpage }) {
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const scrollLock = useRef(false);
 
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    const totalPages = pageElements.filter(
+      (el) => !el.props?.className?.includes("blankPage")
+    ).length;
+    const page = Math.min(totalPages - 1, Math.floor(progress * totalPages));
+
+    // Flip to next page at each breakpoint if not already there
+    if (flipBook.current && flipBook.current.pageFlip) {
+      if (progress <= 0) {
+        flipBook?.current?.pageFlip()?.flip(0);
+        setCurrentPage(0);
+      }
+
+      if (page > currentPage) {
+        if (totalActualPages === 0) {
+          for (let i = 1; i <= 4; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 1) * 75); // 200ms initial, 75ms increment per flip
+          }
+        }
+
+        if (totalActualPages === 5) {
+          for (let i = 6; i <= 9; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 6) * 75); // 200ms initial, 75ms increment per flip
+          }
+        }
+
+        if (totalActualPages === 10) {
+          for (let i = 11; i <= 13; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 11) * 75); // 200ms initial, 75ms increment per flip
+          }
+        }
+
+        if (totalActualPages === 16) {
+          for (let i = 17; i <= 20; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 17) * 75); // 200ms initial, 75ms increment per flip
+          }
+        }
+
+        if (totalActualPages === 21) {
+          for (let i = 22; i <= 25; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 22) * 75); // 200ms initial, 75ms increment per flip
+          }
+        }
+
+        if (totalActualPages === 26) {
+          for (let i = 27; i <= 30; i++) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (i - 27) * 75); // 200ms initial, 75ms increment per flip
+          }
+        }
+
+        flipBook?.current?.pageFlip()?.flipNext();
+        setCurrentPage(page);
+      } else if (page < currentPage) {
+        if (totalActualPages === 5) {
+          for (let i = 4; i >= 1; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (4 - i) * 75);
+          }
+        }
+
+        if (totalActualPages === 10) {
+          for (let i = 9; i >= 6; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (9 - i) * 75);
+          }
+        }
+
+        if (totalActualPages === 16) {
+          for (let i = 13; i >= 11; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (13 - i) * 75);
+          }
+        }
+
+        if (totalActualPages === 21) {
+          for (let i = 20; i >= 17; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (20 - i) * 75);
+          }
+        }
+
+        if (totalActualPages === 26) {
+          for (let i = 25; i >= 22; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (25 - i) * 75);
+          }
+        }
+
+        if (totalActualPages === 31) {
+          for (let i = 30; i >= 27; i--) {
+            setTimeout(() => {
+              flipBook?.current?.pageFlip()?.flip(i);
+            }, 200 + (30 - i) * 75);
+          }
+        }
+
+        flipBook?.current?.pageFlip().flipPrev();
+        setCurrentPage(page);
+      }
+    }
+
+    console.log("scrollYProgress", progress);
+  });
+
   useLayoutEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.style.height = `${7 * 100}vh`; // 7 scroll zones
     }
   }, []);
 
-  useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    // Only allow flips if enabled AND the 1-second delay has passed
-    if (!flipEnabled || !canStartFlipping || isFlipping) return;
 
-    const totalGroups = 7;
-
-    // Fix: Snap to last group if very close to end
-    let targetGroup = Math.floor(progress * totalGroups);
-    if (progress >= 0.98) {
-      targetGroup = totalGroups - 1;
-    }
-
-    if (targetGroup === currentPage) return;
-
-    if (scrollLock.current) {
-      pendingPageRef.current = targetGroup;
-      return;
-    }
-
-    console.log("progress", progress, "→ targetGroup", targetGroup);
-
-    // Small debounce to prevent rapid triggers
-    setTimeout(() => {
-      // Check again before flipping in case things changed
-      if (!scrollLock.current && !isFlipping && canStartFlipping && targetGroup !== currentPage) {
-        flipToGroup(targetGroup);
-      }
-    }, 100);
-  });
-
-  function flipToGroup(groupIndex) {
-    if (!flipBook.current || !flipBook.current.pageFlip) return;
-
-    // Always clear pendingPageRef before starting a new flip
-    pendingPageRef.current = null;
-    scrollLock.current = true;
-    setIsFlipping(true);
-
-    const flipGroups = [
-      [1, 2, 3, 4],
-      [6, 7, 8, 9],
-      [11, 12, 13, 14],
-      [16, 17, 18, 19],
-      [21, 22, 23, 24],
-      [26, 27, 28, 29],
-      [30, 31],
-    ];
-
-    const flips = flipGroups[groupIndex];
-    const isForward = groupIndex > currentPage;
-    const sequence = isForward ? flips : [...flips].reverse();
-
-    sequence.forEach((pageIndex, i) => {
-      setTimeout(() => {
-        flipBook.current?.pageFlip().flip(pageIndex);
-      }, 200 + i * 75);
-    });
-
-    const totalFlipTime = 300 + sequence?.length * 75 + 300;
-
-    setTimeout(() => {
-      setCurrentPage(groupIndex);
-      scrollLock.current = false;
-      setIsFlipping(false);
-
-      if (
-        pendingPageRef.current !== null &&
-        pendingPageRef.current !== groupIndex
-      ) {
-        const nextGroup = pendingPageRef.current;
-        pendingPageRef.current = null;
-        flipToGroup(nextGroup);
-      }
-    }, totalFlipTime);
-  }
-
-  // Only allow flipping when journeyRef is NOT in view
-  // Add 1-second delay after journey leaves viewport before enabling flips
-  useEffect(() => {
-    if (isJourneyInView) {
-      // Journey is in view - disable flipping and reset
-      setFlipEnabled(false);
-      setCanStartFlipping(false);
-      if (flipDelayTimer.current) {
-        clearTimeout(flipDelayTimer.current);
-        flipDelayTimer.current = null;
-      }
-      console.log("Journey in view - flipping disabled");
-    } else {
-      // Journey just left view - start 1-second delay
-      console.log("Journey out of view - starting 1s delay before enabling flips");
-      
-      if (flipDelayTimer.current) {
-        clearTimeout(flipDelayTimer.current);
-      }
-      
-      flipDelayTimer.current = setTimeout(() => {
-        console.log("1-second delay complete - flipping now enabled");
-        setCanStartFlipping(true);
-        setFlipEnabled(true);
-      }, 1000);
-    }
-
-    return () => {
-      if (flipDelayTimer.current) {
-        clearTimeout(flipDelayTimer.current);
-      }
-    };
-  }, [isJourneyInView]);
-
-  // Debug logging
   // console.log("currentPage", currentPage);
-  // console.log("totalActualPages", totalActualPages);
-  // console.log("flipEnabled:", flipEnabled, "canStartFlipping:", canStartFlipping, "isFlipping:", isFlipping);
+  console.log("totalActualPages", totalActualPages);
 
   return (
     <div className="overflow-x-clip">

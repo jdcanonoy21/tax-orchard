@@ -1790,6 +1790,21 @@ export default function SectionSeven({ hideFinalpage }) {
   // console.log("currentPage", currentPage);
   console.log("totalActualPages", totalActualPages);
 
+  /**
+   * Set default scroll position on mount
+   * to ensure consistent starting point
+   */
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto", // No animation on initial load
+      });
+    }
+  }, []);
+
+
   return (
     <div className="overflow-x-clip">
       <motion.div

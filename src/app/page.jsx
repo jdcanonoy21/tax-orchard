@@ -90,7 +90,7 @@ export default function Page() {
         <SectionFive />
         <SectionSix />
         <SectionSeven />
-        {/* <SectionHarvest setHideFinalpage={setHideFinalpage} /> */}
+        <SectionHarvest setHideFinalpage={setHideFinalpage} />
         {/* <SectionEight /> */}
         {/* <SectionNine /> */}
         {/* <SectionTen /> */}

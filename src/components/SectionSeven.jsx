@@ -1660,126 +1660,114 @@ export default function SectionSeven({ hideFinalpage }) {
   const scrollLock = useRef(false);
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    const totalPages = pageElements.filter(
-      (el) => !el.props?.className?.includes("blankPage")
-    ).length;
-    const page = Math.min(totalPages - 1, Math.floor(progress * totalPages));
+    // Only allow flips if enabled AND the 1-second delay has passed
+    if (!flipEnabled || !canStartFlipping || isFlipping) return;
 
-    // Flip to next page at each breakpoint if not already there
-    if (flipBook.current && flipBook.current.pageFlip) {
-      if (progress <= 0) {
-        flipBook?.current?.pageFlip()?.flip(0);
-        setCurrentPage(0);
-      }
+    const totalGroups = 7;
 
-      if (page > currentPage) {
-        if (totalActualPages === 0) {
-          for (let i = 1; i <= 4; i++) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 1) * 75); // 200ms initial, 75ms increment per flip
-          }
-        }
-
-        if (totalActualPages === 5) {
-          for (let i = 6; i <= 9; i++) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 6) * 75); // 200ms initial, 75ms increment per flip
-          }
-        }
-
-        if (totalActualPages === 10) {
-          for (let i = 11; i <= 13; i++) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 11) * 75); // 200ms initial, 75ms increment per flip
-          }
-        }
-
-        if (totalActualPages === 16) {
-          for (let i = 17; i <= 20; i++) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 17) * 75); // 200ms initial, 75ms increment per flip
-          }
-        }
-
-        if (totalActualPages === 21) {
-          for (let i = 22; i <= 25; i++) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 22) * 75); // 200ms initial, 75ms increment per flip
-          }
-        }
-
-        if (totalActualPages === 26) {
-          for (let i = 27; i <= 30; i++) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (i - 27) * 75); // 200ms initial, 75ms increment per flip
-          }
-        }
-
-        flipBook?.current?.pageFlip()?.flipNext();
-        setCurrentPage(page);
-      } else if (page < currentPage) {
-        if (totalActualPages === 5) {
-          for (let i = 4; i >= 1; i--) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (4 - i) * 75);
-          }
-        }
-
-        if (totalActualPages === 10) {
-          for (let i = 9; i >= 6; i--) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (9 - i) * 75);
-          }
-        }
-
-        if (totalActualPages === 16) {
-          for (let i = 13; i >= 11; i--) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (13 - i) * 75);
-          }
-        }
-
-        if (totalActualPages === 21) {
-          for (let i = 20; i >= 17; i--) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (20 - i) * 75);
-          }
-        }
-
-        if (totalActualPages === 26) {
-          for (let i = 25; i >= 22; i--) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (25 - i) * 75);
-          }
-        }
-
-        if (totalActualPages === 31) {
-          for (let i = 30; i >= 27; i--) {
-            setTimeout(() => {
-              flipBook?.current?.pageFlip()?.flip(i);
-            }, 200 + (30 - i) * 75);
-          }
-        }
-
-        flipBook?.current?.pageFlip().flipPrev();
-        setCurrentPage(page);
-      }
+    // Fix: Snap to last group if very close to end
+    let targetGroup = Math.floor(progress * totalGroups);
+    if (progress >= 0.98) {
+      targetGroup = totalGroups - 1;
     }
 
-    console.log("scrollYProgress", progress);
+    if (targetGroup === currentPage) return;
+
+    if (scrollLock.current) {
+      pendingPageRef.current = targetGroup;
+      return;
+    }
+
+    console.log("progress", progress, "→ targetGroup", targetGroup);
+
+    // Small debounce to prevent rapid triggers
+    setTimeout(() => {
+      // Check again before flipping in case things changed
+      if (!scrollLock.current && !isFlipping && canStartFlipping && targetGroup !== currentPage) {
+        flipToGroup(targetGroup);
+      }
+    }, 100);
   });
 
+  function flipToGroup(groupIndex) {
+    if (!flipBook.current || !flipBook.current.pageFlip) return;
+
+    // Always clear pendingPageRef before starting a new flip
+    pendingPageRef.current = null;
+    scrollLock.current = true;
+    setIsFlipping(true);
+
+    const flipGroups = [
+      [1, 2, 3, 4],
+      [6, 7, 8, 9],
+      [11, 12, 13, 14],
+      [16, 17, 18, 19],
+      [21, 22, 23, 24],
+      [26, 27, 28, 29],
+      [30, 31],
+    ];
+
+    const flips = flipGroups[groupIndex];
+    const isForward = groupIndex > currentPage;
+    const sequence = isForward ? flips : [...flips].reverse();
+
+    sequence.forEach((pageIndex, i) => {
+      setTimeout(() => {
+        flipBook.current?.pageFlip().flip(pageIndex);
+      }, 200 + i * 75);
+    });
+
+    const totalFlipTime = 300 + sequence?.length * 75 + 300;
+
+    setTimeout(() => {
+      setCurrentPage(groupIndex);
+      scrollLock.current = false;
+      setIsFlipping(false);
+
+      if (
+        pendingPageRef.current !== null &&
+        pendingPageRef.current !== groupIndex
+      ) {
+        const nextGroup = pendingPageRef.current;
+        pendingPageRef.current = null;
+        flipToGroup(nextGroup);
+      }
+    }, totalFlipTime);
+  }
+
+  // Only allow flipping when journeyRef is NOT in view
+  // Add 1-second delay after journey leaves viewport before enabling flips
+  useEffect(() => {
+    if (isJourneyInView) {
+      // Journey is in view - disable flipping and reset
+      setFlipEnabled(false);
+      setCanStartFlipping(false);
+      if (flipDelayTimer.current) {
+        clearTimeout(flipDelayTimer.current);
+        flipDelayTimer.current = null;
+      }
+      console.log("Journey in view - flipping disabled");
+    } else {
+      // Journey just left view - start 1-second delay
+      console.log("Journey out of view - starting 1s delay before enabling flips");
+      
+      if (flipDelayTimer.current) {
+        clearTimeout(flipDelayTimer.current);
+      }
+      
+      flipDelayTimer.current = setTimeout(() => {
+        console.log("1-second delay complete - flipping now enabled");
+        setCanStartFlipping(true);
+        setFlipEnabled(true);
+      }, 1000);
+    }
+
+    return () => {
+      if (flipDelayTimer.current) {
+        clearTimeout(flipDelayTimer.current);
+      }
+    };
+  }, [isJourneyInView]);
   useLayoutEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.style.height = `${7 * 100}vh`; // 7 scroll zones

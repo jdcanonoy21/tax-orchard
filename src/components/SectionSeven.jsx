@@ -32,6 +32,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const [isFlipping, setIsFlipping] = useState(false);
   const [canStartFlipping, setCanStartFlipping] = useState(false);
   const flipDelayTimer = useRef(null);
+  const lastScrollPosition = useRef(null)
 
   const blankPagesOneData = [
     {
@@ -1560,8 +1561,20 @@ export default function SectionSeven({ hideFinalpage }) {
   }, []);
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    // Block scroll updates while flipping
+    if (isFlipping) {
+      // Lock scroll position
+      if (scrollContainerRef.current) {
+        window.scrollTo(0, lastScrollPosition.current);
+      }
+      return;
+    }
+
+    // Store current scroll position
+    lastScrollPosition.current = window.scrollY;
+
     // Only allow flips if enabled AND the 1-second delay has passed
-    if (!flipEnabled || !canStartFlipping || isFlipping) return;
+    if (!flipEnabled || !canStartFlipping) return;
 
     const totalGroups = 7;
 
@@ -1578,7 +1591,7 @@ export default function SectionSeven({ hideFinalpage }) {
       return;
     }
 
-    console.log("progress", progress, "→ targetGroup", targetGroup);
+    console.log("progress", progress, "→ targetGroup", targetGroup, !scrollLock.current && !isFlipping && canStartFlipping && targetGroup !== currentPage);
 
     // Small debounce to prevent rapid triggers
     setTimeout(() => {
@@ -1591,6 +1604,10 @@ export default function SectionSeven({ hideFinalpage }) {
 
   function flipToGroup(groupIndex) {
     if (!flipBook.current || !flipBook.current.pageFlip) return;
+
+
+    // Store scroll position before flipping
+    lastScrollPosition.current = window.scrollY;
 
     // Always clear pendingPageRef before starting a new flip
     pendingPageRef.current = null;
@@ -1609,31 +1626,76 @@ export default function SectionSeven({ hideFinalpage }) {
 
     const flips = flipGroups[groupIndex];
     const isForward = groupIndex > currentPage;
-    const sequence = isForward ? flips : [...flips].reverse();
-
-    sequence.forEach((pageIndex, i) => {
+    
+    // For backwards, we need to flip using flipPrev
+    // For forwards, use the normal flip with page indices
+    flips.forEach((pageIndex, i) => {
       setTimeout(() => {
-        flipBook.current?.pageFlip().flip(pageIndex);
+        if (isForward) {
+          flipBook.current?.pageFlip().flip(pageIndex);
+        } else {
+          // Use flipPrev for backwards navigation
+          console.log('flipping group started', flipBook.current?.pageFlip())
+          flipBook.current?.pageFlip().flip(pageIndex);
+
+          // flipBook.current?.pageFlip().flipPrev();
+        }
       }, 200 + i * 75);
     });
 
-    const totalFlipTime = 300 + sequence?.length * 75 + 300;
+
+    const totalFlipTime = 300 + flips.length * 75 + 300;
+    const pauseBeforeScroll = 100;
 
     setTimeout(() => {
       setCurrentPage(groupIndex);
       scrollLock.current = false;
-      setIsFlipping(false);
+      
+      setTimeout(() => {
+        setIsFlipping(false);
 
-      if (
-        pendingPageRef.current !== null &&
-        pendingPageRef.current !== groupIndex
-      ) {
-        const nextGroup = pendingPageRef.current;
-        pendingPageRef.current = null;
-        flipToGroup(nextGroup);
-      }
+        if (
+          pendingPageRef.current !== null &&
+          pendingPageRef.current !== groupIndex
+        ) {
+          const nextGroup = pendingPageRef.current;
+          pendingPageRef.current = null;
+          flipToGroup(nextGroup);
+        }
+      }, pauseBeforeScroll);
     }, totalFlipTime);
   }
+
+  /**
+   * Add listener for flipping and prevent scrolling
+   */
+  useEffect(() => {
+    const preventScroll = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+
+    if (isFlipping) {
+      // Prevent wheel/touch scrolling
+      window.addEventListener('wheel', preventScroll, { passive: false });
+      window.addEventListener('touchmove', preventScroll, { passive: false });
+      
+      // Prevent keyboard scrolling
+      const preventKeys = (e) => {
+        if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Space'].includes(e.key)) {
+          e.preventDefault();
+        }
+      };
+      window.addEventListener('keydown', preventKeys);
+      
+      return () => {
+        window.removeEventListener('wheel', preventScroll);
+        window.removeEventListener('touchmove', preventScroll);
+        window.removeEventListener('keydown', preventKeys);
+      };
+    }
+  }, [isFlipping]);
 
   // Only allow flipping when journeyRef is NOT in view
   // Add 1-second delay after journey leaves viewport before enabling flips
@@ -1674,6 +1736,13 @@ export default function SectionSeven({ hideFinalpage }) {
   // console.log("totalActualPages", totalActualPages);
   // console.log("flipEnabled:", flipEnabled, "canStartFlipping:", canStartFlipping, "isFlipping:", isFlipping);
 
+  /**
+   * On initial load set default scroll to always on the top
+   */
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <div className="overflow-x-clip">
       <motion.div
@@ -1687,7 +1756,7 @@ export default function SectionSeven({ hideFinalpage }) {
               The Journey
             </h2>
             <p className="text-lightgrey text-[32px] font-proxima-regular leading-[34px] text-center">
-              In this scenario, let’s say you just made <br />
+              In this scenario, let&apos;s say you just made <br />
               $2 million and the IRS wants half.
             </p>
           </div>

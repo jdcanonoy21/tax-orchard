@@ -37,22 +37,22 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const harvestRef = useRef(null);
   const [isMounted, setIsMounted] = useState(false);
-  
-  const { scrollYProgress: harvestScrollProgress } = useScroll({
-    target: harvestRef,
-    offset: ["start end", "end start"],
-    layoutEffect: false,
-  });
 
-  const harvestBgY = useTransform(
-    harvestScrollProgress,
-    [0, 0.5, 1],
-    ["-100%", "0%", "0%"]
-  );
+  // const { scrollYProgress: harvestScrollProgress } = useScroll({
+  //   target: harvestRef,
+  //   offset: ["start end", "end start"],
+  //   layoutEffect: false,
+  // });
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  // const harvestBgY = useTransform(
+  //   harvestScrollProgress,
+  //   [0, 0.5, 1],
+  //   ["-100%", "0%", "0%"]
+  // );
+
+  // useEffect(() => {
+  //   setIsMounted(true);
+  // }, []);
 
 
   const blankPagesOneData = [

@@ -33,6 +33,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const [isFlipping, setIsFlipping] = useState(false);
   const [canStartFlipping, setCanStartFlipping] = useState(false);
   const flipDelayTimer = useRef(null);
+  const lastScrollPosition = useRef(0);
 
 
 
@@ -1661,21 +1662,38 @@ export default function SectionSeven({ hideFinalpage }) {
   const scrollLock = useRef(false);
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    // Only allow flips if enabled AND the 1-second delay has passed
-    if (!flipEnabled || !canStartFlipping || isFlipping) return;
 
     const totalGroups = 8;
-
     // Fix: Snap to last group if very close to end
     let targetGroup = Math.floor(progress * totalGroups);
-
-    console.log("Raw targetGroup:", targetGroup, "from progress:", progress);
 
     if (progress <= 0.98) {
       targetGroup = targetGroup - 1;
     } 
 
     if (targetGroup === currentPage) return;
+
+    // // Block scroll updates while flipping
+    // /**
+    //  * Return early if currently flipping to lock scroll position
+    //  */
+    // if (isFlipping) {
+    //   // Lock scroll position
+    //   if (scrollContainerRef.current) {
+    //     window.scrollTo({
+    //       top: lastScrollPosition.current,
+    //       behavior: "auto",
+    //     });
+    //   }
+    //   return;
+    // }
+
+    if (!flipEnabled || !canStartFlipping || isFlipping) return;
+
+    
+
+    console.log("Raw targetGroup:", targetGroup, "from progress:", progress);
+
 
     if (scrollLock.current) {
       pendingPageRef.current = targetGroup;
@@ -1695,7 +1713,8 @@ export default function SectionSeven({ hideFinalpage }) {
 
   function flipToGroup(groupIndex) {
     if (!flipBook.current || !flipBook.current.pageFlip) return;
-
+    // Store scroll position before flipping
+    lastScrollPosition.current = window.scrollY;
     // Always clear pendingPageRef before starting a new flip
     pendingPageRef.current = null;
     scrollLock.current = true;
@@ -1731,17 +1750,24 @@ export default function SectionSeven({ hideFinalpage }) {
 
     setTimeout(() => {
       setCurrentPage(groupIndex);
-      scrollLock.current = false;
-      setIsFlipping(false);
 
-      if (
-        pendingPageRef.current !== null &&
-        pendingPageRef.current !== groupIndex
-      ) {
-        const nextGroup = pendingPageRef.current;
-        pendingPageRef.current = null;
-        flipToGroup(nextGroup);
-      }
+      /**
+       * Delay unlocking scroll to ensure flip animation completes
+       * before allowing further scroll interactions
+       */
+      setTimeout(() => {
+        scrollLock.current = false;
+        setIsFlipping(false);
+  
+        if (
+          pendingPageRef.current !== null &&
+          pendingPageRef.current !== groupIndex
+        ) {
+          const nextGroup = pendingPageRef.current;
+          pendingPageRef.current = null;
+          flipToGroup(nextGroup);
+        }
+      }, 1500);
     }, totalFlipTime);
   }
 

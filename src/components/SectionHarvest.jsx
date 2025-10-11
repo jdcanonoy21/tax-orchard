@@ -177,7 +177,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
         transition={{ x: { type: "spring", stiffness: 60, damping: 24 } }}
       >
         <div className="sticky -top-40 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
-          <motion.h2 className="mix-blend-difference text-white text-[183px] font-proxima-bold leading-none text-center">
+          <motion.h2 className="mix-blend-difference text-white text-6xl md:text-[183px] font-proxima-bold leading-none text-center">
             The Harvest
           </motion.h2>
         </div>

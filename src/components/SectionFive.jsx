@@ -43,7 +43,7 @@ export default function SectionFive() {
       <div className="w-full">
         <div className="flex flex-col gap-32 items-center justify-center">
           <div className="text-center max-w-4xl">
-            <h2 className="text-[90px] font-proxima-bold leading-none font-black text-white">
+            <h2 className="px-5 md:px-0 text-5xl md:text-[90px] font-proxima-bold leading-none font-black text-white">
               You can be buried. Or you can be planted.
             </h2>
           </div>

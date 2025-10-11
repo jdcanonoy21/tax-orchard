@@ -98,7 +98,7 @@ export default function SectionTwo() {
       ref={sectionTwoRef}
     >
       <div className="text-center max-w-4xl">
-        <h2 className="text-5xl font-proxima-regular leading-tight text-white">
+        <h2 className="text-3xl md:text-5xl font-proxima-regular leading-snug md:leading-tight text-white">
           <span>If you’ve just sold a business,</span>
           <span
             ref={wordRevealRef}

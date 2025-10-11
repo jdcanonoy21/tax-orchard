@@ -551,7 +551,7 @@ export default function SectionSeven({ hideFinalpage }) {
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
+            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 Instead of paying $1 million to the IRS, you invest $500,000
                 with your financial advisor and $500,000 into your Tax Orchard
@@ -560,43 +560,43 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
 
             <div className="w-full flex justify-center items-center ">
-              <div className="w-1/2 absolute bottom-28  h-20 flex flex-col items-center justify-center ">
+              <div className="w-full md:w-1/2 absolute bottom-28  h-20 flex flex-col items-center justify-center ">
                 <img
                   src="/images/financial-advisor.png"
                   alt="financial advisor"
                   className="w-full"
                 />
-                <div className="flex text-black justify-evenly !w-full -mt-6">
-                  <p className="text-midGrey text-[28px] font-medium">
+                <div className="flex items-center text-black justify-evenly !w-full -mt-6">
+                  <p className="text-midGrey text-lg md:text-[28px] font-medium">
                     Financial Advisor
                   </p>
-                  <p className="text-3xl text-green font-bold">Tax Orchard</p>
+                  <p className="text-2xl md:text-3xl text-green font-bold">Tax Orchard</p>
                 </div>
               </div>
             </div>
 
-            <div className="absolute -left-10 top-16 opacity-60">
+            <div className="absolute -left-10 top-16 opacity-60 z-10">
               <p className="text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Plant
               </p>
             </div>
 
-            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-6 left-0 !w-full items-center">
-              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+            <div className="grid grid-cols-3 md:flex md:justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-8 sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-6 left-0 !w-full items-center">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
                   className="opacity-10"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-full  h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/calendar-tree-1.svg"
                   alt="Tree 1"
                   className="opacity-10"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-full  h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
@@ -688,7 +688,7 @@ export default function SectionSeven({ hideFinalpage }) {
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
+            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 That seed account{" "}
                 <span className="text-blue font-proxima-extrabold font-extrabold">
@@ -699,13 +699,13 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="absolute -left-10 top-16 opacity-60">
+            <div className="absolute -left-10 top-16 opacity-60 z-10">
               <p className="text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Plant
               </p>
             </div>
 
-            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-6 left-0 !w-full items-center">
+            <div className="grid grid-cols-3 md:flex justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-8 sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-6 left-0 !w-full items-center">
               <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/calendar-tree-2.svg"
@@ -818,7 +818,7 @@ export default function SectionSeven({ hideFinalpage }) {
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="text-center w-3/4 justify-center items-start mb-40">
+            <div className="relative text-center w-full md:w-3/4 justify-center items-start mb-40">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 Your seed account steadily
                 <br /> grows in value.
@@ -944,28 +944,28 @@ export default function SectionSeven({ hideFinalpage }) {
               </div>
             </div>
 
-            <div className="absolute -left-24 top-32 opacity-60">
+            <div className="absolute -left-24 top-32 opacity-60 z-10">
               <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Cultivate
               </p>
             </div>
 
-            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-16 left-0 !w-full items-center">
-              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+            <div className="grid grid-cols-3 md:flex md:justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-8 sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-16 left-0 !w-full md:items-center">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_2.svg"
                   alt="Tree 1"
                   className="opacity-100"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_2.svg"
                   alt="Tree 1"
                   className="opacity-100"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_2.svg"
                   alt="Tree 1"
@@ -1063,7 +1063,7 @@ export default function SectionSeven({ hideFinalpage }) {
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
+            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 At the same time, it{" "}
                 <span className="text-green font-extrabold font-proxima-extrabold">
@@ -1073,28 +1073,28 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="absolute -left-24 top-32 opacity-60">
+            <div className="absolute -left-24 top-32 opacity-60 z-10">
               <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Cultivate
               </p>
             </div>
 
-            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-28 left-0 !w-full items-center">
-              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+            <div className="grid grid-cols-3  md:flex justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-8 sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-28 left-0 !w-full items-center">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_3.svg"
                   alt="Tree 1"
                   className="opacity-100"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_3.svg"
                   alt="Tree 1"
                   className="opacity-100"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_3.svg"
                   alt="Tree 1"
@@ -1192,39 +1192,39 @@ export default function SectionSeven({ hideFinalpage }) {
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
+            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 Tax Orchard actively manages this process, applying benefits at
                 the most effective moments.
               </p>
             </div>
 
-            <div className="absolute -left-24 top-32 opacity-60">
+            <div className="absolute -left-24 top-32 opacity-60 z-10">
               <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Cultivate
               </p>
             </div>
 
-            <div className="flex justify-center  gap-4  absolute bottom-14 left-0 !w-full items-center">
-              <div className="w-72 h-56 flex flex-col items-center">
+            <div className="grid grid-cols-3 md:flex justify-center  gap-4  absolute bottom-0 md:bottom-14 left-0 !w-full items-center">
+              <div className="w-full h-full md:w-72 md:h-56 flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_4.svg"
                   alt="Tree 1"
-                  className="opacity-100 w-[600px] h-[600px] object-contain"
+                  className="opacity-100 md:w-[600px] md:h-[600px] object-contain"
                 />
               </div>
-              <div className="w-72 h-56 flex flex-col items-center">
+              <div className="w-full h-full md:w-72 md:h-56 flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_4.svg"
                   alt="Tree 1"
-                  className="opacity-100 w-[300px] h-[300px] object-contain"
+                  className="opacity-100 md:w-[300px] md:h-[300px] object-contain"
                 />
               </div>
-              <div className="w-72 h-56 flex flex-col items-center">
+              <div className="w-full h-full md:w-72 md:h-56 flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_4.svg"
                   alt="Tree 1"
-                  className="opacity-100 w-[300px] h-[300px] object-contain"
+                  className="opacity-100 md:w-[300px] md:h-[300px] object-contain"
                 />
               </div>
             </div>
@@ -1320,7 +1320,7 @@ export default function SectionSeven({ hideFinalpage }) {
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
+            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
               <h3 className="text-3xl pb-8">Vetted Strategies</h3>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.2] text-black ">
                 Every Tax Orchard strategy is{" "}
@@ -1331,32 +1331,32 @@ export default function SectionSeven({ hideFinalpage }) {
               </h2>
             </div>
 
-            <div className="absolute -left-10 top-20 opacity-60">
+            <div className="absolute -left-10 top-20 opacity-60 z-10">
               <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 How?
               </p>
             </div>
 
-            <div className="flex justify-center gap-4 absolute bottom-36 left-0 !w-full items-center">
-              <div className="w-[22rem] h-[12rem] flex flex-col items-center">
+            <div className="grid grid-cols-3 md:flex justify-center gap-4 absolute bottom-0 md:bottom-36 left-0 !w-full items-center">
+              <div className="w-full h-full md:w-[22rem] md:h-[12rem] flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_5.svg"
                   alt="Tree 1"
-                  className="opacity-100 w-[1200px] h-[1600px] object-contain"
+                  className="opacity-100 md:w-[1200px] md:h-[1600px] object-contain"
                 />
               </div>
-              <div className="w-[22rem] h-[12rem] flex flex-col items-center">
+              <div className="w-full h-full md:w-[22rem] md:h-[12rem] flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_5.svg"
                   alt="Tree 1"
-                  className="opacity-100 w-[1200px] h-[1600px] object-contain"
+                  className="opacity-100 md:w-[1200px] md:h-[1600px] object-contain"
                 />
               </div>
-              <div className="w-[22rem] h-[12rem] flex flex-col items-center">
+              <div className="w-full h-full md:w-[22rem] md:h-[12rem] flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_5.svg"
                   alt="Tree 1"
-                  className="opacity-100 w-[1200px] h-[1600px] object-contain"
+                  className="opacity-100 md:w-[1200px] md:h-[1600px] object-contain"
                 />
               </div>
             </div>
@@ -1452,7 +1452,7 @@ export default function SectionSeven({ hideFinalpage }) {
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
+            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
               <h3 className="text-3xl pb-8">Audit Protection</h3>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.2] text-black ">
                 If your Tax Orchard investment is ever audited, our legal team
@@ -1462,32 +1462,32 @@ export default function SectionSeven({ hideFinalpage }) {
               </h2>
             </div>
 
-            <div className="absolute -left-10 top-20 opacity-60">
+            <div className="absolute -left-10 top-20 opacity-60 z-10">
               <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 How?
               </p>
             </div>
 
-            <div className="flex justify-center gap-4 absolute bottom-36 left-0 !w-full items-center">
-              <div className="w-[25rem] h-[15rem] flex flex-col items-center">
+            <div className="grid grid-cols-3 md:flex justify-center gap-4 absolute bottom-0 md:bottom-36 left-0 !w-full items-center">
+              <div className="md:w-[25rem] md:h-[15rem] flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_5.svg"
                   alt="Tree 1"
-                  className="opacity-100 w-[1000px] h-[1600px] object-contain"
+                  className="opacity-100 md:w-[1000px] md:h-[1600px] object-contain"
                 />
               </div>
-              <div className="w-[25rem] h-[15rem] flex flex-col items-center">
+              <div className="md:w-[25rem] md:h-[15rem] flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_5.svg"
                   alt="Tree 1"
-                  className="opacity-100 w-[1000px] h-[1600px] object-contain"
+                  className="opacity-100 md:w-[1000px] md:h-[1600px] object-contain"
                 />
               </div>
-              <div className="w-[25rem] h-[15rem] flex flex-col items-center">
+              <div className="md:w-[25rem] md:h-[15rem] flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_5.svg"
                   alt="Tree 1"
-                  className="opacity-100 w-[1000px] h-[1600px] object-contain"
+                  className="opacity-100 md:w-[1000px] md:h-[1600px] object-contain"
                 />
               </div>
             </div>
@@ -1596,7 +1596,7 @@ export default function SectionSeven({ hideFinalpage }) {
         }  z-0`}
       >
         <h2
-          className={`  text-[183px] font-proxima-bold  leading-none text-center  ${
+          className={`text-6xl  md:text-[183px] font-proxima-bold  leading-none text-center  ${
             hideFinalpage ? "" : "text-white"
           } `}
         >
@@ -1660,16 +1660,23 @@ export default function SectionSeven({ hideFinalpage }) {
   const journeyX = useTransform(scrollYProgress, [0, 0.2], ["0vw", "-100vw"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const scrollLock = useRef(false);
+  const currentProgress = useRef(0);
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
 
-    const totalGroups = 8;
+    if (!flipEnabled || !canStartFlipping || isFlipping) return;
+
+    const totalGroups = 7;
     // Fix: Snap to last group if very close to end
     let targetGroup = Math.floor(progress * totalGroups);
 
-    if (progress <= 0.98) {
+    console.log('is forward?', progress, currentProgress.current, progress < currentProgress.current);
+
+    if (progress < currentProgress.current) {
       targetGroup = targetGroup - 1;
     } 
+
+    currentProgress.current = progress;
 
     if (targetGroup === currentPage) return;
 
@@ -1688,10 +1695,6 @@ export default function SectionSeven({ hideFinalpage }) {
     //   return;
     // }
 
-    if (!flipEnabled || !canStartFlipping || isFlipping) return;
-
-    
-
     console.log("Raw targetGroup:", targetGroup, "from progress:", progress);
 
 
@@ -1705,7 +1708,7 @@ export default function SectionSeven({ hideFinalpage }) {
     // Small debounce to prevent rapid triggers
     setTimeout(() => {
       // Check again before flipping in case things changed
-      if (!scrollLock.current && !isFlipping && canStartFlipping && targetGroup !== currentPage) {
+      if (!scrollLock.current && !isFlipping && canStartFlipping && targetGroup !== currentPage && targetGroup >= 0 ) {
         flipToGroup(targetGroup);
       }
     }, 100);
@@ -1875,10 +1878,10 @@ export default function SectionSeven({ hideFinalpage }) {
       >
         <div className=" min-h-screen bg-black !w-full flex items-center justify-center relative z-50">
           <div className="w-full mx-auto flex flex-col items-center justify-center h-full overflow-hidden ">
-            <h2 className="text-9xl font-proxima-bold leading-none font-black text-white text-center">
+            <h2 className="text-5xl md:text-9xl font-proxima-bold leading-none font-black text-white text-center">
               The Journey
             </h2>
-            <p className="text-lightgrey text-[32px] font-proxima-regular leading-[34px] text-center">
+            <p className="text-lightgrey text-lg leading-snug md:text-[32px] font-proxima-regular md:leading-[34px] text-center">
               In this scenario, let’s say you just made <br />
               $2 million and the IRS wants half.
             </p>

@@ -31,7 +31,7 @@ export default function SectionThree() {
     >
       <div className="text-center max-w-4xl text-white">
         <motion.h3
-          className="text-[45px] font-proxima-regular font-semibold"
+          className=" text-3xl md:text-[45px] font-proxima-regular font-semibold"
           style={{
             y, // Pass the MotionValue directly for translateY
             transition: "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
@@ -40,7 +40,7 @@ export default function SectionThree() {
           That’s not a reward.
         </motion.h3>
         <motion.h2
-          className="text-[90px] font-proxima-bold leading-none font-bold"
+          className="text-4xl  md:text-[90px] font-proxima-bold leading-none font-bold"
           style={{
             scale,
             opacity,

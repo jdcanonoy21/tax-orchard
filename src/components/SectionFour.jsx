@@ -34,7 +34,7 @@ export default function SectionFour() {
 
   return (
     <div className="relative">
-    <div className="absolute -top-32 left-0 bg-black flex justify-center items-center w-full">
+    <div className="absolute -top-52 md:-top-32 left-0 bg-black flex justify-center items-center w-full">
       <svg xmlns="http://www.w3.org/2000/svg" width="3" height="377" viewBox="0 0 3 377">
         <defs>
           <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
@@ -68,7 +68,7 @@ export default function SectionFour() {
       className="min-h-screen flex items-center justify-center p-8 bg-black"
     >
       <div className="text-center max-w-4xl">
-        <h2 className="text-[45px] font-proxima-regular leading-snug text-white">
+        <h2 className="text-4xl md:text-[45px] font-proxima-regular leading-snug text-white">
           But what if the weight of taxes <br /> could be turned into your{" "}
           <br /> foundation for{" "}
           <span className="text-blue font-proxima-regular font-extrabold">

@@ -1742,7 +1742,7 @@ export default function SectionSeven({ hideFinalpage }) {
       "→ pages",
       sequence
     );
-
+    if(!sequence) return; // prevent if no sequence found (out of bounds)
     sequence.forEach((pageIndex, i) => {
       setTimeout(() => {
         flipBook.current?.pageFlip().flip(pageIndex);

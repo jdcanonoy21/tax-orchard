@@ -109,7 +109,7 @@ export default function SectionContact() {
   return (
     <>
       <div className="text-center mb-16">
-        <h2 className="text-[100px] font-proxima-bold leading-none font-black text-black">
+        <h2 className="text-6xl md:text-[100px] font-proxima-bold leading-none font-black text-black">
           Buried or planted.
           <br /> You decide.
         </h2>
@@ -122,11 +122,11 @@ export default function SectionContact() {
             style={{ marginLeft: "20px" }}
           >
             <div className="w-4xl ">
-              <span className="text-midGrey text-3xl font-proxima-regular font-medium">
+              <span className="text-midGrey text-2xl md:text-3xl font-proxima-regular font-medium">
                 Get in touch
               </span>
-              <span className="text-midGrey text-2xl"> / </span>
-              <span className="text-midGrey text-2xl" id="progress-indicator">
+              <span className="text-midGrey text-xl md:text-2xl"> / </span>
+              <span className="text-midGrey text-xl md:text-2xl" id="progress-indicator">
                 {currentStep + 1} of {totalSteps}
               </span>
             </div>
@@ -155,7 +155,7 @@ export default function SectionContact() {
                       <img
                         src="/images/arrow-right.svg"
                         alt="arrow-left"
-                        className="w-10 h-10 text-black"
+                        className="md:w-10 md:h-10 w-6 h-6 text-black"
                         style={{ transform: "scaleX(-1)" }}
                       />
                     </button>
@@ -165,7 +165,7 @@ export default function SectionContact() {
                       <textarea
                         id={step.id}
                         ref={idx === currentStep ? inputRef : null}
-                        className="w-full text-6xl font-medium bg-transparent overflow-hidden outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-20 text-blue placeholder:text-center text-center resize-none focus:placeholder-transparent"
+                        className="w-full text-4xl md:text-6xl font-medium bg-transparent overflow-hidden outline-none placeholder:text-blue md:placeholder:text-6xl placeholder:text-4xl placeholder:font-proxima-regular placeholder:font-regular h-10 md:h-20 text-blue placeholder:text-center text-center resize-none focus:placeholder-transparent"
                         placeholder={step.placeholder}
                         rows={3}
                         value={formData[step.id]}
@@ -177,7 +177,7 @@ export default function SectionContact() {
                         type={step.type}
                         id={step.id}
                         ref={idx === currentStep ? inputRef : null}
-                        className="w-full text-6xl font-medium bg-transparent outline-none placeholder:text-blue placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-20 text-blue placeholder:text-center text-center focus:placeholder-transparent"
+                        className="w-full text-4xl md:text-6xl font-medium bg-transparent outline-none placeholder:text-blue placeholder:text-4xl md:placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-20 text-blue placeholder:text-center text-center focus:placeholder-transparent"
                         placeholder={step.placeholder}
                         value={formData[step.id]}
                         onChange={handleChange}
@@ -195,7 +195,7 @@ export default function SectionContact() {
                     <img
                       src="/images/arrow-right.svg"
                       alt="arrow-right"
-                      className="w-10 h-10 text-black"
+                      className="md:w-10 md:h-10 w-6 h-6 text-black"
                     />
                   </button>
                   <div

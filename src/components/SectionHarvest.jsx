@@ -169,7 +169,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
   // }, [hideContainer]);
 
   return (
-    <div className="-mt-[200vh] w-full  -z-10 overfl" ref={sectionRef}>
+    <div className=" w-full  -z-10 overfl" ref={sectionRef}>
       <motion.section
         className="relative bg-black min-h-screen overflow-x-clip z-30"
         ref={sectionContainerRef}
@@ -205,13 +205,13 @@ export default function SectionHarvest({ setHideFinalpage }) {
               ref={treesTextOneRef}
               style={{ x: treesTextOneX }}
               transition={{ x: { type: "spring", stiffness: 60, damping: 24 } }}
-              className="w-full text-[40px] font-proxima-regular leading-tight text-black pt-16"
+              className="w-full text-3xl md:text-[40px] font-proxima-regular leading-snug md:leading-tight text-black pt-16"
             >
               <span className="font-proxima-bold text-green">Year Ten:</span>{" "}
               You receive your full $500,000 back, possibly more.
             </motion.div>
             <motion.p
-              className="w-full text-[40px] top-0 font-proxima-regular leading-tight text-black absolute"
+              className="w-full text-3xl md:text-[40px] top-0 font-proxima-regular leading-snug md:leading-tight text-black absolute"
               ref={treesTextTwoRef}
               style={{ x: treesTextTwoX }}
               transition={{ x: { type: "spring", stiffness: 60, damping: 24 } }}
@@ -228,13 +228,13 @@ export default function SectionHarvest({ setHideFinalpage }) {
               style={{ x: growTextX }}
             >
               <h2
-                className="text-[80px] font-proxima-bold leading-tight font-black text-black "
+                className="text-5xl md:text-[80px] font-proxima-bold leading-snug md:leading-tight font-black text-black "
                 id="letsgrowtitle"
               >
                 Let's Grow
               </h2>
               <p
-                className="text-[40px] font-proxima-regular leading-tight text-black "
+                className="text-3xl md:text-[40px] font-proxima-regular leading-tight text-black "
                 id="letsgrosubtitle"
               >
                 So, now what may have felt like being buried can actually become
@@ -269,12 +269,11 @@ export default function SectionHarvest({ setHideFinalpage }) {
               className="w-full h-[370px]"
               style={{ x: tree3X, opacity: tree1Opacity }}
             />
-            <div className="  absolute z-50 bottom-0 left-[100px]">
+            <div className="  absolute z-50 bottom-0 w-full flex justify-center left-[50px] md:left-[100px]">
               <motion.svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="700"
-                height="680"
                 viewBox="0 0 600 10"
+                className=" md:w-[700px] h-[680px]"
                 ref={svgLogo}
                 style={{ opacity: svgLogoOpacity }}
               >

@@ -118,6 +118,7 @@ export default function SectionSix() {
                       ref={videoRef}
                       src="/images/roots.mp4"
                       muted
+                      playsInline
                       className="relative md:absolute top-0 ml-[0] left-1/4 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 "
                     />
                   </div>

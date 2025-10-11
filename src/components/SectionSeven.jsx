@@ -35,6 +35,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const flipDelayTimer = useRef(null);
 
 
+
   const blankPagesOneData = [
     {
       highlightMonth: "APR",
@@ -1663,13 +1664,16 @@ export default function SectionSeven({ hideFinalpage }) {
     // Only allow flips if enabled AND the 1-second delay has passed
     if (!flipEnabled || !canStartFlipping || isFlipping) return;
 
-    const totalGroups = 7;
+    const totalGroups = 8;
 
     // Fix: Snap to last group if very close to end
     let targetGroup = Math.floor(progress * totalGroups);
-    if (progress >= 0.98) {
-      targetGroup = totalGroups - 1;
-    }
+
+    console.log("Raw targetGroup:", targetGroup, "from progress:", progress);
+
+    if (progress <= 0.98) {
+      targetGroup = targetGroup - 1;
+    } 
 
     if (targetGroup === currentPage) return;
 
@@ -1710,6 +1714,12 @@ export default function SectionSeven({ hideFinalpage }) {
     const flips = flipGroups[groupIndex];
     const isForward = groupIndex > currentPage;
     const sequence = isForward ? flips : [...flips].reverse();
+
+    console.log(
+      `Flipping from group ${currentPage} to ${groupIndex} (${isForward ? "forward" : "backward"})`,
+      "→ pages",
+      sequence
+    );
 
     sequence.forEach((pageIndex, i) => {
       setTimeout(() => {
@@ -1770,13 +1780,46 @@ export default function SectionSeven({ hideFinalpage }) {
   }, [isJourneyInView]);
   useLayoutEffect(() => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.style.height = `${7 * 100}vh`; // 7 scroll zones
+      scrollContainerRef.current.style.height = `${8 * 100}vh`; // 7 scroll zones
     }
   }, []);
 
 
   // console.log("currentPage", currentPage);
   console.log("totalActualPages", totalActualPages);
+
+  /**
+   * Watch flipping and disable scroll interactions during the flip
+   * to prevent user interference
+   */
+  useEffect(() => {
+    const preventScroll = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+
+    if (isFlipping) {
+      // Prevent wheel/touch scrolling
+      window.addEventListener('wheel', preventScroll, { passive: false });
+      window.addEventListener('touchmove', preventScroll, { passive: false });
+      
+      // Prevent keyboard scrolling
+      const preventKeys = (e) => {
+        if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Space'].includes(e.key)) {
+          e.preventDefault();
+        }
+      };
+      window.addEventListener('keydown', preventKeys);
+      
+      return () => {
+        window.removeEventListener('wheel', preventScroll);
+        window.removeEventListener('touchmove', preventScroll);
+        window.removeEventListener('keydown', preventKeys);
+      };
+    }
+  }, [isFlipping]);
+
 
   /**
    * Set default scroll position on mount
@@ -1792,6 +1835,10 @@ export default function SectionSeven({ hideFinalpage }) {
     }
   }, []);
 
+
+  const currentPageFromFlipBook = useMemo(() => {
+    return flipBook.current?.pageFlip?.()?.getPage?.()
+  }, [flipBook])
 
   return (
     <div className="overflow-x-clip">
@@ -1837,7 +1884,7 @@ export default function SectionSeven({ hideFinalpage }) {
             startPage={currentPage}
             autoSize={true}
             maxShadowOpacity={0.1}
-            disableFlipByClick={true}
+            disableFlipByClick={false}
             useMouseEvents={false}
             useKeyboard={false}
             useTouch={false}
@@ -1855,6 +1902,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
         <div ref={scrollContainerRef} />
       </motion.div>
+   
     </div>
   );
 }

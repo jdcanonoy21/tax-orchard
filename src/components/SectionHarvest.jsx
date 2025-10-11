@@ -170,7 +170,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
 
   return (
     <div className=" w-full  -z-10 overfl" ref={sectionRef}>
-      <motion.section
+      {/* <motion.section
         className="relative bg-black min-h-screen overflow-x-clip z-30"
         ref={sectionContainerRef}
         style={{ x: sectionX }}
@@ -187,7 +187,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
           className={`min-h-screen  bg-white `}
           ref={sectionWhiteDivRef}
         ></motion.div>
-      </motion.section>
+      </motion.section> */}
 
       <motion.section
         ref={treesRef}

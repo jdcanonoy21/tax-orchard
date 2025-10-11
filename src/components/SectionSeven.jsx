@@ -35,6 +35,24 @@ export default function SectionSeven({ hideFinalpage }) {
   const flipDelayTimer = useRef(null);
   const lastScrollPosition = useRef(0);
 
+  const harvestRef = useRef(null);
+  const [isMounted, setIsMounted] = useState(false);
+  
+  const { scrollYProgress: harvestScrollProgress } = useScroll({
+    target: harvestRef,
+    offset: ["start end", "end start"],
+    layoutEffect: false,
+  });
+
+  const harvestBgY = useTransform(
+    harvestScrollProgress,
+    [0, 0.5, 1],
+    ["-100%", "0%", "0%"]
+  );
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
 
   const blankPagesOneData = [
@@ -81,6 +99,7 @@ export default function SectionSeven({ hideFinalpage }) {
     <div
       className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
       key={pageIdx}
+      
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -544,6 +563,7 @@ export default function SectionSeven({ hideFinalpage }) {
       </div>
     </div>
   ));
+
 
   const pageElements = [
 
@@ -1586,23 +1606,23 @@ export default function SectionSeven({ hideFinalpage }) {
     </div>,
 
     <div
-      className={`min-h-screen !w-full flex items-center justify-center relative z-50 transition-colors duration-700 ${
-        hideFinalpage ? "bg-transparent" : "bg-black"
-      }`}
+      className={`min-h-200vh !w-full flex items-center justify-center relative z-50 transition-colors duration-700 bg-black`}
+      ref={harvestRef}
     >
       <div
-        className={` top-0 w-full h-screen fixed  items-center justify-center transition-opacity duration-700 ${
-          hideFinalpage ? " opacity-0" : "flex opacity-100"
-        }  z-0`}
+        className={` top-0 w-full h-screen absolute items-center justify-center transition-opacity duration-700 z-20`}
       >
-        <h2
-          className={`text-6xl  md:text-[183px] font-proxima-bold  leading-none text-center  ${
-            hideFinalpage ? "" : "text-white"
-          } `}
+        <h2 className={`text-6xl w-full h-screen flex items-center justify-center absolute top-0 z-20 md:text-[183px] font-proxima-bold  leading-none text-center mix-blend-difference text-white `}
         >
           The Harvest
         </h2>
-      </div>
+           {isMounted && (
+          <motion.div 
+            className="bg-white absolute w-full h-screen z-10"
+            style={{ bottom: harvestBgY }}
+          />
+        )}
+        </div>
     </div>,
   ];
 
@@ -1656,13 +1676,16 @@ export default function SectionSeven({ hideFinalpage }) {
     offset: ["start end", "end start"],
   });
 
+  const sectionRef = useRef(null);
   const x = useTransform(scrollYProgress, [0, 0.2], ["100vw", "0vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.2], ["0vw", "-100vw"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
+  const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
   const currentProgress = useRef(0);
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
+
 
     if (!flipEnabled || !canStartFlipping || isFlipping) return;
 
@@ -1807,6 +1830,12 @@ export default function SectionSeven({ hideFinalpage }) {
       }
     };
   }, [isJourneyInView]);
+
+  useEffect(() => {
+    console.log("isContainerRefInView", isContainerRefInView);
+  }, [isContainerRefInView]); 
+
+
   useLayoutEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.style.height = `${8 * 100}vh`; // 7 scroll zones
@@ -1870,7 +1899,7 @@ export default function SectionSeven({ hideFinalpage }) {
   }, [flipBook])
 
   return (
-    <div className="overflow-x-clip">
+    <div className="overflow-x-clip" >
       <motion.div
         className="sticky top-0"
         ref={journeyRef}

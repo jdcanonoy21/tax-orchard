@@ -563,6 +563,7 @@ export default function SectionSeven({ hideFinalpage }) {
       </div>
     </div>
   ));
+  
 
 
   const pageElements = [
@@ -900,22 +901,25 @@ export default function SectionSeven({ hideFinalpage }) {
                       .animated-line {
                         stroke-dasharray: 1000;
                         stroke-dashoffset: 1000;
-                        animation: drawLine 2s ease-in-out 0.2s forwards;
+                        animation: drawLine 1s ease-in-out 0.2s forwards;
+                        animation-delay: 0.5s;
+                          animation-iteration-count: 1;
                       }
 
                       .animated-circle {
                         opacity: 0;
                         animation: fadeIn 0.3s ease-out forwards;
+                          animation-iteration-count: 1;
                       }
 
-                      .animated-circle-1 { animation-delay: 0.1s; }
-                      .animated-circle-2 { animation-delay: 0.2s; }
-                      .animated-circle-3 { animation-delay: 0.5s; }
-                      .animated-circle-4 { animation-delay: 0.7s; }
+                      .animated-circle-1 { animation-delay: 0.5s; }
+                      .animated-circle-2 { animation-delay: 0.6s; }
+                      .animated-circle-3 { animation-delay: 0.7s; }
+                      .animated-circle-4 { animation-delay: 0.8s; }
                       .animated-circle-5 { animation-delay: 0.9s; }
-                      .animated-circle-6 { animation-delay: 1s; }
-                      .animated-circle-7 { animation-delay: 1.1s; }
-                      .animated-circle-8 { animation-delay: 1.2s; }
+                      .animated-circle-6 { animation-delay: 0.95s; }
+                      .animated-circle-7 { animation-delay: 1.0s; }
+                      .animated-circle-8 { animation-delay: 1.05s; }
                     `}} />
                   </defs>
                   <g id="Group_361">

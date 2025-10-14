@@ -83,7 +83,7 @@
 
 
 :root {
-  --background: #ffffff;
+  --background: #040405;
   --foreground: #171717;
 }
 
@@ -230,3 +230,27 @@ body {
   transition: opacity 0.7s ease 5s;
   opacity: 0 ;
 }
+
+
+.animated-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawLine 1s ease-in-out 0.2s forwards;
+  animation-delay: 0.5s;
+    animation-iteration-count: 1;
+}
+
+.animated-circle {
+  opacity: 0;
+  animation: fadeIn 0.3s ease-out forwards;
+    animation-iteration-count: 1;
+}
+
+.animated-circle-1 { animation-delay: 0.5s; }
+.animated-circle-2 { animation-delay: 0.6s; }
+.animated-circle-3 { animation-delay: 0.7s; }
+.animated-circle-4 { animation-delay: 0.8s; }
+.animated-circle-5 { animation-delay: 0.9s; }
+.animated-circle-6 { animation-delay: 0.95s; }
+.animated-circle-7 { animation-delay: 1.0s; }
+.animated-circle-8 { animation-delay: 1.05s; }

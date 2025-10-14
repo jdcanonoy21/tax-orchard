@@ -111,16 +111,23 @@ export default function SectionSix() {
                 />
                 <div className="relative">
                   <div
-                    className="w-auto h-auto md:w-[1500px] md:h-[1000px] bg-black"
+                    className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black"
                     id="rootContainer"
                   >
                     <video
+
                       ref={videoRef}
+                      width='100%' height='100%'
                       src="/images/roots.mp4"
                       muted
                       playsInline
-                      className="relative md:absolute top-0 ml-[0] left-1/4 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 "
+                      webkit-playsinline="true"
+                      preload="metadata"
+                      type='video/mp4'
+                      className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 "
                     />
+
+                    
                   </div>
                   {/* Fade-in-right animation for text */}
                   <motion.div
@@ -132,11 +139,11 @@ export default function SectionSix() {
                         : { x: 100, opacity: 0 }
                     }
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="absolute -right-[700px]  transform -translate-y-1/2 max-w-3xl pr-20"
-                    style={{ top:  "400px" }}
+                    className="absolute md:-right-[700px] -right-[300px]  transform -translate-y-1/2 max-w-3xl md:pr-20 md:w-full "
+                    style={{ top:  "380px" }}
                   >
-                    <div className="flex flex-col gap-4 px-20 md:pr-10">
-                      <p className="text-3xl leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
+                    <div className="flex flex-col gap-4 px-20 md:pr-10 md:w-full w-96">
+                      <p className="md:text-3xl text-lg leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
                         At Tax Orchard, we help you turn what you owe into
                         something that grows—using a strategy no one else
                         offers.

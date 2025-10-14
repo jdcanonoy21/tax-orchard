@@ -1,10 +1,45 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 
 export default function Hero() {
   const { scrollYProgress } = useScroll();
+  const videoRef = useRef(null);
+  const [videoError, setVideoError] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handlePlay = () => {
+      console.log('Video started playing');
+    };
+
+    const handleError = (e) => {
+      console.error('Video error:', e);
+      setVideoError(true);
+    };
+
+    const handleCanPlay = () => {
+      console.log('Video can start playing');
+      // Try to play the video
+      video.play().catch((error) => {
+        console.log('Autoplay failed, user interaction required:', error);
+        setVideoError(true);
+      });
+    };
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('error', handleError);
+    video.addEventListener('canplay', handleCanPlay);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('error', handleError);
+      video.removeEventListener('canplay', handleCanPlay);
+    };
+  }, []);
 
   // Move logoX from 0 to -250px as soon as scrollYProgress > 0 (very fast, within first 2% of scroll)
   const logoX = useTransform(scrollYProgress, [0, 0.01], [0, -250]);
@@ -46,6 +81,43 @@ export default function Hero() {
         >
           Your success shouldn’t be buried by taxes.
         </motion.p>
+
+        <div className="relative w-full max-w-md mx-auto">
+          {videoError ? (
+            <div 
+              className="w-full h-auto bg-gray-800 rounded-lg flex items-center justify-center cursor-pointer"
+              onClick={() => {
+                const video = videoRef.current;
+                if (video) {
+                  video.play().catch(console.error);
+                  setVideoError(false);
+                }
+              }}
+            >
+              <div className="text-center text-white p-8">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                  </svg>
+                </div>
+                <p className="text-sm">Tap to play video</p>
+              </div>
+            </div>
+          ) : (
+            <video
+              ref={videoRef}
+              src="https://taxorchard.riiqo.com/wp-content/uploads/2025/10/roots.mp4"
+              muted
+              playsInline
+              autoPlay
+              loop
+              webkit-playsinline="true"
+              preload="auto"
+              type="video/mp4"
+              className="w-full h-auto"
+            />
+          )}
+        </div>
       </div>
 
       <div className="relative z-20 flex justify-center pb-8">
@@ -56,7 +128,12 @@ export default function Hero() {
             className="w-8 h-8"
           />
         </div>
+
+
       </div>
+
+
+
     </section>
   );
 }

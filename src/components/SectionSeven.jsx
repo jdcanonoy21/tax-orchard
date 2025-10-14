@@ -1925,9 +1925,9 @@ export default function SectionSeven({ hideFinalpage }) {
 
 
   return (
-    <div className="overflow-x-clip" >
+    <div className="overflow-x-clip snap-y snap-mandatory" style={{ scrollSnapType: 'y mandatory' }}>
       <motion.div
-        className="sticky top-0"
+        className="sticky top-0 snap-start h-screen"
         ref={journeyRef}
         style={{ x: journeyX }}
       >
@@ -1944,11 +1944,11 @@ export default function SectionSeven({ hideFinalpage }) {
         </div>
       </motion.div>
       <motion.div
-        className="min-h-screen relative w-full !z-40 bg-white"
+        className="min-h-screen relative w-full !z-40 bg-white snap-start"
         ref={containerRef}
         style={{ x }}
       >
-        <div className="flipbook-container sticky top-0 !z-50 w-full min-h-screen overflow-hidden">
+        <div className="flipbook-container sticky top-0 !z-50 w-full min-h-screen overflow-hidden snap-start">
           <HTMLFlipBook
             onChangeState={flipping}
             onFlip={(e) => {
@@ -1984,7 +1984,7 @@ export default function SectionSeven({ hideFinalpage }) {
           </HTMLFlipBook>
         </div>
 
-        <div ref={scrollContainerRef} />
+        <div ref={scrollContainerRef} className="snap-start" />
       </motion.div>
             {/* <div className="fixed z-50 bg-red-500 p-4 bottom-0 left-0">
                 <div>

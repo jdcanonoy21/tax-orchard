@@ -76,7 +76,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
   const treesContentY = useTransform(
     scrollYProgress,
     [0.93, 0.99],
-    ["0%", "-120%"]
+    ["0%", "-122%"]
   );
 
   const sectionContactY = useTransform(

@@ -49,39 +49,39 @@ export default function SectionHarvest({ setHideFinalpage }) {
     ["0vw", "-100vw"]
   );
 
-  const treesOpacity = useTransform(scrollYProgress, [0.33, 0.34], [0, 1]);
+  const treesOpacity = useTransform(scrollYProgress, [0.3, 0.4], [0, 1]);
   const treesTextOneX = useTransform(
     scrollYProgress,
-    [0.36, 0.4, 0.45, 0.5],
+    [0.4, 0.5, 0.55, 0.6],
     ["100vw", "0vw", "0vw", "-100vw"]
   );
 
   const treesTextTwoX = useTransform(
     scrollYProgress,
-    [0.45, 0.5, 0.55, 0.6],
+    [0.55, 0.6, 0.65, 0.7],
     ["100vw", "0vw", "0vw", "-100vw"]
   );
 
-  const tree1X = useTransform(scrollYProgress, [0.6, 0.65], ["0vw", "190px"]);
-  const tree3X = useTransform(scrollYProgress, [0.6, 0.65], ["0vw", "-190px"]);
+  const tree1X = useTransform(scrollYProgress, [0.7, 0.75], ["0vw", "190px"]);
+  const tree3X = useTransform(scrollYProgress, [0.7, 0.75], ["0vw", "-190px"]);
 
-  const tree1Opacity = useTransform(scrollYProgress, [0.65, 0.7], [1, 0]);
-  const svgLogoOpacity = useTransform(scrollYProgress, [0.65, 0.72], [0, 1]);
+  const tree1Opacity = useTransform(scrollYProgress, [0.8, 0.85], [1, 0]);
+  const svgLogoOpacity = useTransform(scrollYProgress, [0.8, 0.87], [0, 1]);
   const growTextX = useTransform(
     scrollYProgress,
-    [0.75, 0.78],
+    [0.85, 0.88],
     ["-100vw", "0vw"]
   );
 
   const treesContentY = useTransform(
     scrollYProgress,
-    [0.83, 0.9],
+    [0.93, 0.99],
     ["0%", "-120%"]
   );
 
   const sectionContactY = useTransform(
     scrollYProgress,
-    [0.85, 0.9],
+    [0.95, 0.99],
     ["100%", "0%"]
   );
 
@@ -286,7 +286,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
                     style={{
                       width: useTransform(
                         scrollYProgress,
-                        [0.75, 0.8],
+                        [0.85, 0.9],
                         [0, 600]
                       ),
                     }}
@@ -359,7 +359,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
         </motion.div>
       </motion.section>
 
-      <div style={{ height: `${500}vh` }}></div>
+      <div style={{ height: `${400}vh` }}></div>
     </div>
   );
 }

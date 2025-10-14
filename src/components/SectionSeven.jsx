@@ -1814,8 +1814,6 @@ export default function SectionSeven({ hideFinalpage }) {
     console.log("isJourneyInView changed:", isJourneyInView);
 
     if (isJourneyInView) {
-      
-     
 
       // Journey is in view - disable flipping and reset
       setFlipEnabled(false);
@@ -1823,6 +1821,7 @@ export default function SectionSeven({ hideFinalpage }) {
       if (flipDelayTimer.current) {
         clearTimeout(flipDelayTimer.current);
         flipDelayTimer.current = null;
+        setCurrentPage(null);
       }
 
        /**

@@ -47,7 +47,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const sectionRef = useRef(null);
   const x = useTransform(scrollYProgress, [0, 0.1], ["100vw", "0vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
-  const harvestBgY = useTransform(scrollYProgress, [0.75, 0.8], ["-100%", "0%"]);
+  const harvestBgY = useTransform(scrollYProgress, [0.8, 0.9], ["-100%", "0%"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
@@ -1700,7 +1700,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
     targetGroup  = targetGroup > 0 ? targetGroup - 1 : targetGroup; // offset by 1 to account for cover page group
 
-    if(progress >= 0.6 )  targetGroup = totalGroups - 2; // prevent going out of bounds
+    if(progress >= 0.7 )  targetGroup = totalGroups - 2; // prevent going out of bounds
 
 
     console.log(progress >= 0.6, "progress", progress, "→ targetGroup", targetGroup);
@@ -1712,11 +1712,11 @@ export default function SectionSeven({ hideFinalpage }) {
 
       if (!scrollLock.current && !isFlipping && canStartFlipping && targetGroup !== currentPage && targetGroup >= 0 ) {
         flipToGroup(targetGroup);
-      } else if(targetGroup == currentPage && targetGroup == 0)  flipBook?.current?.pageFlip?.()?.flip(0);
+      } 
     }, 100);
   });
 
-  function flipToGroup(groupIndex) {
+  function flipToGroup(groupIndex, resetToCover = false) {
     if (!flipBook.current || !flipBook.current.pageFlip) return;
     // Store scroll position before flipping
     lastScrollPosition.current = window.scrollY;
@@ -1726,7 +1726,6 @@ export default function SectionSeven({ hideFinalpage }) {
     scrollLock.current = true;
     setIsFlipping(true);
 
-    
 
     const actualPages = [4, 9, 14, 19, 24, 29, 31]; // last page of each group
 
@@ -1816,17 +1815,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
     if (isJourneyInView) {
       
-      /**
-       * IF Journey is in view:
-       * - Turn page to first page if not already there
-       * - Disable flipping immediately
-       * - Clear any pending flip delays
-       * Reset currentPage to null
-       */
-      if (flipBook.current) {
-        // flipBook.current?.pageFlip?.().flip?.(0);
-        setCurrentPage(null);
-      }
+     
 
       // Journey is in view - disable flipping and reset
       setFlipEnabled(false);
@@ -1834,6 +1823,21 @@ export default function SectionSeven({ hideFinalpage }) {
       if (flipDelayTimer.current) {
         clearTimeout(flipDelayTimer.current);
         flipDelayTimer.current = null;
+      }
+
+       /**
+       * IF Journey is in view:
+       * - Turn page to first page if not already there
+       * - Disable flipping immediately
+       * - Clear any pending flip delays
+       * Reset currentPage to null
+       */
+      if (flipBook.current) {
+        for (let i = 5; i >= 0; i--) {
+          setTimeout(() => {
+            flipBook?.current?.pageFlip?.().flipPrev?.();
+          }, 100 + (5 - i) * 75);
+        }
       }
       console.log("Journey in view - flipping disabled");
     } else {
@@ -1986,6 +1990,11 @@ export default function SectionSeven({ hideFinalpage }) {
             {/* <div className="fixed z-50 bg-red-500 p-4 bottom-0 left-0">
                 <div>
                   {pageElements.length}
+                </div>
+
+                <div className="flex gap-2">
+                  <button onClick={() => flipBook?.current?.pageFlip?.().flip?.(0)}>1</button>
+                  <button onClick={() => flipBook?.current?.pageFlip?.().flip?.(5)}>2</button>
                 </div>
 
 

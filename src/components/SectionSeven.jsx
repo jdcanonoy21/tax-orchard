@@ -23,7 +23,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const containerRef = useRef(null);
   const [flipDirection, setFlipDirection] = useState(null);
   const [windowSize, setWindowSize] = useState({ width: 600, height: 600 });
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(null);
   const [totalActualPages, setTotalActualPages] = useState(0);
 
   const journeyRef = useRef(null);
@@ -34,25 +34,24 @@ export default function SectionSeven({ hideFinalpage }) {
   const [canStartFlipping, setCanStartFlipping] = useState(false);
   const flipDelayTimer = useRef(null);
   const lastScrollPosition = useRef(0);
+  const totalGroups = 8; // 8 groups + 1 journey page 
+
 
   const harvestRef = useRef(null);
-  const [isMounted, setIsMounted] = useState(false);
 
-  // const { scrollYProgress: harvestScrollProgress } = useScroll({
-  //   target: harvestRef,
-  //   offset: ["start end", "end start"],
-  //   layoutEffect: false,
-  // });
+  const { scrollYProgress } = useScroll({
+    target: scrollContainerRef,
+    offset: ["start end", "end start"],
+  });
 
-  // const harvestBgY = useTransform(
-  //   harvestScrollProgress,
-  //   [0, 0.5, 1],
-  //   ["-100%", "0%", "0%"]
-  // );
-
-  // useEffect(() => {
-  //   setIsMounted(true);
-  // }, []);
+  const sectionRef = useRef(null);
+  const x = useTransform(scrollYProgress, [0, 0.1], ["100vw", "0vw"]);
+  const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
+  const harvestBgY = useTransform(scrollYProgress, [0.75, 0.8], ["-100%", "0%"]);
+  const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
+  const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
+  const scrollLock = useRef(false);
+  const currentProgress = useRef(0);
 
 
   const blankPagesOneData = [
@@ -567,7 +566,6 @@ export default function SectionSeven({ hideFinalpage }) {
 
 
   const pageElements = [
-
     <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
         <div className="relative">
@@ -1608,10 +1606,8 @@ export default function SectionSeven({ hideFinalpage }) {
         </div>
       </div>
     </div>,
-
     <div
-      className={`min-h-200vh !w-full flex items-center justify-center relative z-50 transition-colors duration-700 bg-black`}
-      ref={harvestRef}
+      className={`min-h-100vh !w-full flex items-center justify-center relative z-50 transition-colors duration-700 bg-black`}
     >
       <div
         className={` top-0 w-full h-screen absolute items-center justify-center transition-opacity duration-700 z-20`}
@@ -1620,12 +1616,11 @@ export default function SectionSeven({ hideFinalpage }) {
         >
           The Harvest
         </h2>
-           {isMounted && (
-          <motion.div 
-            className="bg-white absolute w-full h-screen z-10"
+          <motion.div
+            ref={harvestRef}
+            className="bg-white absolute w-full h-screen z-10 h-100vh"
             style={{ bottom: harvestBgY }}
           />
-        )}
         </div>
     </div>,
   ];
@@ -1675,69 +1670,49 @@ export default function SectionSeven({ hideFinalpage }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: scrollContainerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const sectionRef = useRef(null);
-  const x = useTransform(scrollYProgress, [0, 0.2], ["100vw", "0vw"]);
-  const journeyX = useTransform(scrollYProgress, [0, 0.2], ["0vw", "-100vw"]);
-  const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
-  const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
-  const scrollLock = useRef(false);
-  const currentProgress = useRef(0);
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    
+    console.log('scrollYProgress changed:', progress, flipEnabled, canStartFlipping, isFlipping);
 
 
     if (!flipEnabled || !canStartFlipping || isFlipping) return;
 
-    const totalGroups = 7;
+
     // Fix: Snap to last group if very close to end
-    let targetGroup = Math.floor(progress * totalGroups);
+    let targetGroup = Math.min(
+      totalGroups - 2,
+      Math.max(0, Math.floor(progress * 10))
+    );
 
     console.log('is forward?', progress, currentProgress.current, progress < currentProgress.current);
 
-    if (progress < currentProgress.current) {
-      targetGroup = targetGroup - 1;
-    } 
-
     currentProgress.current = progress;
 
-    if (targetGroup === currentPage) return;
-
-    // // Block scroll updates while flipping
-    // /**
-    //  * Return early if currently flipping to lock scroll position
-    //  */
-    // if (isFlipping) {
-    //   // Lock scroll position
-    //   if (scrollContainerRef.current) {
-    //     window.scrollTo({
-    //       top: lastScrollPosition.current,
-    //       behavior: "auto",
-    //     });
-    //   }
-    //   return;
-    // }
-
+    // if (targetGroup === currentPage) return;
     console.log("Raw targetGroup:", targetGroup, "from progress:", progress);
-
 
     if (scrollLock.current) {
       pendingPageRef.current = targetGroup;
+      
       return;
     }
 
-    console.log("progress", progress, "→ targetGroup", targetGroup);
+    targetGroup  = targetGroup > 0 ? targetGroup - 1 : targetGroup; // offset by 1 to account for cover page group
+
+    if(progress >= 0.6 )  targetGroup = totalGroups - 2; // prevent going out of bounds
+
+
+    console.log(progress >= 0.6, "progress", progress, "→ targetGroup", targetGroup);
 
     // Small debounce to prevent rapid triggers
     setTimeout(() => {
       // Check again before flipping in case things changed
+      console.log('Debounce check - scrollLock:', scrollLock.current, 'isFlipping:', isFlipping, 'canStartFlipping:', canStartFlipping, 'targetGroup:', targetGroup, 'currentPage:', currentPage);
+
       if (!scrollLock.current && !isFlipping && canStartFlipping && targetGroup !== currentPage && targetGroup >= 0 ) {
         flipToGroup(targetGroup);
-      }
+      } else if(targetGroup == currentPage && targetGroup == 0)  flipBook?.current?.pageFlip?.()?.flip(0);
     }, 100);
   });
 
@@ -1746,65 +1721,113 @@ export default function SectionSeven({ hideFinalpage }) {
     // Store scroll position before flipping
     lastScrollPosition.current = window.scrollY;
     // Always clear pendingPageRef before starting a new flip
+    const totalFlipTime = 300 + 5 * 75 + 300;
     pendingPageRef.current = null;
     scrollLock.current = true;
     setIsFlipping(true);
 
-    const flipGroups = [
-      [1, 2, 3, 4],
-      [6, 7, 8, 9],
-      [11, 12, 13, 14],
-      [16, 17, 18, 19],
-      [21, 22, 23, 24],
-      [26, 27, 28, 29],
-      [30, 31],
-    ];
+    
 
-    const flips = flipGroups[groupIndex];
-    const isForward = groupIndex > currentPage;
-    const sequence = isForward ? flips : [...flips].reverse();
+    const actualPages = [4, 9, 14, 19, 24, 29, 31]; // last page of each group
 
-    console.log(
-      `Flipping from group ${currentPage} to ${groupIndex} (${isForward ? "forward" : "backward"})`,
-      "→ pages",
-      sequence
-    );
-    if(!sequence) return; // prevent if no sequence found (out of bounds)
-    sequence.forEach((pageIndex, i) => {
-      setTimeout(() => {
-        flipBook.current?.pageFlip().flip(pageIndex);
-      }, 200 + i * 75);
-    });
+    const pageFlips = actualPages[groupIndex];
 
-    const totalFlipTime = 300 + sequence?.length * 75 + 300;
+      console.log('flipToGroup called with groupIndex:', groupIndex, 'currentPage:', currentPage, 'pageFlips:', pageFlips);
+
+
+    if(!pageFlips) {
+      setIsFlipping(false);
+      scrollLock.current = false;
+      return; // prevent if no sequence found (out of bounds)
+    }
+
+    const isForward = currentPage == null ? true :  groupIndex > currentPage;
+    if(isForward) {
+      const startPage = Math.max(0, pageFlips - 4);
+
+        for (let i = startPage; i <= pageFlips; i++) {
+          setTimeout(() => {
+            console.log('Flipping to page:', i);
+            flipBook.current?.pageFlip().flip(i);
+          }, 200 + i * 75);
+        }
+    } else {
+        const backActualPage =  (pageFlips + 1)
+        const startPage = Math.min(31, Math.max(0, backActualPage + 4));
+
+        console.log('flipping back', startPage)
+
+        for (let i = startPage; i > backActualPage; i--) {
+          setTimeout(() => {
+            console.log('Flipping to page back:', i);
+            flipBook.current?.pageFlip().flip(i);
+          }, 200 + (startPage - i) * 75);
+        }
+    }
+
+    // const flipGroups = [
+    //   [0, 1, 2, 3, 4, 5],
+    //   [5, 6, 7, 8, 9],
+    //   [9, 10, 11, 12, 13, 14],
+    //   [14, 15, 16, 17, 18, 19],
+    //   [19, 20, 21, 22, 23, 24],
+    //   [24, 25, 26, 27, 28, 29],
+    //   [29, 30, 31]
+    // ];
+
+    // // const flipGroups = pageElementGroups;
+
+    // const flips = flipGroups[groupIndex];
+    // const isForward = currentPage == null ? true :  groupIndex > currentPage;
+    // const sequence = isForward ? flips : [...flips].reverse();
+
+    // console.log(
+    //   `Flipping from group ${currentPage} to ${groupIndex} ${flipBook.current?.pageFlip?.().getCurrentPage?.() ?? 0} (${isForward ? "forward" : "backward"})`,
+    //   "→ pages",
+    //   sequence
+    // );
+    // if(!sequence) {
+    //   setIsFlipping(false);
+    //   scrollLock.current = false;
+    //   return; // prevent if no sequence found (out of bounds)
+    // }
+    // sequence.forEach((pageIndex, i) => {
+    //   setTimeout(() => {
+    //     flipBook.current?.pageFlip().flip(pageIndex);
+    //   }, 200 + i * 75);
+    // });
+
+    
 
     setTimeout(() => {
-      setCurrentPage(groupIndex);
 
-      /**
-       * Delay unlocking scroll to ensure flip animation completes
-       * before allowing further scroll interactions
-       */
-      setTimeout(() => {
-        scrollLock.current = false;
-        setIsFlipping(false);
-  
-        if (
-          pendingPageRef.current !== null &&
-          pendingPageRef.current !== groupIndex
-        ) {
-          const nextGroup = pendingPageRef.current;
-          pendingPageRef.current = null;
-          flipToGroup(nextGroup);
-        }
-      }, 1500);
+      scrollLock.current = false;
+      setIsFlipping(false);
+      setCurrentPage(groupIndex);
+      // if(groupIndex == 0) setCurrentPage(null); // reset to cover state if back to start
+     
     }, totalFlipTime);
   }
 
   // Only allow flipping when journeyRef is NOT in view
   // Add 1-second delay after journey leaves viewport before enabling flips
   useEffect(() => {
+    console.log("isJourneyInView changed:", isJourneyInView);
+
     if (isJourneyInView) {
+      
+      /**
+       * IF Journey is in view:
+       * - Turn page to first page if not already there
+       * - Disable flipping immediately
+       * - Clear any pending flip delays
+       * Reset currentPage to null
+       */
+      if (flipBook.current) {
+        // flipBook.current?.pageFlip?.().flip?.(0);
+        setCurrentPage(null);
+      }
+
       // Journey is in view - disable flipping and reset
       setFlipEnabled(false);
       setCanStartFlipping(false);
@@ -1842,7 +1865,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
   useLayoutEffect(() => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.style.height = `${8 * 100}vh`; // 7 scroll zones
+      scrollContainerRef.current.style.height = `${totalGroups * 100}vh`; // 7 scroll zones
     }
   }, []);
 
@@ -1897,10 +1920,6 @@ export default function SectionSeven({ hideFinalpage }) {
     }
   }, []);
 
-
-  const currentPageFromFlipBook = useMemo(() => {
-    return flipBook.current?.pageFlip?.()?.getPage?.()
-  }, [flipBook])
 
   return (
     <div className="overflow-x-clip" >
@@ -1964,7 +1983,13 @@ export default function SectionSeven({ hideFinalpage }) {
 
         <div ref={scrollContainerRef} />
       </motion.div>
-   
+            {/* <div className="fixed z-50 bg-red-500 p-4 bottom-0 left-0">
+                <div>
+                  {pageElements.length}
+                </div>
+
+
+            </div> */}
     </div>
   );
 }

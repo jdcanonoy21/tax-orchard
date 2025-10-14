@@ -47,7 +47,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const sectionRef = useRef(null);
   const x = useTransform(scrollYProgress, [0, 0.1], ["100vw", "0vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
-  const harvestBgY = useTransform(scrollYProgress, [0.75, 0.8], ["-100%", "0%"]);
+  const harvestBgY = useTransform(scrollYProgress, [0.8, 0.9], ["-100%", "0%"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
@@ -1696,7 +1696,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
     targetGroup  = targetGroup > 0 ? targetGroup - 1 : targetGroup; // offset by 1 to account for cover page group
 
-    if(progress >= 0.6 )  targetGroup = totalGroups - 2; // prevent going out of bounds
+    if(progress >= 0.7 )  targetGroup = totalGroups - 2; // prevent going out of bounds
 
 
     console.log(progress >= 0.6, "progress", progress, "→ targetGroup", targetGroup);

@@ -78,7 +78,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const [canStartFlipping, setCanStartFlipping] = useState(false);
   const flipDelayTimer = useRef(null);
   const lastScrollPosition = useRef(0);
-  const totalGroups = 9; // 8 groups + 1 journey page 
+  const totalGroups = 8; // 8 groups + 1 journey page
 
 
   const harvestRef = useRef(null);
@@ -90,7 +90,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const x = useTransform(scrollYProgress, [0, 0.1], ["100vw", "0vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
-  const harvestBgY = useTransform(scrollYProgress, [0.85, 0.9], ["-100%", "0%"]);
+  const harvestBgY = useTransform(scrollYProgress, [0.8, 0.9], ["-100%", "0%"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
@@ -1760,7 +1760,7 @@ export default function SectionSeven({ hideFinalpage }) {
     
     let targetGroup = rawTarget > 0 ? rawTarget - 1 : rawTarget;
 
-    if(progress >= 0.8 )  targetGroup = totalGroups - 2; // prevent going out of bounds
+    if(progress >= 0.7 )  targetGroup = totalGroups - 2; // prevent going out of bounds
 
     
     console.log('is forward?', progress, currentProgress.current, progress < currentProgress.current);
@@ -1856,7 +1856,7 @@ export default function SectionSeven({ hideFinalpage }) {
     setIsFlipping(true);
 
 
-    const actualPages = [0, 4, 9, 14, 19, 24, 29, 31]; // last page of each group
+    const actualPages = [ 4, 9, 14, 19, 24, 29, 31]; // last page of each group
 
     const pageFlips = actualPages[groupIndex];
 

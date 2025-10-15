@@ -237,7 +237,7 @@ main {
 }
 
 
-.animated-line {
+/* .animated-line {
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
   animation: drawLine 1s ease-in-out 0.2s forwards;
@@ -258,4 +258,82 @@ main {
 .animated-circle-5 { animation-delay: 0.9s; }
 .animated-circle-6 { animation-delay: 0.95s; }
 .animated-circle-7 { animation-delay: 1.0s; }
-.animated-circle-8 { animation-delay: 1.05s; }
+.animated-circle-8 { animation-delay: 1.05s; } */
+
+
+.st0 {
+  fill: #4c6fb6;
+  opacity: 0;
+}
+
+.st1 {
+  fill: #fff;
+}
+
+.st2 {
+  stroke: #4c6fb6;
+  stroke-width: 2px;
+}
+
+.st2, .st3 {
+  fill: none;
+}
+
+.st3 {
+  stroke: #707071;
+  stroke-dasharray: 3 3;
+  stroke-width: .5px;
+}
+
+.st4 {
+  fill: #2aaf4a;
+}
+
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animated-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+
+.animated-line.animate {
+  animation: drawLine 1s ease-in-out 0.5s forwards;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.animated-circle {
+  opacity: 0;
+}
+
+.animated-circle.animate {
+  opacity: 0;
+  animation: fadeIn 0.3s ease-out forwards;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.animated-circle-1.animate { animation-delay: 0.5s; }
+.animated-circle-2.animate { animation-delay: 0.6s; }
+.animated-circle-3.animate { animation-delay: 0.7s; }
+.animated-circle-4.animate { animation-delay: 0.8s; }
+.animated-circle-5.animate { animation-delay: 0.9s; }
+.animated-circle-6.animate { animation-delay: 0.95s; }
+.animated-circle-7.animate { animation-delay: 1.0s; }
+.animated-circle-8.animate { animation-delay: 1.05s; }

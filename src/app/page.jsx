@@ -82,7 +82,6 @@ export default function Page() {
 
   return (
     <>
-      <main ref={mainRef}>
         <Hero />
         <SectionTwo />
         <SectionThree />
@@ -96,7 +95,6 @@ export default function Page() {
         {/* <SectionTen /> */}
         {/* <SectionEleven /> */}
         {/* <SectionLast /> */}
-      </main>
     </>
   );
 }

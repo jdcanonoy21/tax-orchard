@@ -17,6 +17,50 @@ import {
   useInView,
 } from "motion/react";
 
+/**
+ * SectionSeven Component - Interactive Page Flip Animation for Tax Orchard Journey
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {Function} props.hideFinalpage - Callback function to hide the final page
+ * 
+ * @description
+ * A complex scrollable page-flip component that visualizes the Tax Orchard investment journey
+ * across multiple years. The component uses react-pageflip for book-like animations and
+ * Framer Motion for scroll-based interactions.
+ * 
+ * Key Features:
+ * - Scroll-triggered page flipping with 8 distinct groups representing different years
+ * - Smooth transitions between "journey" intro page and interactive flipbook
+ * - Responsive design with dynamic sizing based on viewport
+ * - Animated SVG charts and tree growth visualizations
+ * - Scroll momentum prevention during page flips
+ * - 1-second delay after journey section before enabling flips
+ * - Automatic scroll locking during animations
+ * 
+ * Page Groups Structure:
+ * - Group 0 (Year 01): Pages 0-4 - Initial investment setup
+ * - Group 1 (Year 02): Pages 5-9 - Tax loss generation
+ * - Group 2 (Year 03): Pages 10-14 - Seed account growth
+ * - Group 3 (Year 05): Pages 15-19 - Tax credits and deductions
+ * - Group 4 (Year 07): Pages 20-24 - Active management
+ * - Group 5 (Year 09): Pages 25-29 - Vetted strategies
+ * - Group 6 (Year 10): Pages 30-31 - Audit protection and harvest
+ * 
+ * @requires react-pageflip - For the flipbook functionality
+ * @requires framer-motion - For scroll animations and transitions
+ * @requires useState - For managing flip state, page tracking, and UI states
+ * @requires useEffect - For scroll event handling and cleanup
+ * @requires useRef - For DOM element and state persistence across renders
+ * @requires useLayoutEffect - For DOM measurements before paint
+ * 
+ * @example
+ * ```jsx
+ * <SectionSeven hideFinalpage={() => console.log('Hide final page')} />
+ * ```
+ * 
+ * @returns {JSX.Element} The rendered section with journey intro and interactive flipbook
+ */
 export default function SectionSeven({ hideFinalpage }) {
   const flipBook = useRef();
   const scrollContainerRef = useRef(null);
@@ -44,7 +88,6 @@ export default function SectionSeven({ hideFinalpage }) {
     offset: ["start end", "end start"],
   });
 
-  const sectionRef = useRef(null);
   const x = useTransform(scrollYProgress, [0, 0.1], ["100vw", "0vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
   const harvestBgY = useTransform(scrollYProgress, [0.8, 0.9], ["-100%", "0%"]);
@@ -1675,6 +1718,16 @@ export default function SectionSeven({ hideFinalpage }) {
     
     console.log('scrollYProgress changed:', progress, flipEnabled, canStartFlipping, isFlipping);
 
+    if(isFlipping) {
+      /**
+       * Force to last scroll position after flip completes
+       * This prevents scroll jumping due to content height changes
+       */
+      if(lastScrollPosition.current !== null) {
+        window.scrollTo(0, lastScrollPosition.current);
+      }
+    }
+
 
     if (!flipEnabled || !canStartFlipping || isFlipping) return;
 
@@ -1716,11 +1769,67 @@ export default function SectionSeven({ hideFinalpage }) {
     }, 100);
   });
 
+  /**
+   * Stops all scroll momentum and movement on the page.
+   * 
+   * This function halts both Lenis smooth scrolling (if available) and native browser
+   * scroll momentum by immediately setting the scroll position to its current value.
+   * 
+   * @function stopScrollMomentum
+   * @returns {void}
+   */
+  const stopScrollMomentum = () => {
+  // Stop Lenis if available
+  if (window.lenis) {
+    window.lenis.stop();
+  }
+  
+  // Kill native scroll momentum
+  const currentScroll = window.scrollY;
+  window.scrollTo({
+    top: currentScroll,
+    left: 0,
+    behavior: 'instant'
+  });
+};
+
+  /**
+   * Flips the book to a specific group of pages with animation.
+   * 
+   * @param {number} groupIndex - The index of the group to flip to (0-6, where each group represents a section of pages)
+   * @param {boolean} [resetToCover=false] - Whether to reset to the cover page (currently unused)
+   * 
+   * @description
+   * This function handles the animated page flipping to a specific group. It:
+   * - Stops any ongoing scroll momentum
+   * - Locks scrolling during the flip animation
+   * - Animates multiple page flips in sequence (either forward or backward)
+   * - Releases the scroll lock after the animation and pause complete
+   * 
+   * The function maps group indices to actual page numbers:
+   * - Group 0: pages 0-4
+   * - Group 1: pages 5-9
+   * - Group 2: pages 10-14
+   * - Group 3: pages 15-19
+   * - Group 4: pages 20-24
+   * - Group 5: pages 25-29
+   * - Group 6: pages 30-31
+   * 
+   * @requires flipBook.current.pageFlip - The page flip library instance
+   * @requires currentPage - Current page/group index state
+   * 
+   * @returns {void}
+   */
   function flipToGroup(groupIndex, resetToCover = false) {
     if (!flipBook.current || !flipBook.current.pageFlip) return;
+
+    // Stop all scrolling immediately
+    stopScrollMomentum();
+
     // Store scroll position before flipping
     lastScrollPosition.current = window.scrollY;
     // Always clear pendingPageRef before starting a new flip
+    const pausedScrollTime =  1500; // 1.5 seconds
     const totalFlipTime = 300 + 5 * 75 + 300;
     pendingPageRef.current = null;
     scrollLock.current = true;
@@ -1735,8 +1844,10 @@ export default function SectionSeven({ hideFinalpage }) {
 
 
     if(!pageFlips) {
-      setIsFlipping(false);
-      scrollLock.current = false;
+      setTimeout(() => {
+            setIsFlipping(false);
+            scrollLock.current = false;
+      }, pausedScrollTime);
       return; // prevent if no sequence found (out of bounds)
     }
 
@@ -1764,48 +1875,15 @@ export default function SectionSeven({ hideFinalpage }) {
         }
     }
 
-    // const flipGroups = [
-    //   [0, 1, 2, 3, 4, 5],
-    //   [5, 6, 7, 8, 9],
-    //   [9, 10, 11, 12, 13, 14],
-    //   [14, 15, 16, 17, 18, 19],
-    //   [19, 20, 21, 22, 23, 24],
-    //   [24, 25, 26, 27, 28, 29],
-    //   [29, 30, 31]
-    // ];
-
-    // // const flipGroups = pageElementGroups;
-
-    // const flips = flipGroups[groupIndex];
-    // const isForward = currentPage == null ? true :  groupIndex > currentPage;
-    // const sequence = isForward ? flips : [...flips].reverse();
-
-    // console.log(
-    //   `Flipping from group ${currentPage} to ${groupIndex} ${flipBook.current?.pageFlip?.().getCurrentPage?.() ?? 0} (${isForward ? "forward" : "backward"})`,
-    //   "→ pages",
-    //   sequence
-    // );
-    // if(!sequence) {
-    //   setIsFlipping(false);
-    //   scrollLock.current = false;
-    //   return; // prevent if no sequence found (out of bounds)
-    // }
-    // sequence.forEach((pageIndex, i) => {
-    //   setTimeout(() => {
-    //     flipBook.current?.pageFlip().flip(pageIndex);
-    //   }, 200 + i * 75);
-    // });
 
     
-
+    // After flip sequence and pause, release scroll lock
     setTimeout(() => {
-
-      scrollLock.current = false;
-      setIsFlipping(false);
-      setCurrentPage(groupIndex);
-      // if(groupIndex == 0) setCurrentPage(null); // reset to cover state if back to start
+          scrollLock.current = false;
+          setIsFlipping(false);
+          setCurrentPage(groupIndex);
      
-    }, totalFlipTime);
+    }, (totalFlipTime + pausedScrollTime));
   }
 
   // Only allow flipping when journeyRef is NOT in view
@@ -1879,33 +1957,46 @@ export default function SectionSeven({ hideFinalpage }) {
   /**
    * Watch flipping and disable scroll interactions during the flip
    * to prevent user interference
+   * Also pauses Lenis smooth scrolling if in use
+   * 
    */
-  useEffect(() => {
-    const preventScroll = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
-    };
 
-    if (isFlipping) {
-      // Prevent wheel/touch scrolling
-      window.addEventListener('wheel', preventScroll, { passive: false });
-      window.addEventListener('touchmove', preventScroll, { passive: false });
-      
-      // Prevent keyboard scrolling
-      const preventKeys = (e) => {
-        if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Space'].includes(e.key)) {
-          e.preventDefault();
-        }
-      };
-      window.addEventListener('keydown', preventKeys);
-      
-      return () => {
-        window.removeEventListener('wheel', preventScroll);
-        window.removeEventListener('touchmove', preventScroll);
-        window.removeEventListener('keydown', preventKeys);
-      };
+  useEffect(() => {
+    if (!isFlipping) {
+      // Re-enable Lenis when not flipping
+      if (window.lenis) {
+        window.lenis.start();
+      }
+      return;
     }
+
+    // Stop Lenis during flip
+    if (window.lenis) {
+      window.lenis.stop();
+    }
+
+    const preventScroll = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  };
+
+  const preventKeys = (e) => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Space'].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  // Prevent wheel/touch scrolling
+  window.addEventListener('wheel', preventScroll, { passive: false });
+  window.addEventListener('touchmove', preventScroll, { passive: false });
+  window.addEventListener('keydown', preventKeys);
+  
+  return () => {
+    window.removeEventListener('wheel', preventScroll);
+    window.removeEventListener('touchmove', preventScroll);
+    window.removeEventListener('keydown', preventKeys);
+  };
   }, [isFlipping]);
 
 
@@ -1925,9 +2016,10 @@ export default function SectionSeven({ hideFinalpage }) {
 
 
   return (
-    <div className="overflow-x-clip snap-y snap-mandatory" style={{ scrollSnapType: 'y mandatory' }}>
+    <>
+      <div className="overflow-x-clip">
       <motion.div
-        className="sticky top-0 snap-start h-screen"
+        className="sticky top-0 snap-start snap-always  h-screen"
         ref={journeyRef}
         style={{ x: journeyX }}
       >
@@ -1944,11 +2036,11 @@ export default function SectionSeven({ hideFinalpage }) {
         </div>
       </motion.div>
       <motion.div
-        className="min-h-screen relative w-full !z-40 bg-white snap-start"
+        className="min-h-screen w-full !z-40 bg-white "
         ref={containerRef}
         style={{ x }}
       >
-        <div className="flipbook-container sticky top-0 !z-50 w-full min-h-screen overflow-hidden snap-start">
+        <div className="flipbook-container sticky top-0  !z-50 w-full min-h-screen overflow-hidden ">
           <HTMLFlipBook
             onChangeState={flipping}
             onFlip={(e) => {
@@ -1984,7 +2076,9 @@ export default function SectionSeven({ hideFinalpage }) {
           </HTMLFlipBook>
         </div>
 
-        <div ref={scrollContainerRef} className="snap-start" />
+        <div ref={scrollContainerRef}  >
+         
+        </div>
       </motion.div>
             {/* <div className="fixed z-50 bg-red-500 p-4 bottom-0 left-0">
                 <div>
@@ -1999,5 +2093,10 @@ export default function SectionSeven({ hideFinalpage }) {
 
             </div> */}
     </div>
+
+    
+
+      
+    </>
   );
 }

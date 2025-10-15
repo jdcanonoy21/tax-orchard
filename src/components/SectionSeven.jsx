@@ -78,7 +78,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const [canStartFlipping, setCanStartFlipping] = useState(false);
   const flipDelayTimer = useRef(null);
   const lastScrollPosition = useRef(0);
-  const totalGroups = 8; // 8 groups + 1 journey page 
+  const totalGroups = 9; // 8 groups + 1 journey page 
 
 
   const harvestRef = useRef(null);
@@ -90,7 +90,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const x = useTransform(scrollYProgress, [0, 0.1], ["100vw", "0vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
-  const harvestBgY = useTransform(scrollYProgress, [0.8, 0.9], ["-100%", "0%"]);
+  const harvestBgY = useTransform(scrollYProgress, [0.85, 0.9], ["-100%", "0%"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
@@ -1713,7 +1713,26 @@ export default function SectionSeven({ hideFinalpage }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
+  /**
+   * Handles scroll progress changes to trigger page flips.
+   * 
+   * This effect listens to changes in the scrollYProgress motion value and determines
+   * if a page flip should be initiated based on the current scroll position, flip state,
+   * and whether flipping is enabled. It calculates the target group of pages to flip to
+   * and calls the flipToGroup function if conditions are met.  
+   * @requires scrollYProgress - A framer-motion motion value representing vertical scroll progress (0 to 1)
+   * @requires flipEnabled - Boolean state indicating if flipping is currently enabled
+   * @requires canStartFlipping - Boolean state indicating if flipping can start (e.g., after initial load)
+   * @requires isFlipping - Boolean state indicating if a flip animation is currently in progress
+   * @requires currentPage - Current page/group index state
+   * @requires totalGroups - Total number of page groups available for flipping
+   * @requires flipToGroup - Function to initiate the flip animation to a specific group
+   * 
+   * The effect includes debouncing logic to prevent rapid successive flips and ensures
+   * that scrolling is locked during flip animations to avoid conflicts.
+   * 
+   * @returns {void}
+   */
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
     
     console.log('scrollYProgress changed:', progress, flipEnabled, canStartFlipping, isFlipping);
@@ -1733,11 +1752,17 @@ export default function SectionSeven({ hideFinalpage }) {
 
 
     // Fix: Snap to last group if very close to end
-    let targetGroup = Math.min(
+
+    let rawTarget = Math.min(
       totalGroups - 2,
       Math.max(0, Math.floor(progress * 10))
     );
+    
+    let targetGroup = rawTarget > 0 ? rawTarget - 1 : rawTarget;
 
+    if(progress >= 0.8 )  targetGroup = totalGroups - 2; // prevent going out of bounds
+
+    
     console.log('is forward?', progress, currentProgress.current, progress < currentProgress.current);
 
     currentProgress.current = progress;
@@ -1750,11 +1775,6 @@ export default function SectionSeven({ hideFinalpage }) {
       
       return;
     }
-
-    targetGroup  = targetGroup > 0 ? targetGroup - 1 : targetGroup; // offset by 1 to account for cover page group
-
-    if(progress >= 0.7 )  targetGroup = totalGroups - 2; // prevent going out of bounds
-
 
     console.log(progress >= 0.6, "progress", progress, "→ targetGroup", targetGroup);
 
@@ -1836,7 +1856,7 @@ export default function SectionSeven({ hideFinalpage }) {
     setIsFlipping(true);
 
 
-    const actualPages = [4, 9, 14, 19, 24, 29, 31]; // last page of each group
+    const actualPages = [0, 4, 9, 14, 19, 24, 29, 31]; // last page of each group
 
     const pageFlips = actualPages[groupIndex];
 

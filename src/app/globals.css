@@ -308,11 +308,12 @@ main {
 }
 
 .animated-line {
-  stroke-dasharray: 1000;
+  stroke-dasharray: 0;
   stroke-dashoffset: 1000;
 }
 
 .animated-line.animate {
+  stroke-dasharray: 1000;
   animation: drawLine 1s ease-in-out 0.5s forwards;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;

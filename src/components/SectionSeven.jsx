@@ -16,6 +16,7 @@ import {
   useTransform,
   useInView,
 } from "motion/react";
+import LineChart from "./lineChart";
 
 /**
  * SectionSeven Component - Interactive Page Flip Animation for Tax Orchard Journey
@@ -100,6 +101,8 @@ export default function SectionSeven({ hideFinalpage }) {
   const [shouldAnimate, showAnimateChart] = useState(false);
   const svgLineChart = useRef(null);
   const isScrolling = useRef(false);
+  const svgAnimationKey = useRef(Math.random());
+
 
 
   const blankPagesOneData = [
@@ -895,56 +898,9 @@ export default function SectionSeven({ hideFinalpage }) {
             <div className="w-full flex justify-center items-center relative">
               <div className="w-full -bottom-28 absolute   h-64 flex flex-col items-center justify-center">
                 <div className="w-full h-full  absolute top-0 left-0 z-10" ></div>
-                <svg 
-                 ref={svgLineChart}
-                id="Layer_1" 
-                xmlns="http://www.w3.org/2000/svg" 
-                version="1.1" 
-                viewBox="0 0 511 231" 
-                className="z-10"
-              >
-                <g id="Group_361">
-                  <rect id="Rectangle_219-2" className="st1" width="100%" height="100%" rx="14" ry="14" fill="#ffffff"/>
-                  <g id="Group_360">
-                    <g id="Group_359">
-                      <g id="Group_355">
-                        <path id="Path_1017" className="st3" d="M41,59.3v138.1"/>
-                        <path id="Path_1018" className="st3" d="M102.7,59.3v138.1"/>
-                      </g>
-                      <g id="Group_358">
-                        <path id="Path_1017-2" className="st3" d="M287.8,59.3v138.1"/>
-                        <path id="Path_1018-2" className="st3" d="M349.5,59.3v138.1"/>
-                      </g>
-                      <g id="Group_356">
-                        <path id="Path_1017-3" className="st3" d="M164.4,59.3v138.1"/>
-                        <path id="Path_1018-3" className="st3" d="M226.1,59.3v138.1"/>
-                      </g>
-                      <g id="Group_357">
-                        <path id="Path_1017-4" className="st3" d="M411.3,59.3v138.1"/>
-                        <path id="Path_1018-4" className="st3" d="M473,59.3v138.1"/>
-                      </g>
-                      <rect id="Rectangle_218" className="st0" x="446.7" y="9.1" width="52.5" height="212.9" rx="10" ry="10"/>
-                      <path 
-                        className={shouldAnimate ? "animated-line animate" : "animated-line"}
-                        d="M41,182.3l62.8-10.7,60.4-35.1,62.3-57,61,23.5,63-32.4,62.3,8.9,62.8-25.7"
-                        stroke="#4c6fb6"
-                        strokeWidth="2"
-                        fill="none"
-                      />
-                    </g>
-                    <g id="Group_365">
-                      <circle id="Ellipse_17" className={`st4 animated-circle ${shouldAnimate ? "animate animated-circle-1" : ""}`} cx="40.5" cy="182.5" r="4.5"/>
-                      <circle id="Ellipse_18" className={`st4 animated-circle ${shouldAnimate ? "animate animated-circle-2" : ""}`} cx="102.5" cy="171.5" r="4.5"/>
-                      <ellipse id="Ellipse_19" className={`st4 animated-circle ${shouldAnimate ? "animate animated-circle-3" : ""}`} cx="165" cy="136.5" rx="4" ry="4.5"/>
-                      <circle id="Ellipse_20" className={`st4 animated-circle ${shouldAnimate ? "animate animated-circle-4" : ""}`} cx="226.5" cy="80.5" r="4.5"/>
-                      <circle id="Ellipse_21" className={`st4 animated-circle ${shouldAnimate ? "animate animated-circle-5" : ""}`} cx="287.5" cy="102.5" r="4.5"/>
-                      <circle id="Ellipse_22" className={`st4 animated-circle ${shouldAnimate ? "animate animated-circle-6" : ""}`} cx="349.5" cy="71.5" r="4.5"/>
-                      <ellipse id="Ellipse_23" className={`st4 animated-circle ${shouldAnimate ? "animate animated-circle-7" : ""}`} cx="411" cy="80.5" rx="4" ry="4.5"/>
-                      <circle id="Ellipse_24" className={`st4 animated-circle ${shouldAnimate ? "animate animated-circle-8" : ""}`} cx="473.5" cy="54.5" r="4.5"/>
-                    </g>
-                  </g>
-                </g>
-              </svg>
+                  <LineChart 
+                    shouldAnimate={shouldAnimate}
+                  />
               </div>
             </div>
 
@@ -1795,8 +1751,8 @@ export default function SectionSeven({ hideFinalpage }) {
     // Store scroll position before flipping
     lastScrollPosition.current = window.scrollY;
     // Always clear pendingPageRef before starting a new flip
-    const pausedScrollTime =  1500; // 1.5 seconds
-    const totalFlipTime = 300 + 5 * 75 + 300;
+    const pausedScrollTime =  500; // 0.5 second
+    const totalFlipTime = 200 + 5 * 75 + 300;
     pendingPageRef.current = null;
     scrollLock.current = true;
     setIsFlipping(true);
@@ -1988,20 +1944,21 @@ export default function SectionSeven({ hideFinalpage }) {
    * 
    */
   useEffect(() => {
-    console.log("currentPage changed:", totalActualPages);
+  console.log("currentPage changed:", totalActualPages);
 
-    if(totalActualPages !== 10) {
-      showAnimateChart(false);
-      hasChartAnimated.current = false;
-    } else if(totalActualPages === 10 && !hasChartAnimated.current) {
-      
-      setTimeout(() => {
-        showAnimateChart(true);
-        hasChartAnimated.current = true;
-      }, 500);
+  if(totalActualPages !== 10) {
+    showAnimateChart(false);
+    hasChartAnimated.current = false;
+  } else if(totalActualPages === 10 && !hasChartAnimated.current) {
+    showAnimateChart(true);
     
-    }
-  }, [totalActualPages]);
+    setTimeout(() => {
+      hasChartAnimated.current = true;
+      // Generate new key only on first animation
+    }, 500);
+  
+  }
+}, [totalActualPages]);
 
 
 
@@ -2072,20 +2029,7 @@ export default function SectionSeven({ hideFinalpage }) {
          
         </div>
       </motion.div>
-            {/* <div className="fixed z-50 bg-red-500 p-4 bottom-0 left-0">
-                <div>
-                  {pageElements.length}
-
-                  {hasChartAnimated.current} times
-                </div>
-
-                <div className="flex gap-2">
-                  <button onClick={() => flipBook?.current?.pageFlip?.().flip?.(0)}>1</button>
-                  <button onClick={() => flipBook?.current?.pageFlip?.().flip?.(5)}>2</button>
-                </div>
-
-
-            </div> */}
+           
     </div>
 
     

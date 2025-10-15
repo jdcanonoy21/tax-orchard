@@ -14,8 +14,6 @@ import SectionContact from "./SctionContact";
 
 export default function SectionHarvest({ setHideFinalpage }) {
   const sectionRef = useRef(null);
-  const sectionContainerRef = useRef(null);
-  const sectionWhiteDivRef = useRef(null);
   const treesRef = useRef(null);
   const tree1Ref = useRef(null);
   const tree2Ref = useRef(null);
@@ -43,13 +41,8 @@ export default function SectionHarvest({ setHideFinalpage }) {
     }
   });
 
-  const sectionX = useTransform(
-    scrollYProgress,
-    [0.32, 0.33],
-    ["0vw", "-100vw"]
-  );
-
-  const treesOpacity = useTransform(scrollYProgress, [0.3, 0.4], [0, 1]);
+  const treesOpacity = useTransform(scrollYProgress, [0.25, 0.4], [0, 1]);
+   const treesY = useTransform(scrollYProgress, [0.25, 0.4], [50, 0]);
   const treesTextOneX = useTransform(
     scrollYProgress,
     [0.4, 0.5, 0.55, 0.6],
@@ -66,7 +59,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
   const tree3X = useTransform(scrollYProgress, [0.7, 0.75], ["0vw", "-190px"]);
 
   const tree1Opacity = useTransform(scrollYProgress, [0.8, 0.85], [1, 0]);
-  const svgLogoOpacity = useTransform(scrollYProgress, [0.8, 0.87], [0, 1]);
+  const svgLogoOpacity = useTransform(scrollYProgress, [0.8, 0.87, 0.96, 1], [0, 1, 1, 0]);
   const growTextX = useTransform(
     scrollYProgress,
     [0.85, 0.88],
@@ -160,38 +153,14 @@ export default function SectionHarvest({ setHideFinalpage }) {
     return () => unsubscribe();
   }, [treesTextOneX, tree1Ref, tree2Ref, tree3Ref]);
 
-  // useEffect(() => {
-  //   let timeout;
-  //   if (hideContainer && sectionRef.current) {
-  //     timeout = setTimeout(() => setShowWhiteDiv(true), 2000);
-  //   }
-  //   return () => clearTimeout(timeout);
-  // }, [hideContainer]);
 
   return (
-    <div className=" w-full  -z-10 overfl" ref={sectionRef}>
-      {/* <motion.section
-        className="relative bg-black min-h-screen overflow-x-clip z-30"
-        ref={sectionContainerRef}
-        style={{ x: sectionX }}
-        transition={{ x: { type: "spring", stiffness: 60, damping: 24 } }}
-      >
-        <div className="sticky -top-40 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-30">
-          <motion.h2 className="mix-blend-difference text-white text-6xl md:text-[183px] font-proxima-bold leading-none text-center">
-            The Harvest
-          </motion.h2>
-        </div>
-        <motion.div className={`h-[120vh]  bg-black `}></motion.div>
-        <motion.div className={`min-h-screen  bg-white `}></motion.div>
-        <motion.div
-          className={`min-h-screen  bg-white `}
-          ref={sectionWhiteDivRef}
-        ></motion.div>
-      </motion.section> */}
+    <div className=" w-full  -z-10 bg-white" ref={sectionRef}>
+
 
       <motion.section
         ref={treesRef}
-        style={{ opacity: treesOpacity, marginTop: "-200vh" }}
+        style={{ opacity: treesOpacity,   y: treesY, marginTop: "-200vh" }}
         transition={{ opacity: { type: "spring", stiffness: 60, damping: 24 } }}
         className={`bg-white min-h-screen sticky top-0 flex items-center justify-center p-8 w-full z-0   overflow-hidden`}
       >
@@ -228,7 +197,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
               style={{ x: growTextX }}
             >
               <h2
-                className="text-5xl md:text-[80px] font-proxima-bold leading-snug md:leading-tight font-black text-black "
+                className="text-4xl md:text-[80px] font-proxima-bold leading-snug md:leading-tight font-black text-black "
                 id="letsgrowtitle"
               >
                 Let's Grow
@@ -247,29 +216,30 @@ export default function SectionHarvest({ setHideFinalpage }) {
               ref={tree1Ref}
               style={{ x: tree1X, opacity: tree1Opacity }}
               alt="Year 10"
-              className="w-full h-[370px]"
+              className="w-full md:h-[370px] h-[170px]"
             />
 
             <motion.img
               ref={tree2Ref}
               style={{ opacity: tree1Opacity }}
               alt="Year 10"
-              className="w-full h-[430px] relative !z-50"
+              className="w-full md:h-[430px] relative !z-50 h-[230px]"
               id="tree2"
             />
-            <img
+            <motion.img
               src="/images/tree-behind.svg"
               alt="Year 10"
-              className="w-full h-[430px] absolute top-[34px] z-10"
+              style={{ opacity: tree1Opacity }}
+              className="w-full md:h-[430px] h-[230px] absolute md:top-[34px] top-[14px] z-10"
               id="tree2a"
             />
             <motion.img
               ref={tree3Ref}
               alt="Year 10"
-              className="w-full h-[370px]"
+              className="w-full md:h-[370px] h-[170px]"
               style={{ x: tree3X, opacity: tree1Opacity }}
             />
-            <div className="  absolute z-50 bottom-0 w-full flex justify-center left-[50px] md:left-[100px]">
+            <motion.div className="  absolute z-50 md:bottom-0 -bottom-44 w-full flex justify-center left-[50px] md:left-[100px]" style={{ opacity: svgLogoOpacity }}>
               <motion.svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 600 10"
@@ -346,7 +316,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
                   mask="url(#path-fill-mask)"
                 />
               </motion.svg>
-            </div>
+            </motion.div>
           </div>
         </motion.div>
 

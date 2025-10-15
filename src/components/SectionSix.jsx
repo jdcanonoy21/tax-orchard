@@ -12,7 +12,9 @@ export default function SectionSix() {
   const videoRef = useRef(null);
   const videoMobileRef = useRef(null);
   const [lastProgress, setLastProgress] = useState(0);
+  const [mobileVideoFinished, setMobileVideoFinished] = useState(false);
   const rootTextRef = useRef(null);
+  const rootTextMobileRef = useRef(null);
   const animationFrameRef = useRef(null);
   const targetVideoTimeRef = useRef(0);
 
@@ -98,6 +100,14 @@ export default function SectionSix() {
       return;
     }
 
+    // Add event listener for when video ends
+    const handleVideoEnd = () => {
+      console.log('Mobile video finished playing');
+      setMobileVideoFinished(true);
+    };
+
+    video.addEventListener('ended', handleVideoEnd);
+
     if (isMobileVideoInView) {
       console.log('Mobile video is in view, attempting to play');
       video.play().catch((error) => {
@@ -106,7 +116,14 @@ export default function SectionSix() {
     } else {
       console.log('Mobile video is out of view, pausing');
       video.pause();
+      // Reset finished state when video goes out of view
+      setMobileVideoFinished(false);
     }
+
+    // Cleanup event listener
+    return () => {
+      video.removeEventListener('ended', handleVideoEnd);
+    };
   }, [isMobileVideoInView]);
 
   return (
@@ -130,7 +147,7 @@ export default function SectionSix() {
                 <img
                   src="/images/seed.png"
                   alt="Seed"
-                  className="w-40 md:w-52 h-auto relative z-10 js-fade-right"
+                  className="w-20 md:w-52 h-auto relative z-10 js-fade-right"
                 />
                 <div className="relative">
                   <div
@@ -156,8 +173,8 @@ export default function SectionSix() {
     
 
    
-   {/* Fade-in-right animation for text */}
-   <motion.div
+                {/* Fade-in-right animation for text */}
+                <motion.div
                     ref={rootTextRef}
                     initial={{ x: 100, opacity: 0 }}
                     animate={
@@ -166,11 +183,11 @@ export default function SectionSix() {
                         : { x: 100, opacity: 0 }
                     }
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="absolute md:-right-[700px] -right-[500px]  transform -translate-y-1/2 max-w-3xl md:pr-20 md:w-full  "
+                    className="absolute md:-right-[700px] -right-[300px] md:mt-auto -mt-20  transform -translate-y-1/2 max-w-3xl md:pr-20 md:w-full  hidden md:block"
                     style={{ top:  "380px", zIndex: 9999 }}
                   >
-                    <div className="flex flex-col gap-4 px-20 md:pr-10 md:w-full w-96">
-                      <p className="md:text-3xl text-lg leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
+                    <div className="flex flex-col gap-4 px-28 md:pr-10 md:w-full w-96">
+                      <p className="md:text-3xl text-base leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
                         At Tax Orchard, we help you turn what you owe into
                         something that grows—using a strategy no one else
                         offers.
@@ -181,22 +198,40 @@ export default function SectionSix() {
                     </div>
                   </motion.div>
 
-
-
-           
+                  <motion.div
+                    ref={rootTextMobileRef}
+                    initial={{ x: 100, opacity: 0 }}
+                    animate={mobileVideoFinished
+                        ? { x: 0, opacity: 1 }
+                        : { x: 100, opacity: 0 }
+                    }
+                    transition={{ duration: 0.4 }}
+                    className="absolute md:-right-[700px] -right-[300px] md:mt-auto -mt-20  transform -translate-y-1/2 max-w-3xl md:pr-20 md:w-full  block md:hidden "
+                    style={{ top:  "380px", zIndex: 9999 }}
+                  >
+                    <div className="flex flex-col gap-4 px-28 md:pr-10 md:w-full w-96">
+                      <p className="md:text-3xl text-base leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
+                        At Tax Orchard, we help you turn what you owe into
+                        something that grows—using a strategy no one else
+                        offers.
+                        <span className="font-proxima-bold">
+                          We turn your tax liability into an assets.
+                        </span>
+                      </p>
+                    </div>
+                  </motion.div>
+ 
+ 
                 </div>
 
-             
-
-                 <div className="block md:hidden relative w-[1000px] h-[700px] -z-0 mt-4">
+                 <div className="block md:hidden relative w-[750px] h-[600px] -z-0 mt-4">
                      <video
                        ref={videoMobileRef}
                        muted
                        playsInline
                        webkit-playsinline="true"
                        preload="metadata"
-                       loop
-                       className="  w-full object-cover object-top ml-[80px] -mt-4"
+                       className="  w-full object-cover object-top ml-[150px] -mt-4"
                      >
                        <source src="/images/roots.webm" type="video/webm" />
                        <source src="/images/roots.mp4" type="video/mp4" />

@@ -190,7 +190,7 @@ export default function SectionContact() {
   return (
     <>
       <div className="text-center mb-16">
-        <h2 className="text-6xl md:text-[100px] font-proxima-bold leading-none font-black text-black">
+        <h2 className="text-4xl md:text-[100px] font-proxima-bold leading-none font-black text-black">
           Buried or planted.
           <br /> You decide.
         </h2>
@@ -246,7 +246,7 @@ export default function SectionContact() {
                       <textarea
                         id={step.id}
                         ref={idx === currentStep ? inputRef : null}
-                        className={`w-full text-4xl md:text-6xl font-medium bg-transparent overflow-hidden outline-none md:placeholder:text-6xl placeholder:text-4xl placeholder:font-proxima-regular placeholder:font-regular h-10 md:h-20 placeholder:text-center text-center resize-none focus:placeholder-transparent ${
+                        className={`w-full text-3xl md:text-6xl font-medium bg-transparent overflow-hidden outline-none md:placeholder:text-6xl placeholder:text-4xl placeholder:font-proxima-regular placeholder:font-regular h-10 md:h-20 placeholder:text-center text-center resize-none focus:placeholder-transparent ${
                           validationError && idx === currentStep 
                             ? 'placeholder:text-red-500 text-red-500' 
                             : 'placeholder:text-blue text-blue'
@@ -262,7 +262,7 @@ export default function SectionContact() {
                         type={step.type}
                         id={step.id}
                         ref={idx === currentStep ? inputRef : null}
-                        className={`w-full text-4xl md:text-6xl font-medium bg-transparent outline-none placeholder:text-4xl md:placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-20 placeholder:text-center text-center focus:placeholder-transparent ${
+                        className={`w-full text-3xl md:text-6xl font-medium bg-transparent outline-none placeholder:text-4xl md:placeholder:text-6xl placeholder:font-proxima-regular placeholder:font-regular h-20 placeholder:text-center text-center focus:placeholder-transparent ${
                           validationError && idx === currentStep 
                             ? 'placeholder:text-red-500 text-red-500' 
                             : 'placeholder:text-blue text-blue'

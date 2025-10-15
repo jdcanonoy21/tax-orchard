@@ -72,6 +72,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const journeyRef = useRef(null);
   const pendingPageRef = useRef(null);
+  const sectionContainerRef = useRef(null);
 
   const [flipEnabled, setFlipEnabled] = useState(false);
   const [isFlipping, setIsFlipping] = useState(false);
@@ -88,9 +89,9 @@ export default function SectionSeven({ hideFinalpage }) {
     offset: ["start end", "end start"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 0.1, 0.9, 0.95], ["100vw", "0vw", "0vw", "-100vw"]);
+  const x = useTransform(scrollYProgress, [0, 0.1, 0.8, .9], ["100vw", "0vw", "0vw", "-100vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
-  const harvestBgY = useTransform(scrollYProgress, [0.8, 0.9], ["-100%", "0%"]);
+  const harvestBgY = useTransform(scrollYProgress, [0.75, 0.8], ["-100%", "0%"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
@@ -1592,6 +1593,7 @@ export default function SectionSeven({ hideFinalpage }) {
     >
       <div
         className={` top-0 w-full h-screen absolute items-center justify-center transition-opacity duration-700 z-20`}
+
       >
         <h2 className={`text-6xl w-full h-screen flex items-center justify-center absolute top-0 z-20 md:text-[183px] font-proxima-bold  leading-none text-center mix-blend-difference text-white `}
         >
@@ -1650,6 +1652,7 @@ export default function SectionSeven({ hideFinalpage }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
 
   /**
    * Handles scroll progress changes to trigger page flips.
@@ -2006,7 +2009,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
   return (
     <>
-      <div className="overflow-x-clip">
+      <div className="overflow-x-clip"     >
       <motion.div
         className="sticky top-0 snap-start snap-always  h-screen"
         ref={journeyRef}

@@ -1671,6 +1671,9 @@ export default function SectionSeven({ hideFinalpage }) {
   }, []);
 
 
+  
+
+
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
     
     console.log('scrollYProgress changed:', progress, flipEnabled, canStartFlipping, isFlipping);

@@ -10,6 +10,7 @@ import {
 export default function SectionSix() {
   const rootContainerRef = useRef(null);
   const videoRef = useRef(null);
+  const videoMobileRef = useRef(null);
   const [lastProgress, setLastProgress] = useState(0);
   const rootTextRef = useRef(null);
   const animationFrameRef = useRef(null);
@@ -34,6 +35,7 @@ export default function SectionSix() {
   const y = useTransform(delayedProgress, [0, 1], ["0%", "-55%"]);
 
   const isRootTextInView = useInView(rootTextRef, { amount:  0.5, once: false });
+  const isMobileVideoInView = useInView(videoMobileRef, { amount: 0.5, once: false });
 
   useMotionValueEvent(videoScrollYProgress, "change", (latest) => {
     const video = videoRef.current;
@@ -86,6 +88,27 @@ export default function SectionSix() {
 
   });
 
+  // Simple play/pause for mobile video based on visibility
+  React.useEffect(() => {
+    const video = videoMobileRef.current;
+    console.log('Mobile video effect triggered:', { video: !!video, isMobileVideoInView, videoSrc: video?.src });
+    
+    if (!video) {
+      console.log('No mobile video element found');
+      return;
+    }
+
+    if (isMobileVideoInView) {
+      console.log('Mobile video is in view, attempting to play');
+      video.play().catch((error) => {
+        console.error('Failed to play mobile video:', error);
+      });
+    } else {
+      console.log('Mobile video is out of view, pausing');
+      video.pause();
+    }
+  }, [isMobileVideoInView]);
+
   return (
     <section
       className="relative overflow-x-clip  bg-black md:pt-80  !z-40 w-screen"
@@ -111,7 +134,7 @@ export default function SectionSix() {
                 />
                 <div className="relative">
                   <div
-                    className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black"
+                    className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black hidden md:block "
                     id="rootContainer"
                   >
                     <video
@@ -129,8 +152,12 @@ export default function SectionSix() {
 
                     
                   </div>
-                  {/* Fade-in-right animation for text */}
-                  <motion.div
+
+    
+
+   
+   {/* Fade-in-right animation for text */}
+   <motion.div
                     ref={rootTextRef}
                     initial={{ x: 100, opacity: 0 }}
                     animate={
@@ -139,8 +166,8 @@ export default function SectionSix() {
                         : { x: 100, opacity: 0 }
                     }
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="absolute md:-right-[700px] -right-[300px]  transform -translate-y-1/2 max-w-3xl md:pr-20 md:w-full "
-                    style={{ top:  "380px" }}
+                    className="absolute md:-right-[700px] -right-[500px]  transform -translate-y-1/2 max-w-3xl md:pr-20 md:w-full  "
+                    style={{ top:  "380px", zIndex: 9999 }}
                   >
                     <div className="flex flex-col gap-4 px-20 md:pr-10 md:w-full w-96">
                       <p className="md:text-3xl text-lg leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
@@ -153,7 +180,29 @@ export default function SectionSix() {
                       </p>
                     </div>
                   </motion.div>
+
+
+
+           
                 </div>
+
+             
+
+                 <div className="block md:hidden relative w-[1000px] h-[700px] -z-0 mt-4">
+                     <video
+                       ref={videoMobileRef}
+                       muted
+                       playsInline
+                       webkit-playsinline="true"
+                       preload="metadata"
+                       loop
+                       className="  w-full object-cover object-top ml-[80px] -mt-4"
+                     >
+                       <source src="/images/roots.webm" type="video/webm" />
+                       <source src="/images/roots.mp4" type="video/mp4" />
+                     </video>
+                   </div>
+
               </div>
             </div>
           </div>

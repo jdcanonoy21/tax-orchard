@@ -5,6 +5,9 @@ import { motion, useScroll, useTransform } from "motion/react";
 
 export default function Hero() {
   const { scrollYProgress } = useScroll();
+  const videoRef = useRef(null);
+  const [videoError, setVideoError] = useState(false);
+
 
 
   // Move logoX from 0 to -250px as soon as scrollYProgress > 0 (very fast, within first 2% of scroll)
@@ -48,7 +51,16 @@ export default function Hero() {
           Your success shouldn’t be buried by taxes.
         </motion.p>
 
-   
+        {/* <video
+              src="/images/roots.webm"
+              muted
+              playsInline
+              autoPlay
+              loop
+              preload="auto"
+              type="video/webm"
+              className="w-full h-auto"
+            /> */}
       </div>
 
       <div className="relative z-20 flex justify-center pb-8">

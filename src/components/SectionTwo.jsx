@@ -92,7 +92,7 @@ export default function SectionTwo() {
 
   return (
     <section
-      className={`min-h-screen flex items-center justify-center p-8 ${
+      className={` min-h-[60vh] md:min-h-screen flex items-center justify-center p-8 ${
         sticky ? "sticky" : ""
       } top-0 bg-black`}
       ref={sectionTwoRef}

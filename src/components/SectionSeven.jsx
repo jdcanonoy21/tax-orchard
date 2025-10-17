@@ -147,11 +147,11 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const blankPagesOne = blankPagesOneData.map((page, pageIdx) => (
     <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50 blankPage"
       key={pageIdx}
       
     >
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="absolute -left-10 top-16 opacity-60">
@@ -225,10 +225,10 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const blankPagesTwo = blankPagesOneData.map((page, pageIdx) => (
     <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50 blankPage"
       key={pageIdx}
     >
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="absolute -left-10 top-16 opacity-60">
@@ -304,10 +304,10 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const blankPagesThree = blankPagesOneData.map((page, pageIdx) => (
     <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50 blankPage"
       key={pageIdx}
     >
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="absolute -left-24 top-32 opacity-60">
@@ -382,10 +382,10 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const blankPagesFour = blankPagesOneData.map((page, pageIdx) => (
     <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50 blankPage"
       key={pageIdx}
     >
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="absolute -left-24 top-32 opacity-60">
@@ -460,10 +460,10 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const blankPagesFive = blankPagesOneData.map((page, pageIdx) => (
     <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50 blankPage"
       key={pageIdx}
     >
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="absolute -left-24 top-32 opacity-60">
@@ -538,10 +538,10 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const blankPagesSix = blankPagesOneData.map((page, pageIdx) => (
     <div
-      className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50 blankPage"
+      className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50 blankPage"
       key={pageIdx}
     >
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="absolute -left-24 top-32 opacity-60">
@@ -617,8 +617,8 @@ export default function SectionSeven({ hideFinalpage }) {
 
 
   const pageElements = [
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+    <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
@@ -754,8 +754,8 @@ export default function SectionSeven({ hideFinalpage }) {
       </div>
     </div>,
     ...blankPagesOne,
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+    <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
@@ -884,8 +884,8 @@ export default function SectionSeven({ hideFinalpage }) {
       </div>
     </div>,
     ...blankPagesTwo,
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+    <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="relative text-center w-full md:w-3/4 justify-center items-start mb-40">
@@ -1019,8 +1019,8 @@ export default function SectionSeven({ hideFinalpage }) {
       </div>
     </div>,
     ...blankPagesThree,
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+    <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
@@ -1148,8 +1148,8 @@ export default function SectionSeven({ hideFinalpage }) {
       </div>
     </div>,
     ...blankPagesFour,
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+    <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
@@ -1276,8 +1276,8 @@ export default function SectionSeven({ hideFinalpage }) {
       </div>
     </div>,
     ...blankPagesFive,
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+    <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
@@ -1408,8 +1408,8 @@ export default function SectionSeven({ hideFinalpage }) {
       </div>
     </div>,
     ...blankPagesSix,
-    <div className="min-h-screen bg-white !w-full flex items-center justify-center relative z-50">
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden mt-10">
+    <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
             <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
@@ -1972,7 +1972,7 @@ export default function SectionSeven({ hideFinalpage }) {
         ref={journeyRef}
         style={{ x: journeyX }}
       >
-        <div className=" min-h-screen bg-black !w-full flex items-center justify-center relative z-50">
+        <div className=" min-h-[100dvh] bg-black !w-full flex items-center justify-center relative z-50">
           <div className="w-full mx-auto flex flex-col items-center justify-center h-full overflow-hidden ">
             <h2 className="text-5xl md:text-9xl font-proxima-bold leading-none font-black text-white text-center">
               The Journey
@@ -1985,11 +1985,11 @@ export default function SectionSeven({ hideFinalpage }) {
         </div>
       </motion.div>
       <motion.div
-        className="min-h-screen w-full !z-40 bg-white "
+        className="min-h-[100dvh] w-full !z-40 bg-white "
         ref={containerRef}
         style={{ x }}
       >
-        <div className="flipbook-container sticky top-0  !z-50 w-full min-h-screen overflow-hidden ">
+        <div className="flipbook-container sticky top-0  !z-50 w-full min-h-[100dvh] overflow-hidden ">
           <HTMLFlipBook
             onChangeState={flipping}
             onFlip={(e) => {
@@ -2019,7 +2019,7 @@ export default function SectionSeven({ hideFinalpage }) {
                 : flipDirection === 1
                 ? "flipping-prev"
                 : ""
-            } min-h-screen w-full ${isFlipping ? 'pointer-events-none' : 'pointer-events-auto'}`}
+            } min-h-[100dvh] w-full ${isFlipping ? 'pointer-events-none' : 'pointer-events-auto'}`}
           >
             {pageElements.map((el, idx) => cloneElement(el, { key: idx }))}
           </HTMLFlipBook>

@@ -139,7 +139,7 @@ export default function SectionContact() {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch('https://taxorchard.riiqo.com/wp-json/taxorchard/v1/contact', {
+      const response = await fetch('https://taxorchard.com/wp-json/taxorchard/v1/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

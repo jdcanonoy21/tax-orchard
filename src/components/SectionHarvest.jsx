@@ -13,6 +13,9 @@ import {
 import SectionContact from "./SctionContact";
 
 export default function SectionHarvest({ setHideFinalpage }) {
+  if(window === undefined) return null;
+  const isMobile = window.innerWidth < 768;
+
   const sectionRef = useRef(null);
   const treesRef = useRef(null);
   const tree1Ref = useRef(null);
@@ -55,11 +58,11 @@ export default function SectionHarvest({ setHideFinalpage }) {
     ["100vw", "0vw", "0vw", "-100vw"]
   );
 
-  const tree1X = useTransform(scrollYProgress, [0.7, 0.75], ["0vw", "190px"]);
-  const tree3X = useTransform(scrollYProgress, [0.7, 0.75], ["0vw", "-190px"]);
+  const tree1X = useTransform(scrollYProgress, [0.7, 0.75], ["0vw",isMobile ? '80%' :  "190px"]);
+  const tree3X = useTransform(scrollYProgress, [0.7, 0.75], ["0vw", isMobile ? '-80%' : "-190px"]);
 
   const tree1Opacity = useTransform(scrollYProgress, [0.8, 0.85], [1, 0]);
-  const svgLogoOpacity = useTransform(scrollYProgress, [0.8, 0.87, 0.96, 1], [0, 1, 1, 0]);
+  const svgLogoOpacity = useTransform(scrollYProgress, [0.8, 0.87, 0.95, isMobile ? 0.98 : 1], [0, 1, 1, 0]);
   const growTextX = useTransform(
     scrollYProgress,
     [0.85, 0.88],
@@ -156,8 +159,6 @@ export default function SectionHarvest({ setHideFinalpage }) {
 
   return (
     <div className=" w-full  -z-10 bg-white" ref={sectionRef}>
-
-
       <motion.section
         ref={treesRef}
         style={{ opacity: treesOpacity,   y: treesY, marginTop: "-200vh" }}
@@ -329,7 +330,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
         </motion.div>
       </motion.section>
 
-      <div style={{ height: `${400}vh` }}></div>
+      <div style={{ height: `${isMobile ? 500 : 400}vh` }}></div>
     </div>
   );
 }

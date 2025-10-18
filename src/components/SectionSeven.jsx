@@ -94,9 +94,9 @@ export default function SectionSeven({ hideFinalpage }) {
     offset: ["start end", "end start"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 0.1, 0.85, 0.9], ["100vw", "0vw", "0vw", "-100vw"]);
+  const x = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.85, 0.88] : [0, 0.1, 0.85, 0.9], ["100vw", "0vw", "0vw", "-100vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
-  const harvestBgY = useTransform(scrollYProgress, [0.75, 0.84], ["-100%", "0%"]);
+  const harvestBgY = useTransform(scrollYProgress, [0.78, 0.83], ["-100%", "0%"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
@@ -1031,7 +1031,7 @@ export default function SectionSeven({ hideFinalpage }) {
     
     let targetGroup = rawTarget > 0 ? rawTarget - 1 : rawTarget;
 
-    if(progress >= 0.7 )  targetGroup = totalGroups - 2; // prevent going out of bounds
+    if(progress >= 0.65 )  targetGroup = totalGroups - 2; // prevent going out of bounds
 
     
     console.log('is forward?', progress, currentProgress.current, progress < currentProgress.current);
@@ -1120,7 +1120,7 @@ export default function SectionSeven({ hideFinalpage }) {
     // Store scroll position before flipping
     lastScrollPosition.current = window.scrollY;
     // Always clear pendingPageRef before starting a new flip
-    const pausedScrollTime = groupIndex > 6 ? 1000 :  500; // 0.5 second
+    const pausedScrollTime = groupIndex > 6 ? 2000 :  500; // 0.5 second
     const totalFlipTime = 200 + 5 * 75 + 300;
     pendingPageRef.current = null;
     scrollLock.current = true;

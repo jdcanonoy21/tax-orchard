@@ -96,7 +96,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
   const x = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.85, 0.88] : [0, 0.1, 0.85, 0.9], ["100vw", "0vw", "0vw", "-100vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
-  const harvestBgY = useTransform(scrollYProgress, [0.78, 0.83], ["-100%", "0%"]);
+  const harvestBgY = useTransform(scrollYProgress, isMobile ? [0.8, 0.84] : [0.78, 0.83], ["-100%", "0%"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
@@ -794,7 +794,7 @@ export default function SectionSeven({ hideFinalpage }) {
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
             <div className="relative z-20 text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
-              <h3 className="text-3xl pb-8">Vetted Strategies</h3>
+              <h3 className="text-xl text-lightgrey md:text-3xl pb-8">Vetted Strategies</h3>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.2] text-black ">
                 Every Tax Orchard strategy is{" "}
                 <span className="font-extrabold text-blue font-proxima-extrabold">
@@ -856,7 +856,7 @@ export default function SectionSeven({ hideFinalpage }) {
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
             <div className="relative z-20 text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
-              <h3 className="text-3xl pb-8">Audit Protection</h3>
+              <h3 className="text-xl text-lightgrey md:text-3xl pb-8">Audit Protection</h3>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.2] text-black ">
                 If your Tax Orchard investment is ever audited, our legal team
                 provides full representation at no cost to you, supplying all
@@ -958,8 +958,8 @@ export default function SectionSeven({ hideFinalpage }) {
     setTimeout(() => {
       const block = document.querySelector(".flipbook > div > .stf__block");
       if (block) {
-        // block.style.overflow = "hidden";
-        // block.style.width = "101%";
+        block.style.overflow = "hidden";
+        block.style.width = "101%";
       }
     }, 0);
   };
@@ -1351,11 +1351,13 @@ export default function SectionSeven({ hideFinalpage }) {
         </div>
       </motion.div>
       <motion.div
-        className=" w-full sticky top-0 !z-40 bg-white"
+        className="min-h-screen w-full sticky top-0 !z-40 "
         ref={containerRef}
-        style={{ x }}
+        style={{ 
+          x, 
+        }}
       >
-        <div className="flipbook-container  sticky left-0 top-0 !z-50 w-full min-h-[100vh] overflow-hidden ">
+        <div className="flipbook-container  sticky left-0 top-0 !z-50 w-full min-h-screen overflow-hidden ">
           <HTMLFlipBook
             onChangeState={flipping}
             onFlip={(e) => {
@@ -1363,7 +1365,7 @@ export default function SectionSeven({ hideFinalpage }) {
             }}
             ref={flipBook}
             width={windowSize.width}
-            height={windowSize.height}
+            height={windowSize.height + (isMobile ? 100 : 0)}
             minWidth={315}
             maxWidth={1500}
             minHeight={420}
@@ -1384,7 +1386,7 @@ export default function SectionSeven({ hideFinalpage }) {
                 : flipDirection === 1
                 ? "flipping-prev"
                 : ""
-            } min-h-[100vh] w-full  ${isFlipping ? 'pointer-events-none' : 'pointer-events-auto'}`}
+            } min-h-screen w-full  ${isFlipping ? 'pointer-events-none' : 'pointer-events-auto'}`}
           >
             {pageElements.map((el, idx) => cloneElement(el, { key: idx }))}
           </HTMLFlipBook>

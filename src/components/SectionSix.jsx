@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   useScroll,
   motion,
@@ -6,6 +6,7 @@ import {
   useTransform,
   useInView,
 } from "framer-motion";
+import GroundLine from "./groundLine";
 
 export default function SectionSix() {
   if(typeof window === "undefined") return null;
@@ -20,7 +21,8 @@ export default function SectionSix() {
   const animationFrameRef = useRef(null);
   const targetVideoTimeRef = useRef(0);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
+  const sectionFiveRef = useRef(null);
+  const [showGround,  setShowGround] = useState(false);
   // Scroll progress for video: start when section enters viewport, end when it leaves
   const { scrollYProgress: videoScrollYProgress } = useScroll({
     target: rootContainerRef,
@@ -38,6 +40,7 @@ export default function SectionSix() {
 
   const x = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", isMobile ? '-150%' : "-145%"]);
   const y = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", "-55%"]);
+  const yGround = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", "-150%"]);
 
   const isRootTextInView = useInView(rootTextRef, { amount:  0.5, once: false });
   const isMobileVideoInView = useInView(videoMobileRef, { amount: 0.1, once: false });
@@ -112,6 +115,16 @@ export default function SectionSix() {
 
   });
 
+  useEffect(() => {
+    const sectionFive = document.querySelector('.sectionFive');
+    console.log(
+      'Section Six mounted, sectionFive element:', sectionFive,
+      rootContainerRef
+    );
+    sectionFiveRef.current = sectionFive
+    setShowGround(true);
+  }, [])
+
   // Simple play/pause for mobile video based on visibility
   React.useEffect(() => {
     const video = videoMobileRef.current;
@@ -159,7 +172,20 @@ export default function SectionSix() {
       className="relative overflow-x-clip  bg-black md:pt-80  !z-40 w-screen"
       ref={rootContainerRef}
     >
-
+      {showGround && (
+        <motion.div
+          className="relative -top-[10vh] md:-top-[20vh] w-full left-0 flex justify-center items-center z-10"
+          style={{
+              x: x,
+              y: yGround,
+              willChange: "transform",
+            }}
+          >
+          <GroundLine 
+            sectionRef={sectionFiveRef}
+          />
+        </motion.div>
+      )}
       <div className="sticky top-0 flex md:items-center overflow-visible h-[50vh] md:h-[500px]">
         {/* Apply smooth scroll transforms to .track */}
         <motion.div

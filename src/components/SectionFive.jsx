@@ -37,7 +37,7 @@ export default function SectionFive() {
 
   return (
     <section
-      className="h-[70vh] md:h-screen flex items-center overflow-hidden bg-black"
+      className="h-[70vh] md:h-screen flex items-center overflow-hidden bg-black sectionFive"
       ref={sectionRef}
     >
       <div className="w-full">
@@ -49,13 +49,12 @@ export default function SectionFive() {
           </div>
           <div className="relative w-full h-8  -bottom-16 md:bottom-0 md:mt-8 flex justify-center items-center">
 
-
+{/* 
             <svg xmlns="http://www.w3.org/2000/svg"  width="866" height="9.557" viewBox="0 0 866 9.557" className="w-[70%] h-auto rotate-[0.5deg]">
               <defs>
                 <clipPath id="clip-path">
                   <rect id="Rectangle_874" data-name="Rectangle 874" width="866" height="9.557" fill="none"/>
                 </clipPath>
-                {/* Animated clip path that reveals the ground from left to right */}
                 <clipPath id="animated-clip">
                   <rect 
                     x="0" 
@@ -76,7 +75,7 @@ export default function SectionFive() {
                   </g>
                 </g>
               </g>
-            </svg>
+            </svg> */}
           </div>
         </div>
       </div>

@@ -65,7 +65,7 @@ export default function SectionFour() {
     <section
       id="section-four"
       ref={sectionRef}
-      className="min-h-[60vh] pt-80 md:pt-8 md:min-h-screen flex items-center justify-center p-8 bg-black "
+      className="min-h-[60vh] pb-[25vh] md:pb-8 pt-80 md:pt-8 md:min-h-screen flex items-center justify-center p-8 bg-black "
     >
       <div className="text-center max-w-4xl">
         <h2 className="text-4xl md:text-[45px] font-proxima-regular leading-snug text-white">

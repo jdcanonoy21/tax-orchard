@@ -13,8 +13,8 @@ import {
 import SectionContact from "./SctionContact";
 
 export default function SectionHarvest({ setHideFinalpage }) {
-  if(window === undefined) return null;
-  const isMobile = window.innerWidth < 768;
+  if (typeof window === "undefined") return null;
+  const isMobile = window?.innerWidth < 768;
 
   const sectionRef = useRef(null);
   const treesRef = useRef(null);

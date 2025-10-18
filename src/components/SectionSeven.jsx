@@ -17,6 +17,7 @@ import {
   useInView,
 } from "motion/react";
 import LineChart from "./lineChart";
+import FlipBookMonths from "./flipBookMonths";
 
 /**
  * SectionSeven Component - Interactive Page Flip Animation for Tax Orchard Journey
@@ -63,11 +64,14 @@ import LineChart from "./lineChart";
  * @returns {JSX.Element} The rendered section with journey intro and interactive flipbook
  */
 export default function SectionSeven({ hideFinalpage }) {
+
+  if(typeof window === "undefined") return null;
+
   const flipBook = useRef();
   const scrollContainerRef = useRef(null);
   const containerRef = useRef(null);
   const [flipDirection, setFlipDirection] = useState(null);
-  const [windowSize, setWindowSize] = useState({ width: 600, height: 600 });
+  const [windowSize, setWindowSize] = useState({ width: window?.innerWidth || 1200, height: window?.innerHeight || 1200 });
   const [currentPage, setCurrentPage] = useState(null);
   const [totalActualPages, setTotalActualPages] = useState(0);
 
@@ -81,18 +85,18 @@ export default function SectionSeven({ hideFinalpage }) {
   const flipDelayTimer = useRef(null);
   const lastScrollPosition = useRef(0);
   const totalGroups = 8; // 8 groups + 1 journey page
-
-
   const harvestRef = useRef(null);
+
+  const isMobile = useMemo(() => windowSize.width < 768, [windowSize?.width]);
 
   const { scrollYProgress } = useScroll({
     target: scrollContainerRef,
     offset: ["start end", "end start"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 0.1, 0.8, .9], ["100vw", "0vw", "0vw", "-100vw"]);
+  const x = useTransform(scrollYProgress, [0, 0.1, 0.85, 0.9], ["100vw", "0vw", "0vw", "-100vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
-  const harvestBgY = useTransform(scrollYProgress, [0.75, 0.8], ["-100%", "0%"]);
+  const harvestBgY = useTransform(scrollYProgress, [0.75, 0.84], ["-100%", "0%"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
@@ -102,8 +106,6 @@ export default function SectionSeven({ hideFinalpage }) {
   const svgLineChart = useRef(null);
   const isScrolling = useRef(false);
   const svgAnimationKey = useRef(Math.random());
-
-
 
   const blankPagesOneData = [
     {
@@ -130,20 +132,11 @@ export default function SectionSeven({ hideFinalpage }) {
     },
   ];
 
-  const months = [
-    "JAN",
-    "FEB",
-    "MAR",
-    "APR",
-    "MAY",
-    "JUN",
-    "JUL",
-    "AUG",
-    "SEP",
-    "OCT",
-    "NOV",
-    "DEC",
-  ];
+  const months = useMemo(() => {
+    if(windowSize.width < 640) return  ['JAN', 'MAR', 'JUN', 'SEP', 'DEC']
+    else return  ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  }, [windowSize?.width]) 
+
 
   const blankPagesOne = blankPagesOneData.map((page, pageIdx) => (
     <div
@@ -153,28 +146,28 @@ export default function SectionSeven({ hideFinalpage }) {
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="absolute -left-10 top-16 opacity-60">
-              <p className="text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-10 top-16 md:top-24 opacity-60">
+              <p className="text-6xl md:text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Plant
               </p>
             </div>
             <div className="flex justify-center gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-6 left-0 !w-full items-center">
-              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
                   className="opacity-10"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
                 <img
                   src="/images/calendar-tree-1.svg"
                   alt="Tree 1"
                   className="opacity-10"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
@@ -184,33 +177,9 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
-              <div className="flex flex-1 min-w-0 h-16">
-                {months.map((month, idx) => (
-                  <div
-                    key={month}
-                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
-                      month === page.highlightMonth ? "100px" : "60px"
-                    }] relative overflow-hidden`}
-                  >
-                    {idx === page.highlightIndex ? (
-                      <div
-                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
-                      ></div>
-                    ) : null}
-                    <span
-                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
-                        idx === page.highlightIndex
-                          ? "font-extrabold text-blue"
-                          : "font-medium text-black"
-                      }`}
-                    >
-                      {month}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={page} />
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
                   YEAR 01
@@ -230,9 +199,9 @@ export default function SectionSeven({ hideFinalpage }) {
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="absolute -left-10 top-16 opacity-60">
-              <p className="text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-10 top-16 md:top-24 opacity-60">
+              <p className="text-6xl md:text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Plant
               </p>
             </div>
@@ -263,33 +232,9 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
-              <div className="flex flex-1 min-w-0 h-16">
-                {months.map((month, idx) => (
-                  <div
-                    key={month}
-                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
-                      month === page.highlightMonth ? "100px" : "60px"
-                    }] relative overflow-hidden`}
-                  >
-                    {idx === page.highlightIndex ? (
-                      <div
-                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
-                      ></div>
-                    ) : null}
-                    <span
-                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
-                        idx === page.highlightIndex
-                          ? "font-extrabold text-blue"
-                          : "font-medium text-black"
-                      }`}
-                    >
-                      {month}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={page} />
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
                   YEAR 02
@@ -309,21 +254,14 @@ export default function SectionSeven({ hideFinalpage }) {
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="absolute -left-24 top-32 opacity-60">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 md:-left-24 top-32 md:top-40 opacity-60">
+              <p className="text-6xl md:text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Cultivate
               </p>
             </div>
 
             <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-16 left-0 !w-full items-center">
-              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
-                <img
-                  src="/images/TaxOrchard_Tree_2.svg"
-                  alt="Tree 1"
-                  className="opacity-100"
-                />
-              </div>
               <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_2.svg"
@@ -331,7 +269,14 @@ export default function SectionSeven({ hideFinalpage }) {
                   className="opacity-100"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
+                <img
+                  src="/images/TaxOrchard_Tree_2.svg"
+                  alt="Tree 1"
+                  className="opacity-100"
+                />
+              </div>
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
                 <img
                   src="/images/TaxOrchard_Tree_2.svg"
                   alt="Tree 1"
@@ -341,33 +286,9 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
-              <div className="flex flex-1 min-w-0 h-16">
-                {months.map((month, idx) => (
-                  <div
-                    key={month}
-                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
-                      month === page.highlightMonth ? "100px" : "60px"
-                    }] relative overflow-hidden`}
-                  >
-                    {idx === page.highlightIndex ? (
-                      <div
-                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
-                      ></div>
-                    ) : null}
-                    <span
-                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
-                        idx === page.highlightIndex
-                          ? "font-extrabold text-blue"
-                          : "font-medium text-black"
-                      }`}
-                    >
-                      {month}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={page} />
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
                   YEAR 03
@@ -387,29 +308,29 @@ export default function SectionSeven({ hideFinalpage }) {
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="absolute -left-24 top-32 opacity-60">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 md:-left-24 top-32 md:top-40 opacity-60">
+              <p className="text-6xl md:text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Cultivate
               </p>
             </div>
 
-            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-28 left-0 !w-full items-center">
-              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-0 left-0 !w-full items-center">
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center mx-auto">
                 <img
                   src="/images/TaxOrchard_Tree_3.svg"
                   alt="Tree 1"
                   className="opacity-100"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
                 <img
                   src="/images/TaxOrchard_Tree_3.svg"
                   alt="Tree 1"
                   className="opacity-100"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
                 <img
                   src="/images/TaxOrchard_Tree_3.svg"
                   alt="Tree 1"
@@ -419,33 +340,9 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
-              <div className="flex flex-1 min-w-0 h-16">
-                {months.map((month, idx) => (
-                  <div
-                    key={month}
-                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
-                      month === page.highlightMonth ? "100px" : "60px"
-                    }] relative overflow-hidden`}
-                  >
-                    {idx === page.highlightIndex ? (
-                      <div
-                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
-                      ></div>
-                    ) : null}
-                    <span
-                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
-                        idx === page.highlightIndex
-                          ? "font-extrabold text-blue"
-                          : "font-medium text-black"
-                      }`}
-                    >
-                      {month}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={page} />
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
                   YEAR 05
@@ -465,14 +362,14 @@ export default function SectionSeven({ hideFinalpage }) {
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="absolute -left-24 top-32 opacity-60">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 md:-left-24 top-32 md:top-40 opacity-60">
+              <p className="text-6xl md:text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Cultivate
               </p>
             </div>
 
-            <div className="flex justify-center  gap-4  absolute bottom-14 left-0 !w-full items-center">
+            <div className="flex justify-center  gap-4  absolute bottom-0 left-0 !w-full items-center">
               <div className="w-72 h-56 flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_4.svg"
@@ -497,33 +394,9 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
-              <div className="flex flex-1 min-w-0 h-16">
-                {months.map((month, idx) => (
-                  <div
-                    key={month}
-                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
-                      month === page.highlightMonth ? "100px" : "60px"
-                    }] relative overflow-hidden`}
-                  >
-                    {idx === page.highlightIndex ? (
-                      <div
-                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
-                      ></div>
-                    ) : null}
-                    <span
-                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
-                        idx === page.highlightIndex
-                          ? "font-extrabold text-blue"
-                          : "font-medium text-black"
-                      }`}
-                    >
-                      {month}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={page} />
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
                   YEAR 07
@@ -543,14 +416,14 @@ export default function SectionSeven({ hideFinalpage }) {
     >
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="absolute -left-24 top-32 opacity-60">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="absolute -left-24 md:-left-24 top-32 md:top-40 opacity-60">
+              <p className="text-6xl md:text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Cultivate
               </p>
             </div>
 
-            <div className="flex justify-center gap-4 absolute bottom-36 left-0 !w-full items-center">
+            <div className="flex justify-center gap-4 absolute bottom-0 left-0 !w-full items-center">
               <div className="w-[22rem] h-[12rem] flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_5.svg"
@@ -575,33 +448,9 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
-              <div className="flex flex-1 min-w-0 h-16">
-                {months.map((month, idx) => (
-                  <div
-                    key={month}
-                    className={`flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[${
-                      month === page.highlightMonth ? "100px" : "60px"
-                    }] relative overflow-hidden`}
-                  >
-                    {idx === page.highlightIndex ? (
-                      <div
-                        className={`absolute top-0 left-0 !w-full h-2 bg-${page.highlightColor} z-20`}
-                      ></div>
-                    ) : null}
-                    <span
-                      className={`text-sm sm:text-[15px] text-[15px] font-baskervville-semibold ${
-                        idx === page.highlightIndex
-                          ? "font-extrabold text-blue"
-                          : "font-medium text-black"
-                      }`}
-                    >
-                      {month}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={page} />
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
                   YEAR 09
@@ -620,8 +469,8 @@ export default function SectionSeven({ hideFinalpage }) {
     <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="relative z-20 text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 Instead of paying $1 million to the IRS, you invest $500,000
                 with your financial advisor and $500,000 into your Tax Orchard
@@ -640,13 +489,15 @@ export default function SectionSeven({ hideFinalpage }) {
                   <p className="text-midGrey text-lg md:text-[28px] font-medium">
                     Financial Advisor
                   </p>
-                  <p className="text-2xl md:text-3xl text-green font-bold">Tax Orchard</p>
+                  <p className="text-2xl md:text-3xl text-green font-bold">
+                    Tax Orchard
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div className="absolute -left-10 top-16 opacity-60 z-10">
-              <p className="text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+            <div className="absolute -left-10 top-16 md:top-24 opacity-60 z-10">
+              <p className="text-6xl md:text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Plant
               </p>
             </div>
@@ -676,72 +527,10 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
-              <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold text-blue">
-                    JAN
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    FEB
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium  text-black ">
-                    MAR
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    APR
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAY
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUN
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUL
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    AUG
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    SEP
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    OCT
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    NOV
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    DEC
-                  </span>
-                </div>
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={{}} />
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
@@ -757,8 +546,8 @@ export default function SectionSeven({ hideFinalpage }) {
     <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="relative z-20 text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 That seed account{" "}
                 <span className="text-blue font-proxima-extrabold font-extrabold">
@@ -769,28 +558,28 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="absolute -left-10 top-16 opacity-60 z-10">
-              <p className="text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+            <div className="absolute -left-10 top-16 md:top-24 opacity-60 z-10">
+              <p className="text-6xl md:text-[100px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Plant
               </p>
             </div>
 
             <div className="grid grid-cols-3 md:flex justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-8 sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-6 left-0 !w-full items-center">
-              <div className="w-full h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
                   className="opacity-10"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
                 <img
                   src="/images/calendar-tree-1.svg"
                   alt="Tree 1"
                   className="opacity-10"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
@@ -800,78 +589,10 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
-              <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold text-blue">
-                    JAN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    FEB
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black ">
-                    APR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAY
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUL
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    AUG
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    SEP
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    OCT
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    NOV
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    DEC
-                  </span>
-                </div>
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={{}} />
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
@@ -887,7 +608,7 @@ export default function SectionSeven({ hideFinalpage }) {
     <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
             <div className="relative text-center w-full md:w-3/4 justify-center items-start mb-40">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 Your seed account steadily
@@ -897,15 +618,13 @@ export default function SectionSeven({ hideFinalpage }) {
 
             <div className="w-full flex justify-center items-center relative">
               <div className="w-full -bottom-28 absolute   h-64 flex flex-col items-center justify-center">
-                <div className="w-full h-full  absolute top-0 left-0 z-10" ></div>
-                  <LineChart 
-                    shouldAnimate={shouldAnimate}
-                  />
+                <div className="w-full h-full  absolute top-0 left-0 z-10"></div>
+                <LineChart shouldAnimate={shouldAnimate} />
               </div>
             </div>
 
-            <div className="absolute -left-24 top-32 opacity-60 z-10">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+            <div className="absolute -left-24 md:-left-24 top-32 md:top-40 opacity-60 z-10">
+              <p className="text-6xl md:text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Cultivate
               </p>
             </div>
@@ -935,78 +654,10 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
-              <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold text-blue">
-                    JAN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    FEB
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    APR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black ">
-                    MAY
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUN
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUL
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    AUG
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    SEP
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    OCT
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    NOV
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    DEC
-                  </span>
-                </div>
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={{}} />
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
@@ -1022,8 +673,8 @@ export default function SectionSeven({ hideFinalpage }) {
     <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="relative z-20 text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 At the same time, it{" "}
                 <span className="text-green font-extrabold font-proxima-extrabold">
@@ -1033,8 +684,8 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="absolute -left-24 top-32 opacity-60 z-10">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+            <div className="absolute -left-24 md:-left-24 top-32 md:top-40 opacity-60 z-10">
+              <p className="text-6xl md:text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Cultivate
               </p>
             </div>
@@ -1064,78 +715,10 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
-              <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
-                    JAN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    FEB
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    APR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAY
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUL
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    AUG
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    SEP
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    OCT
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    NOV
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    DEC
-                  </span>
-                </div>
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={{}} />
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
@@ -1151,16 +734,16 @@ export default function SectionSeven({ hideFinalpage }) {
     <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="relative z-20 text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.3] text-black ">
                 Tax Orchard actively manages this process, applying benefits at
                 the most effective moments.
               </p>
             </div>
 
-            <div className="absolute -left-24 top-32 opacity-60 z-10">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+            <div className="absolute -left-24 md:-left-24 top-32 md:top-40 opacity-60 z-10">
+              <p className="text-6xl md:text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 Cultivate
               </p>
             </div>
@@ -1190,80 +773,10 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
-              <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
-                    JAN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    FEB
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    APR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAY
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUL
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    AUG
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    SEP
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    OCT
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    NOV
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    DEC
-                  </span>
-                </div>
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={{}} />
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
@@ -1279,8 +792,8 @@ export default function SectionSeven({ hideFinalpage }) {
     <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="relative z-20 text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
               <h3 className="text-3xl pb-8">Vetted Strategies</h3>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.2] text-black ">
                 Every Tax Orchard strategy is{" "}
@@ -1291,8 +804,8 @@ export default function SectionSeven({ hideFinalpage }) {
               </h2>
             </div>
 
-            <div className="absolute -left-10 top-20 opacity-60 z-10">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+            <div className="absolute -left-12 md:-left-10 top-20 md:top-28 opacity-60 z-10">
+              <p className="text-6xl md:text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 How?
               </p>
             </div>
@@ -1322,80 +835,10 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
-              <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
-                    JAN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    FEB
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    APR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAY
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUL
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    AUG
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    SEP
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    OCT
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    NOV
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    DEC
-                  </span>
-                </div>
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={{}} />
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
@@ -1411,8 +854,8 @@ export default function SectionSeven({ hideFinalpage }) {
     <div className="min-h-[100dvh] bg-white !w-full flex items-center justify-center relative z-50">
       <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
         <div className="relative">
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 sm:px-8 md:px-12 lg:px-16 relative">
-            <div className="relative z-20 text-center w-full md:w-3/4 justify-center items-center mb-8 sm:mb-12">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
+            <div className="relative z-20 text-center w-3/4 justify-center items-center mb-8 sm:mb-12">
               <h3 className="text-3xl pb-8">Audit Protection</h3>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-proxima-regular !leading-[1.2] text-black ">
                 If your Tax Orchard investment is ever audited, our legal team
@@ -1422,8 +865,8 @@ export default function SectionSeven({ hideFinalpage }) {
               </h2>
             </div>
 
-            <div className="absolute -left-10 top-20 opacity-60 z-10">
-              <p className="text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
+            <div className="absolute -left-12 md:-left-10 top-20 md:top-28 opacity-60 z-10">
+              <p className="text-6xl md:text-[80px] font-proxima-regular text-[#EFEBE1] font-bold transform -rotate-90">
                 How?
               </p>
             </div>
@@ -1453,86 +896,10 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
           <div className="w-full relative">
-            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-auto relative">
+            <div className="flex items-center border-t border-gray-500 bg-white overflow-x-clip relative">
               <div className="flex justify-center h-2 border-t border-gray-500 absolute top-2 !w-full"></div>
 
-              <div className="flex flex-1 min-w-0 h-16">
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[100px] relative  overflow-hidden">
-                  <div className="absolute top-0 left-0 !w-full h-2 bg-blue z-20 "></div>
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-extrabold  text-blue ">
-                    JAN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    FEB
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    APR
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    MAY
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUN
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUL
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    JUL
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    AUG
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    SEP
-                  </span>
-                </div>
-
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    OCT
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    NOV
-                  </span>
-                </div>
-                <div className="flex-1 text-center flex items-end justify-center pb-4 border-r border-gray-300 min-w-[60px]">
-                  <span className="text-sm sm:text-[15px] text-[15px] font-baskervville-semibold font-medium text-black">
-                    DEC
-                  </span>
-                </div>
-              </div>
+              <FlipBookMonths windowSize={windowSize} months={months} page={{}} />
 
               <div className="bg-black text-white px-3 sm:px-4 md:px-6 flex justify-center items-center flex-shrink-0 h-14 z-10 mt-auto">
                 <span className="text-xs sm:text-[20px] text-[20px] font-proxima-regular">
@@ -1545,22 +912,22 @@ export default function SectionSeven({ hideFinalpage }) {
       </div>
     </div>,
     <div
-      className={`min-h-100vh !w-full flex items-center justify-center relative z-50 transition-colors duration-700 bg-black`}
+      className={`min-h-100vh !w-full !top-0 flex items-center justify-center relative z-50 transition-colors duration-700 bg-black`}
     >
       <div
         className={` top-0 w-full h-screen absolute items-center justify-center transition-opacity duration-700 z-20`}
-
       >
-        <h2 className={`text-6xl w-full h-screen flex items-center justify-center absolute top-0 z-20 md:text-[183px] font-proxima-bold  leading-none text-center mix-blend-difference text-white `}
+        <h2
+          className={`text-6xl w-full h-screen flex items-center justify-center absolute top-0 z-20 md:text-[183px] font-proxima-bold  leading-none text-center mix-blend-difference text-white `}
         >
           The Harvest
         </h2>
-          <motion.div
-            ref={harvestRef}
-            className="bg-white absolute w-full h-screen z-10 h-100vh"
-            style={{ bottom: harvestBgY }}
-          />
-        </div>
+        <motion.div
+          ref={harvestRef}
+          className="bg-white absolute w-full h-screen z-10 h-100vh"
+          style={{ bottom: harvestBgY }}
+        />
+      </div>
     </div>,
   ];
 
@@ -1591,14 +958,16 @@ export default function SectionSeven({ hideFinalpage }) {
     setTimeout(() => {
       const block = document.querySelector(".flipbook > div > .stf__block");
       if (block) {
-        block.style.overflow = "hidden";
-        block.style.width = "101%";
+        // block.style.overflow = "hidden";
+        // block.style.width = "101%";
       }
     }, 0);
   };
 
   useEffect(() => {
     function handleResize() {
+      console.log("Window resized", window.innerWidth, window.innerHeight);
+
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -1751,7 +1120,7 @@ export default function SectionSeven({ hideFinalpage }) {
     // Store scroll position before flipping
     lastScrollPosition.current = window.scrollY;
     // Always clear pendingPageRef before starting a new flip
-    const pausedScrollTime =  500; // 0.5 second
+    const pausedScrollTime = groupIndex > 6 ? 1000 :  500; // 0.5 second
     const totalFlipTime = 200 + 5 * 75 + 300;
     pendingPageRef.current = null;
     scrollLock.current = true;
@@ -1929,11 +1298,12 @@ export default function SectionSeven({ hideFinalpage }) {
    * to ensure consistent starting point
    */
   useEffect(() => {
+    lastScrollPosition.current = 0;
     if (typeof window !== "undefined") {
       window.scrollTo({
         top: 0,
         left: 0,
-        behavior: "auto", // No animation on initial load
+        behavior: "instant", // No animation on initial load
       });
     }
   }, []);
@@ -1960,13 +1330,9 @@ export default function SectionSeven({ hideFinalpage }) {
   }
 }, [totalActualPages]);
 
-
-
-
-
   return (
     <>
-      <div className="overflow-x-clip"     >
+      <div className="overflow-x-clip ">
       <motion.div
         className="sticky top-0 snap-start snap-always  h-screen"
         ref={journeyRef}
@@ -1985,11 +1351,11 @@ export default function SectionSeven({ hideFinalpage }) {
         </div>
       </motion.div>
       <motion.div
-        className="min-h-[100dvh] w-full !z-40 bg-white "
+        className=" w-full sticky top-0 !z-40 bg-white"
         ref={containerRef}
         style={{ x }}
       >
-        <div className="flipbook-container sticky top-0  !z-50 w-full min-h-[100dvh] overflow-hidden ">
+        <div className="flipbook-container  sticky left-0 top-0 !z-50 w-full min-h-[100vh] overflow-hidden ">
           <HTMLFlipBook
             onChangeState={flipping}
             onFlip={(e) => {
@@ -2001,7 +1367,6 @@ export default function SectionSeven({ hideFinalpage }) {
             minWidth={315}
             maxWidth={1500}
             minHeight={420}
-            maxHeight={windowSize.height}
             showCover={false}
             flippingTime={500}
             usePortrait={true}
@@ -2019,7 +1384,7 @@ export default function SectionSeven({ hideFinalpage }) {
                 : flipDirection === 1
                 ? "flipping-prev"
                 : ""
-            } min-h-[100dvh] w-full ${isFlipping ? 'pointer-events-none' : 'pointer-events-auto'}`}
+            } min-h-[100vh] w-full  ${isFlipping ? 'pointer-events-none' : 'pointer-events-auto'}`}
           >
             {pageElements.map((el, idx) => cloneElement(el, { key: idx }))}
           </HTMLFlipBook>
@@ -2029,12 +1394,9 @@ export default function SectionSeven({ hideFinalpage }) {
          
         </div>
       </motion.div>
-           
+   
     </div>
 
-    
-
-      
     </>
   );
 }

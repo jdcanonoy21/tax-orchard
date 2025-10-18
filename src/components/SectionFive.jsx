@@ -37,7 +37,7 @@ export default function SectionFive() {
 
   return (
     <section
-      className="h-screen flex items-center overflow-hidden bg-black"
+      className="h-[70vh] md:h-screen flex items-center overflow-hidden bg-black"
       ref={sectionRef}
     >
       <div className="w-full">
@@ -47,7 +47,7 @@ export default function SectionFive() {
               You can be buried. Or you can be planted.
             </h2>
           </div>
-          <div className="relative w-full h-8 mt-8 flex justify-center items-center">
+          <div className="relative w-full h-8  -bottom-16 md:bottom-0 md:mt-8 flex justify-center items-center">
 
 
             <svg xmlns="http://www.w3.org/2000/svg"  width="866" height="9.557" viewBox="0 0 866 9.557" className="w-[70%] h-auto rotate-[0.5deg]">

@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      spacing : {
+        'top-safe' : 'env(safe-area-inset-top)',
+        'bottom-safe' : 'env(safe-area-inset-bottom)',
+      },
       fontSize: {
         giant: "120px",
       },

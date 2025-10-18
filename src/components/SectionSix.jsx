@@ -8,6 +8,8 @@ import {
 } from "framer-motion";
 
 export default function SectionSix() {
+  if(typeof window === "undefined") return null;
+
   const rootContainerRef = useRef(null);
   const videoRef = useRef(null);
   const videoMobileRef = useRef(null);
@@ -17,6 +19,7 @@ export default function SectionSix() {
   const rootTextMobileRef = useRef(null);
   const animationFrameRef = useRef(null);
   const targetVideoTimeRef = useRef(0);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   // Scroll progress for video: start when section enters viewport, end when it leaves
   const { scrollYProgress: videoScrollYProgress } = useScroll({
@@ -33,24 +36,42 @@ export default function SectionSix() {
   // Smooth horizontal/vertical scroll transforms
   const delayedProgress = useTransform(xyScrollYProgress, [0.4, 1], [0, 1]);
 
-  const x = useTransform(delayedProgress, [0, 1], ["0%", "-145%"]);
-  const y = useTransform(delayedProgress, [0, 1], ["0%", "-55%"]);
+  const x = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", isMobile ? '-150%' : "-145%"]);
+  const y = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", "-55%"]);
 
   const isRootTextInView = useInView(rootTextRef, { amount:  0.5, once: false });
-  const isMobileVideoInView = useInView(videoMobileRef, { amount: 0.5, once: false });
+  const isMobileVideoInView = useInView(videoMobileRef, { amount: 0.1, once: false });
 
   useMotionValueEvent(videoScrollYProgress, "change", (latest) => {
-    const video = videoRef.current;
-    const VIDEO_LENGTH = 5; // seconds
+    const video = isMobile ? videoMobileRef.current : videoRef.current;
+    const VIDEO_LENGTH = video?.duration || 5; // seconds
+
+    // console.log("Video scroll progress:", latest, VIDEO_LENGTH, video?.currentTime);
 
          if (video && latest > 0) {
           
-          const progress = Math.min(latest / 1.2, 1);
+          const progress =isMobile ? latest :  Math.min(latest / 1.2, 1);
           const targetTime = progress * VIDEO_LENGTH;
           targetVideoTimeRef.current = targetTime;
     
           // Ensure video is paused (we're scrubbing, not playing)
           if (!video.paused) video.pause();
+
+
+          if(isMobile) {
+            /**
+             * For mobile, we just jump to the target time directly for simplicity
+             */
+            video.currentTime = targetTime;
+
+            console.log('Mobile video time set to:', targetTime, VIDEO_LENGTH);
+
+            if(targetTime >= VIDEO_LENGTH) setMobileVideoFinished(true)
+              else setMobileVideoFinished(false)
+            return;
+          }
+            
+
     
           // Smoothly animate currentTime towards targetTime
           const animateVideo = () => {
@@ -58,9 +79,10 @@ export default function SectionSix() {
             const current = video.currentTime;
             const target = targetVideoTimeRef.current;
             const diff = target - current;
-    
+
+            // console.log('Animating video:', { current, target, diff });
             // If close enough, snap to target and stop animating
-            if (Math.abs(diff) < 0.02) {
+            if (Math.abs(diff) < 0.02 ) {
               video.currentTime = target;
               animationFrameRef.current = null;
               return;
@@ -106,15 +128,21 @@ export default function SectionSix() {
       setMobileVideoFinished(true);
     };
 
+
+    video?.load();
     video.addEventListener('ended', handleVideoEnd);
 
-    if (isMobileVideoInView) {
-      console.log('Mobile video is in view, attempting to play');
-      video.play().catch((error) => {
-        console.error('Failed to play mobile video:', error);
-      });
+
+    if (isMobile) {
+      // console.log('Mobile video is in view, attempting to play');
+      video.pause();
+
+
+      // video.play().catch((error) => {
+      //   console.error('Failed to play mobile video:', error);
+      // });
     } else {
-      console.log('Mobile video is out of view, pausing');
+      // console.log('Mobile video is out of view, pausing');
       video.pause();
       // Reset finished state when video goes out of view
       setMobileVideoFinished(false);
@@ -131,7 +159,8 @@ export default function SectionSix() {
       className="relative overflow-x-clip  bg-black md:pt-80  !z-40 w-screen"
       ref={rootContainerRef}
     >
-      <div className="sticky top-0 flex md:items-center overflow-visible h-screen md:h-[500px]">
+
+      <div className="sticky top-0 flex md:items-center overflow-visible h-[50vh] md:h-[500px]">
         {/* Apply smooth scroll transforms to .track */}
         <motion.div
           className="track w-full"
@@ -198,19 +227,17 @@ export default function SectionSix() {
                     </div>
                   </motion.div>
 
+
                   <motion.div
                     ref={rootTextMobileRef}
-                    initial={{ x: 100, opacity: 0 }}
-                    animate={mobileVideoFinished
-                        ? { x: 0, opacity: 1 }
-                        : { x: 100, opacity: 0 }
-                    }
+                    initial={{ x: '200%', opacity: 0 }}
+                    animate={mobileVideoFinished ? { x: '100%', opacity: 1 } : { x: '200%', opacity: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="absolute md:-right-[700px] -right-[300px] md:mt-auto -mt-20  transform -translate-y-1/2 max-w-3xl md:pr-20 md:w-full  block md:hidden "
+                    className="absolute md:-right-[700px]  md:mt-auto -mt-20  transform   max-w-3xl md:pr-20 md:w-full  block md:hidden "
                     style={{ top:  "380px", zIndex: 9999 }}
                   >
-                    <div className="flex flex-col gap-4 px-28 md:pr-10 md:w-full w-96">
-                      <p className="md:text-3xl text-base leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
+                    <div className="flex flex-col gap-4 md:px-28 md:pr-10  w-screen px-8">
+                      <p className="!text-3xl text-base leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
                         At Tax Orchard, we help you turn what you owe into
                         something that grows—using a strategy no one else
                         offers.

@@ -38,8 +38,8 @@ export default function SectionSix() {
   // Smooth horizontal/vertical scroll transforms
   const delayedProgress = useTransform(xyScrollYProgress, [0.4, 1], [0, 1]);
 
-  const x = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", isMobile ? '-150%' : "-145%"]);
-  const y = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", "-55%"]);
+  const x = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", isMobile ? '-155%' : "-145%"]);
+  const y = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%",  "-55%"]);
   const yGround = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", "-150%"]);
 
   const isRootTextInView = useInView(rootTextRef, { amount:  0.5, once: false });
@@ -67,9 +67,9 @@ export default function SectionSix() {
              */
             video.currentTime = targetTime;
 
-            console.log('Mobile video time set to:', targetTime, VIDEO_LENGTH);
+            console.log('Mobile video time set to:', progress, targetTime, VIDEO_LENGTH);
 
-            if(targetTime >= VIDEO_LENGTH) setMobileVideoFinished(true)
+            if(targetTime >= (VIDEO_LENGTH - 0.15)) setMobileVideoFinished(true)
               else setMobileVideoFinished(false)
             return;
           }
@@ -174,7 +174,7 @@ export default function SectionSix() {
     >
       {showGround && (
         <motion.div
-          className="relative -top-[10vh] md:-top-[20vh] w-full left-0 flex justify-center items-center z-10"
+          className="relative -top-[10vh] md:-top-[50vh] w-full left-0 flex justify-center items-center z-10"
           style={{
               x: x,
               y: yGround,
@@ -257,7 +257,7 @@ export default function SectionSix() {
                   <motion.div
                     ref={rootTextMobileRef}
                     initial={{ x: '200%', opacity: 0 }}
-                    animate={mobileVideoFinished ? { x: '100%', opacity: 1 } : { x: '200%', opacity: 0 }}
+                    animate={mobileVideoFinished ? { x: '108%', opacity: 1 } : { x: '200%', opacity: 0 }}
                     transition={{ duration: 0.4 }}
                     className="absolute md:-right-[700px]  md:mt-auto -mt-20  transform   max-w-3xl md:pr-20 md:w-full  block md:hidden "
                     style={{ top:  "380px", zIndex: 9999 }}

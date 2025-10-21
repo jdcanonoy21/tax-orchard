@@ -70,7 +70,9 @@ export default function SectionSix() {
             console.log('Mobile video time set to:', progress, targetTime, VIDEO_LENGTH);
 
             if(targetTime >= (VIDEO_LENGTH - 0.15)) setMobileVideoFinished(true)
-              else setMobileVideoFinished(false)
+              else setMobileVideoFinished(false);
+
+
             return;
           }
             
@@ -127,6 +129,7 @@ export default function SectionSix() {
 
   // Simple play/pause for mobile video based on visibility
   React.useEffect(() => {
+    if(!isMobile) return;
     const video = videoMobileRef.current;
     console.log('Mobile video effect triggered:', { video: !!video, isMobileVideoInView, videoSrc: video?.src });
     
@@ -150,10 +153,6 @@ export default function SectionSix() {
       // console.log('Mobile video is in view, attempting to play');
       video.pause();
 
-
-      // video.play().catch((error) => {
-      //   console.error('Failed to play mobile video:', error);
-      // });
     } else {
       // console.log('Mobile video is out of view, pausing');
       video.pause();
@@ -165,7 +164,7 @@ export default function SectionSix() {
     return () => {
       video.removeEventListener('ended', handleVideoEnd);
     };
-  }, [isMobileVideoInView]);
+  }, [isMobile]);
 
   return (
     <section
@@ -226,8 +225,6 @@ export default function SectionSix() {
                   </div>
 
     
-
-   
                 {/* Fade-in-right animation for text */}
                 <motion.div
                     ref={rootTextRef}
@@ -257,7 +254,7 @@ export default function SectionSix() {
                   <motion.div
                     ref={rootTextMobileRef}
                     initial={{ x: '200%', opacity: 0 }}
-                    animate={mobileVideoFinished ? { x: '108%', opacity: 1 } : { x: '200%', opacity: 0 }}
+                    animate={mobileVideoFinished ? { x: '105%', opacity: 1 } : { x: '200%', opacity: 0 }}
                     transition={{ duration: 0.4 }}
                     className="absolute md:-right-[700px]  md:mt-auto -mt-20  transform   max-w-3xl md:pr-20 md:w-full  block md:hidden "
                     style={{ top:  "380px", zIndex: 9999 }}
@@ -277,7 +274,7 @@ export default function SectionSix() {
  
                 </div>
 
-                 <div className="block md:hidden relative w-[750px] h-[600px] -z-0 mt-4">
+                 <div className="block md:hidden relative w-[800px] h-[600px] left-2 z-1 mt-0 overflow-clip">
                      <video
                        ref={videoMobileRef}
                        muted

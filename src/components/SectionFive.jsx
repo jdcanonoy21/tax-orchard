@@ -37,7 +37,7 @@ export default function SectionFive() {
 
   return (
     <section
-      className="h-[70vh] md:h-screen flex items-center overflow-hidden bg-black sectionFive"
+      className="h-[70vh] md:h-screen flex items-center overflow-hidden sectionFive"
       ref={sectionRef}
     >
       <div className="w-full">

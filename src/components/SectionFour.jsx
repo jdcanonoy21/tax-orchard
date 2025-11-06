@@ -34,7 +34,7 @@ export default function SectionFour() {
 
   return (
     <div className="relative">
-    <div className="absolute -top-20 md:-top-32 left-0 bg-black flex justify-center items-center w-full">
+    <div className="absolute -top-20 md:-top-40 left-0  flex justify-center items-center w-full">
       <svg xmlns="http://www.w3.org/2000/svg" width="3" height="377" viewBox="0 0 3 377">
         <defs>
           <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
@@ -65,7 +65,7 @@ export default function SectionFour() {
     <section
       id="section-four"
       ref={sectionRef}
-      className="min-h-[60vh] pb-[25vh] md:pb-8 pt-80 md:pt-8 md:min-h-screen flex items-center justify-center p-8 bg-black "
+      className="min-h-[60vh] pb-[25vh] md:pb-8 pt-80 md:pt-20 md:min-h-screen flex items-center justify-center p-8 "
     >
       <div className="text-center max-w-4xl">
         <h2 className="text-4xl md:text-[45px] font-proxima-regular leading-snug text-white">

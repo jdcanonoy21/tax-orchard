@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef, use } from "react";
-import { useScroll, useMotionValueEvent } from "framer-motion";
+import { useScroll, useMotionValueEvent } from "motion/react";
 import { scroller } from "react-scroll";
 
-export default function SectionTwo() {
+export default function SectionTwo({ externalScrollYProgress }) {
   const revealText =
     "landed a major contract or are a high wage earner, you could be facing a";
   const revealWords = revealText.split(" ");
@@ -56,45 +56,28 @@ export default function SectionTwo() {
       idxTwo = 0;
     }
 
-    // Highlight when progress > 0.55
-    if (progress > 0.5) {
-      if (!highlight) setHighlight(true);
-    } else {
-      if (highlight) setHighlight(false);
-    }
+
 
     setRevealIndex(idx);
     setRevealIndexTwo(idxTwo);
   });
 
-  // useEffect(() => {
-  //   function lockScroll() {
-  //     document.body.style.overflow = "hidden";
-  //   }
+  // Listen to external scroll progress if provided
+  useMotionValueEvent(externalScrollYProgress, "change", (progress) => {
+    // Use external progress for highlight logic
+    if (progress > 0.095) {
+      if (!highlight) setHighlight(true);
+    } else {
+      if (highlight) setHighlight(false);
+    }
+  });
 
-  //   function unlockScroll() {
-  //     document.body.style.overflow = "";
-  //   }
-
-  //   const unsubscribe = scrollYProgress.on("change", (progress) => {
-  //     if (progress >= 0.5) {
-  //       lockScroll();
-  //     } else {
-  //       unlockScroll();
-  //     }
-  //   });
-
-  //   return () => {
-  //     unlockScroll();
-  //     unsubscribe();
-  //   };
-  // }, [scrollYProgress]);
 
   return (
     <section
       className={`min-h-[60vh] pb-[25vh] md:pb-8 md:min-h-screen flex items-center justify-center p-8 ${
         sticky ? "sticky" : ""
-      } top-0 bg-black`}
+      } top-0 `}
       ref={sectionTwoRef}
     >
       <div className="text-center max-w-4xl">

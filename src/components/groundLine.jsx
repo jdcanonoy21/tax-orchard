@@ -7,7 +7,7 @@ export default function GroundLine({sectionRef}) {
 
     if(!sectionRef.current) return;
 
-    console.log('sectionRef', sectionRef)
+    // console.log('sectionRef', sectionRef)
 
     /* ======= FRAMER MOTION SCROLL ======= */
     const { scrollYProgress } = useScroll({
@@ -20,19 +20,35 @@ export default function GroundLine({sectionRef}) {
         const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
         let screenWdth = (window.innerWidth || document.documentElement.clientWidth);
         screenWdth= isMobile ? screenWdth * 2 : screenWdth;
-        console.log('progress ground', progress, screenWdth);
+        // console.log('progress ground', progress, screenWdth);
         
         // Mobile: finish at 0.5, Desktop: start at 0.5 and finish at 1.0
-        const mappedProgress = isMobile 
-            ? Math.min(progress / 0.5, 1) // 0-0.3 maps to 0-1, capped at 1
-            : progress < 0.4 ? 0 : (progress - 0.4) * 2;
+        let mappedProgress;
+        
+        if (progress >= 0.8) {
+            // Speed up to reach 1 faster when progress >= 0.8
+            if (isMobile) {
+                // Mobile already reaches 1 at progress 0.5, so just cap at 1
+                mappedProgress = 1;
+            } else {
+                // Desktop: calculate base progress at 0.8, then accelerate
+                const baseProgress = (0.8 - 0.4) * 0.7; // 0.28
+                const remainingProgress = progress - 0.8; // 0 to 0.2
+                const speedMultiplier = 5; // Accelerate to reach 1 quickly
+                const additionalProgress = remainingProgress * speedMultiplier * 0.7;
+                mappedProgress = Math.min(baseProgress + additionalProgress, 1);
+            }
+        } else {
+            mappedProgress = isMobile 
+                ? Math.min(progress / 0.5, 1) // 0-0.5 maps to 0-1, capped at 1
+                : progress < 0.4 ? 0 : (progress - 0.4) * .7;
+        }
+        
         const pathLine = Math.min(Math.max(mappedProgress * screenWdth, 0), screenWdth);
         setPathLine(pathLine);
     });
 
-    useEffect(() => {
-        
-    }, []);
+
     
     return (
        <div className="relative w-full mb-8 flex justify-center items-center">

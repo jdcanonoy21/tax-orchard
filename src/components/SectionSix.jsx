@@ -8,7 +8,7 @@ import {
 } from "framer-motion";
 import GroundLine from "./groundLine";
 
-export default function SectionSix() {
+export default function SectionSix({externalScrollYProgress}) {
   if(typeof window === "undefined") return null;
 
   const rootContainerRef = useRef(null);
@@ -44,12 +44,18 @@ export default function SectionSix() {
 
   const isRootTextInView = useInView(rootTextRef, { amount:  0.5, once: false });
   const isMobileVideoInView = useInView(videoMobileRef, { amount: 0.1, once: false });
+  const [seedVisible, setSeedVisible] = useState(false);
+
+  // Update seed visibility based on externalScrollYProgress
+  useMotionValueEvent(externalScrollYProgress, "change", (latest) => {
+    setSeedVisible(latest >= 0.323);
+  });
 
   useMotionValueEvent(videoScrollYProgress, "change", (latest) => {
     const video = isMobile ? videoMobileRef.current : videoRef.current;
     const VIDEO_LENGTH = video?.duration || 5; // seconds
 
-    // console.log("Video scroll progress:", latest, VIDEO_LENGTH, video?.currentTime);
+    console.log("Video scroll progress:", latest, VIDEO_LENGTH, video?.currentTime);
 
          if (video && latest > 0) {
           
@@ -168,7 +174,7 @@ export default function SectionSix() {
 
   return (
     <section
-      className="relative overflow-x-clip  bg-black md:pt-80  !z-40 w-screen"
+      className="relative overflow-x-clip   md:pt-80  !z-40 w-screen "
       ref={rootContainerRef}
     >
       {showGround && (
@@ -198,10 +204,10 @@ export default function SectionSix() {
           <div className="w-full relative ">
             <div className="relative flex items-center justify-center">
               <div className="flex flex-col items-center">
-                <img
-                  src="/images/seed.png"
+                <motion.img
+                  src="/images/seed-new.jpg"
                   alt="Seed"
-                  className="w-20 md:w-52 h-auto relative z-10 js-fade-right"
+                  className={`w-20 md:w-[185px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
                 />
                 <div className="relative">
                   <div
@@ -209,19 +215,17 @@ export default function SectionSix() {
                     id="rootContainer"
                   >
                     <video
-
                       ref={videoRef}
                       width='100%' height='100%'
                       src="/images/roots.mp4"
                       muted
+                      autoPlay
                       playsInline
                       webkit-playsinline="true"
                       preload="metadata"
                       type='video/mp4'
                       className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 "
                     />
-
-                    
                   </div>
 
     

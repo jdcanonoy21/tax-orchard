@@ -20,7 +20,7 @@ export default function Hero() {
   const paragraphScale = useTransform(scrollYProgress, [0, 0.01], [1, 1.15]);
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-between p-8 bg-black">
+    <section className="relative min-h-screen flex flex-col justify-between p-8 ">
       <motion.div
         initial={{ opacity: 1, x: 0, y: 0 }}
         style={{ position: "fixed", x: logoX }}
@@ -61,6 +61,7 @@ export default function Hero() {
               type="video/webm"
               className="w-full h-auto"
             /> */}
+            
       </div>
 
       <div className="relative z-20 flex justify-center pb-8">

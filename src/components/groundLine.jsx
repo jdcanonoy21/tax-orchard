@@ -35,7 +35,7 @@ export default function GroundLine({sectionRef}) {
                 const baseProgress = (0.8 - 0.4) * 0.7; // 0.28
                 const remainingProgress = progress - 0.8; // 0 to 0.2
                 const speedMultiplier = 5; // Accelerate to reach 1 quickly
-                const additionalProgress = remainingProgress * speedMultiplier * 0.7;
+                const additionalProgress = remainingProgress * speedMultiplier * 1.5;
                 mappedProgress = Math.min(baseProgress + additionalProgress, 1);
             }
         } else {

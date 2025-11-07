@@ -22,6 +22,7 @@ export default function SectionSix({externalScrollYProgress}) {
   const targetVideoTimeRef = useRef(0);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const sectionFiveRef = useRef(null);
+  const desktopVideoPrimedRef = useRef(false);
   const [showGround,  setShowGround] = useState(false);
   // Scroll progress for video: start when section enters viewport, end when it leaves
   const { scrollYProgress: videoScrollYProgress } = useScroll({
@@ -51,16 +52,68 @@ export default function SectionSix({externalScrollYProgress}) {
     setSeedVisible(latest >= 0.323);
   });
 
+  const SHOW_VIDEO_PROGRESS = 0.1991869918699187;
+
   useMotionValueEvent(videoScrollYProgress, "change", (latest) => {
     const video = isMobile ? videoMobileRef.current : videoRef.current;
     const VIDEO_LENGTH = video?.duration || 5; // seconds
 
     console.log("Video scroll progress:", latest, VIDEO_LENGTH, video?.currentTime);
 
-         if (video && latest > 0) {
-          
-          const progress =isMobile ? latest :  Math.min(latest / 1.2, 1);
-          const targetTime = progress * VIDEO_LENGTH;
+    const shouldShowVideo = latest >= SHOW_VIDEO_PROGRESS;
+        if (!shouldShowVideo) {
+          if (video) {
+            targetVideoTimeRef.current = 0;
+            if (animationFrameRef.current) {
+              cancelAnimationFrame(animationFrameRef.current);
+              animationFrameRef.current = null;
+            }
+            if (!isMobile) {
+              try {
+                video.style.opacity = "1";
+                video.style.visibility = "visible";
+              } catch (_) {}
+            }
+            video.currentTime = 0;
+            if (!video.paused) video.pause();
+          }
+          setMobileVideoFinished(false);
+          setLastProgress(0);
+          if (!isMobile) {
+            desktopVideoPrimedRef.current = false;
+          }
+          return;
+        }
+
+        if (!isMobile && video && !desktopVideoPrimedRef.current) {
+          if (video.readyState < 2) {
+            try { video.load(); } catch (_) {}
+          }
+          const playAttempt = video.play();
+          if (playAttempt && typeof playAttempt.then === 'function') {
+            playAttempt
+              .then(() => {
+                if (video) {
+                  try {
+                    video.pause();
+                    video.currentTime = 0.001;
+                    video.style.opacity = "1";
+                    video.style.visibility = "visible";
+                  } catch (_) {}
+                }
+              })
+              .catch(() => {});
+          }
+          desktopVideoPrimedRef.current = true;
+        }
+
+        if (video && latest > 0) {
+          const effectiveProgress = Math.max(latest - SHOW_VIDEO_PROGRESS, 0);
+          const normalizedProgress = Math.min(
+            effectiveProgress / Math.max(1 - SHOW_VIDEO_PROGRESS, 0.0001),
+            1
+          );
+          const targetTime = normalizedProgress * VIDEO_LENGTH;
           targetVideoTimeRef.current = targetTime;
     
           // Ensure video is paused (we're scrubbing, not playing)
@@ -73,7 +126,7 @@ export default function SectionSix({externalScrollYProgress}) {
              */
             video.currentTime = targetTime;
 
-            console.log('Mobile video time set to:', progress, targetTime, VIDEO_LENGTH);
+            console.log('Mobile video time set to:', normalizedProgress, targetTime, VIDEO_LENGTH);
 
             if(targetTime >= (VIDEO_LENGTH - 0.15)) setMobileVideoFinished(true)
               else setMobileVideoFinished(false);
@@ -132,6 +185,69 @@ export default function SectionSix({externalScrollYProgress}) {
     sectionFiveRef.current = sectionFive
     setShowGround(true);
   }, [])
+
+  useEffect(() => {
+    if (isMobile) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    const ensureVisible = () => {
+      try {
+        video.style.opacity = "1";
+        video.style.visibility = "visible";
+      } catch (_) {}
+    };
+
+    const primeVideo = () => {
+      ensureVisible();
+      try {
+        if (video.readyState < 2) {
+          video.load();
+        }
+        const seekTo = 0.001;
+        const attempt = video.play();
+        if (attempt && typeof attempt.then === 'function') {
+          attempt
+            .then(() => {
+              try {
+                video.pause();
+                video.currentTime = seekTo;
+              } catch (_) {}
+            })
+            .catch(() => {
+              try {
+                video.currentTime = seekTo;
+              } catch (_) {}
+            });
+        } else {
+          try {
+            video.pause();
+            video.currentTime = seekTo;
+          } catch (_) {}
+        }
+      } catch (_) {}
+    };
+
+    ensureVisible();
+    let primeListenerAttached = false;
+    if (video.readyState >= 2) {
+      primeVideo();
+    } else {
+      video.addEventListener('loadeddata', primeVideo);
+      primeListenerAttached = true;
+    }
+
+    video.addEventListener('pause', ensureVisible);
+    video.addEventListener('loadeddata', ensureVisible);
+
+    return () => {
+      video.removeEventListener('pause', ensureVisible);
+      video.removeEventListener('loadeddata', ensureVisible);
+      if (primeListenerAttached) {
+        video.removeEventListener('loadeddata', primeVideo);
+      }
+    };
+  }, [isMobile]);
 
   // Simple play/pause for mobile video based on visibility
   React.useEffect(() => {
@@ -207,14 +323,26 @@ export default function SectionSix({externalScrollYProgress}) {
                 <motion.img
                   src="/images/seed-new.jpg"
                   alt="Seed"
-                  className={`w-20 md:w-[185px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
+                  className={`w-20 md:w-[180px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
                 />
-                <div className="relative">
-                  <div
-                    className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black hidden md:block "
-                    id="rootContainer"
-                  >
-                    <video
+                  <div className="relative">
+                    <div
+                      className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black hidden md:!block "
+                      id="rootContainer"
+                    >
+                      <video
+                        ref={videoRef}
+                        width='100%' height='100%'
+                        muted
+                        autoPlay
+                        playsInline
+                        webkit-playsinline="true"
+                        className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 transition-opacity duration-300"
+                      >
+                        <source src="/images/roots.mp4" type="video/mp4" />
+                      </video>
+
+                      {/* <video
                       ref={videoRef}
                       width='100%' height='100%'
                       src="/images/roots.mp4"
@@ -222,11 +350,11 @@ export default function SectionSix({externalScrollYProgress}) {
                       autoPlay
                       playsInline
                       webkit-playsinline="true"
-                      preload="metadata"
+                      preload="auto"
                       type='video/mp4'
-                      className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 "
-                    />
-                  </div>
+                      className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 transition-opacity duration-300"
+                    /> */}
+                    </div>
 
     
                 {/* Fade-in-right animation for text */}
@@ -285,7 +413,7 @@ export default function SectionSix({externalScrollYProgress}) {
                        playsInline
                        webkit-playsinline="true"
                        preload="metadata"
-                       className="  w-full object-cover object-top ml-[150px] -mt-4"
+                       className="w-full object-cover object-top ml-[150px] -mt-4"
                      >
                        <source src="/images/roots.webm" type="video/webm" />
                        <source src="/images/roots.mp4" type="video/mp4" />

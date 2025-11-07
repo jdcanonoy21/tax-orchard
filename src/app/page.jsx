@@ -20,7 +20,6 @@ export default function Page() {
   const hasPlayedPast127 = useRef(false);
   const [hideFinalpage, setHideFinalpage] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
-  const [hideOverlay, setHideOverlay] = useState(false);
   const [hideVideo, setHideVideo] = useState(false);
   
   const resetVideoToStart = React.useCallback(() => {
@@ -49,20 +48,32 @@ export default function Page() {
   // Stop at 0.105 (20vw), then move to 0vw at 0.108
   const videoX = useTransform(
     scrollYProgress,
-    [0, 0.073, 0.095, 0.135, 0.141, 0.19,0.199],
-    ["200vw", "100vw", "20vw", "20vw", "-10vw", "20vw", ".5vw"]
+    [0, 0.073, 0.095, 0.135, 0.141, 0.172,0.185,0.194],
+    ["200vw", "100vw", "20vw", "20vw", "-10vw", "30vw", "30vw",".5vw"]
   );
 
   const sectionTwoX = useTransform(
     scrollYProgress,
-    [0, 0.14, 0.16],
+    [0, 0.135, 0.16],
     ["0vw", "0vw", "100vw"]
   );
 
   const sectionThreeX = useTransform(
     scrollYProgress,
-    [0, 0.19, 0.192, ],
+    [0, 0.181, 0.2, ],
     ["0vw", "0vw", "-100vw"]
+  );
+
+  const overlayX = useTransform(
+    scrollYProgress,
+    [0, 0.138, 0.141],
+    ["0vw", "0vw", "-20vw"]
+  );
+
+  const overlayOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.144, 0.145],
+    [1, 1, 0]
   );
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
@@ -70,18 +81,11 @@ export default function Page() {
     setShowVideo(true)
 
     // Hide video when progress >= 0.32
-    if (progress >= 0.323) {
+    if (progress >= 0.329) {
       setHideVideo(true);
     } else {
       setHideVideo(false);
     }
-
-        // Hide overlay when progress exceeds 0.1
-      if (progress > 0.14) {
-        setHideOverlay(true);
-      }else {
-        setHideOverlay(false);
-      }
 
     const video = videoRef.current;
     if (!video) return;
@@ -91,10 +95,12 @@ export default function Page() {
       // Map progress value (0 to 1) to video duration
       // Adjust the progress range as needed for when video should start/end
       const startProgress = 0.14; // Video starts at 14% scroll
-      const continueProgress = 0.188; // Continue scrubbing from 0.188 scroll
-      const secondPauseProgress = 0.29; // Video reaches end at 30% scroll
+      const continueProgress = 0.181; // Resume scrubbing from 0.181 scroll
+      const pauseProgressThreshold = 0.175; // Stop scrubbing at 2.5s when progress reaches 0.175
+      const secondPauseProgress = 0.31; // Video reaches end at 30% scroll
       
       const pauseTime = 2.5; // Pause at 2.5 seconds of the video
+      const resumeStartTime = 3.3; // Resume scrubbing from 3 seconds
       const slowDownTime = 1; // Slow down at 1 second of the video
       const endVideoTime = 6.3; // End time at 6 seconds
       
@@ -104,6 +110,12 @@ export default function Page() {
         video.pause();
         video.playbackRate = 1.0; // Normal speed
       } else if (progress >= startProgress && progress < continueProgress) {
+        if (progress >= pauseProgressThreshold) {
+          video.currentTime = pauseTime;
+          video.playbackRate = 0.1;
+          video.pause();
+          return;
+        }
         // Scrub video from startProgress to continueProgress, mapping to 0-2.5 seconds
         let normalizedProgress = (progress - startProgress) / (continueProgress - startProgress);
         
@@ -113,7 +125,7 @@ export default function Page() {
           const progressAtOneSecond = slowDownTime / pauseTime;
           const progressAfterOneSecond = normalizedProgress - progressAtOneSecond;
           // Divide the progress after 1 second by 3 to slow it down
-          normalizedProgress = progressAtOneSecond + (progressAfterOneSecond / .9);
+          normalizedProgress = progressAtOneSecond + (progressAfterOneSecond / 1);
         }
         
         video.currentTime = normalizedProgress * pauseTime;
@@ -121,9 +133,9 @@ export default function Page() {
         
         video.pause(); // Keep paused during scrubbing for smoother control
       } else if (progress >= continueProgress && progress < secondPauseProgress) {
-        // Continue scrubbing video from 2.5 seconds based on scroll
+        // Continue scrubbing video from 3 seconds based on scroll
         const normalizedProgress = (progress - continueProgress) / (secondPauseProgress - continueProgress);
-        const videoTime = pauseTime + (normalizedProgress * (endVideoTime - pauseTime));
+        const videoTime = resumeStartTime + (normalizedProgress * (endVideoTime - resumeStartTime));
         
         video.currentTime = Math.min(videoTime, endVideoTime);
         video.playbackRate = 1.0; // Normal speed
@@ -248,7 +260,7 @@ export default function Page() {
       <div className="relative ">
         <motion.video
           ref={videoRef}
-          className={`fixed top-0 left-0 w-full h-full flex object-cover z-0 ${hideVideo ? 'opacity-0' : showVideo ? 'opacity-80' : 'opacity-100'}`}
+          className={`fixed top-0 left-0 md:left-0 md:w-full w-[100vh] md:h-full h-[100vh] flex md:object-cover object-scale-down z-0 ${hideVideo ? 'opacity-0' : showVideo ? 'opacity-80' : 'opacity-100'}`}
           style={{ x: videoX, willChange: 'transform' }}
           muted
           playsInline
@@ -265,9 +277,15 @@ export default function Page() {
 
         {/* 70% white cover on the left */}
 
-        <div className={`${hideOverlay ? 'opacity-0' : 'opacity-100'} fixed top-0 left-0 h-full w-[50%] bg-black z-10 pointer-events-none`} />
+        <motion.div
+          className="fixed top-0 left-0 h-full w-[51%] bg-black z-10 pointer-events-none"
+          style={{ x: overlayX, opacity: overlayOpacity, willChange: "transform, opacity" }}
+        />
         {/* Right-edge fade from white to transparent */}
-        <div className={`${hideOverlay ? 'opacity-0' : 'opacity-100'} fixed top-0 left-[50%] h-full w-[45%] bg-gradient-to-r from-black to-transparent z-10 pointer-events-none`} />
+        <motion.div
+          className="fixed top-0 left-[50%] h-full w-[45%] bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"
+          style={{ x: overlayX, opacity: overlayOpacity, willChange: "transform, opacity" }}
+        />
       </div>
 
       <div className="relative z-20">

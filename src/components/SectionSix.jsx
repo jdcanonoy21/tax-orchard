@@ -5,6 +5,7 @@ import {
   useMotionValueEvent,
   useTransform,
   useInView,
+  useMotionValue,
 } from "framer-motion";
 import GroundLine from "./groundLine";
 
@@ -38,10 +39,60 @@ export default function SectionSix({externalScrollYProgress}) {
 
   // Smooth horizontal/vertical scroll transforms
   const delayedProgress = useTransform(xyScrollYProgress, [0.4, 1], [0, 1]);
+  const smoothedProgress = useMotionValue(delayedProgress.get());
+  const targetProgressRef = useRef(smoothedProgress.get());
+  const progressAnimationRef = useRef(null);
 
-  const x = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", isMobile ? '-155%' : "-145%"]);
-  const y = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%",  "-55%"]);
-  const yGround = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", "-150%"]);
+  const startProgressAnimation = React.useCallback(() => {
+    if (progressAnimationRef.current) return;
+
+    const animate = () => {
+      const current = smoothedProgress.get();
+      const target = targetProgressRef.current;
+      const diff = target - current;
+
+      if (Math.abs(diff) < 0.0005) {
+        smoothedProgress.set(target);
+        progressAnimationRef.current = null;
+        return;
+      }
+
+      smoothedProgress.set(current + diff * 0.14);
+      progressAnimationRef.current = requestAnimationFrame(animate);
+    };
+
+    progressAnimationRef.current = requestAnimationFrame(animate);
+  }, [smoothedProgress]);
+
+  useMotionValueEvent(delayedProgress, "change", (latest) => {
+    targetProgressRef.current = latest;
+    startProgressAnimation();
+  });
+
+  useEffect(() => {
+    return () => {
+      if (progressAnimationRef.current) {
+        cancelAnimationFrame(progressAnimationRef.current);
+        progressAnimationRef.current = null;
+      }
+    };
+  }, []);
+
+  const x = useTransform(
+    smoothedProgress,
+    [0, isMobile ? 0.4 : 1],
+    ["0%", isMobile ? "-155%" : "-145%"]
+  );
+  const y = useTransform(
+    smoothedProgress,
+    [0, isMobile ? 0.4 : 1],
+    ["0%", "-55%"]
+  );
+  const yGround = useTransform(
+    smoothedProgress,
+    [0, isMobile ? 0.4 : 1],
+    ["0%", "-150%"]
+  );
 
   const isRootTextInView = useInView(rootTextRef, { amount:  0.5, once: false });
   const isMobileVideoInView = useInView(videoMobileRef, { amount: 0.1, once: false });

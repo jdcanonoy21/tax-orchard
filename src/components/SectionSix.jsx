@@ -46,10 +46,12 @@ export default function SectionSix({externalScrollYProgress}) {
   const isRootTextInView = useInView(rootTextRef, { amount:  0.5, once: false });
   const isMobileVideoInView = useInView(videoMobileRef, { amount: 0.1, once: false });
   const [seedVisible, setSeedVisible] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   // Update seed visibility based on externalScrollYProgress
   useMotionValueEvent(externalScrollYProgress, "change", (latest) => {
     setSeedVisible(latest >= 0.323);
+    setShowVideo(latest >= 0.325);
   });
 
   const SHOW_VIDEO_PROGRESS = 0.1991869918699187;
@@ -327,20 +329,24 @@ export default function SectionSix({externalScrollYProgress}) {
                 />
                   <div className="relative">
                     <div
-                      className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black hidden md:!block "
+                      className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black hidden md:block "
                       id="rootContainer"
                     >
-                      <video
-                        ref={videoRef}
-                        width='100%' height='100%'
-                        muted
-                        autoPlay
-                        playsInline
-                        webkit-playsinline="true"
-                        className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 transition-opacity duration-300"
-                      >
-                        <source src="/images/roots.mp4" type="video/mp4" />
-                      </video>
+                      {showVideo && (
+                        <video
+                          ref={videoRef}
+                          width='100%' height='100%'
+                          muted
+                          autoPlay
+                          preload="auto"
+                          loop
+                          playsInline
+                          webkit-playsinline="true"
+                          className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 transition-opacity duration-300"
+                        >
+                          <source src="/images/roots.mp4" type="video/mp4" />
+                        </video>
+                      )}
 
                       {/* <video
                       ref={videoRef}

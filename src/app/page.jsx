@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import Lenis from "@studio-freight/lenis";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "motion/react";
 
@@ -21,6 +21,20 @@ export default function Page() {
   const [hideFinalpage, setHideFinalpage] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [hideVideo, setHideVideo] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const updateIsMobile = () => setIsMobile(window.innerWidth < 768);
+
+    updateIsMobile();
+    window.addEventListener("resize", updateIsMobile);
+
+    return () => {
+      window.removeEventListener("resize", updateIsMobile);
+    };
+  }, []);
   
   const resetVideoToStart = React.useCallback(() => {
     const v = videoRef.current;
@@ -46,11 +60,45 @@ export default function Page() {
 
   // Slide the video in from right (-100%) to center as the user scrolls
   // Stop at 0.105 (20vw), then move to 0vw at 0.108
-  const videoX = useTransform(
+  const {
+    videoInputRange,
+    videoOutputRange,
+    videoObjectInputRange,
+    videoObjectOutputRange,
+    overlayInputRange,
+    overlayOutputRange,
+  } = useMemo(() => {
+    if (isMobile) {
+      return {
+        videoInputRange: [0, 0.05, 0.09, 0.13, 0.17, 0.2],
+        videoOutputRange: ["160vw", "90vw", "0vw", "0vw", "0vw", "-20vw"],
+        videoObjectInputRange: [0, 0.2],
+        videoObjectOutputRange: ["30% center", "75% center"],
+        overlayInputRange: [0, 0.12, 0.16],
+        overlayOutputRange: ["0vw", "0vw", "-12vw"],
+      };
+    }
+
+
+
+    return {
+      videoInputRange: 
+      [0, 0.073, 0.095, 0.135, 0.15, 0.172,0.185,0.194],
+      videoOutputRange: ["200vw", "100vw", "20vw", "20vw", "-13vw", "35vw", "35vw", ".5vw"],
+      videoObjectInputRange: [0, 1],
+      videoObjectOutputRange: ["50% center", "50% center"],
+      overlayInputRange: [0, 0.138, 0.141],
+      overlayOutputRange: ["0vw", "0vw", "-20vw"],
+    };
+  }, [isMobile]);
+
+  const videoX = useTransform(scrollYProgress, videoInputRange, videoOutputRange);
+  const videoObjectPosition = useTransform(
     scrollYProgress,
-    [0, 0.073, 0.095, 0.135, 0.141, 0.172,0.185,0.194],
-    ["200vw", "100vw", "20vw", "20vw", "-10vw", "30vw", "30vw",".5vw"]
+    videoObjectInputRange,
+    videoObjectOutputRange
   );
+  const overlayX = useTransform(scrollYProgress, overlayInputRange, overlayOutputRange);
 
   const sectionTwoX = useTransform(
     scrollYProgress,
@@ -64,12 +112,6 @@ export default function Page() {
     ["0vw", "0vw", "-100vw"]
   );
 
-  const overlayX = useTransform(
-    scrollYProgress,
-    [0, 0.138, 0.141],
-    ["0vw", "0vw", "-20vw"]
-  );
-
   const overlayOpacity = useTransform(
     scrollYProgress,
     [0, 0.144, 0.145],
@@ -81,7 +123,7 @@ export default function Page() {
     setShowVideo(true)
 
     // Hide video when progress >= 0.32
-    if (progress >= 0.329) {
+    if (progress >= 0.323) {
       setHideVideo(true);
     } else {
       setHideVideo(false);
@@ -260,8 +302,8 @@ export default function Page() {
       <div className="relative ">
         <motion.video
           ref={videoRef}
-          className={`fixed top-0 left-0 md:left-0 md:w-full w-[100vh] md:h-full h-[100vh] flex md:object-cover object-scale-down z-0 ${hideVideo ? 'opacity-0' : showVideo ? 'opacity-80' : 'opacity-100'}`}
-          style={{ x: videoX, willChange: 'transform' }}
+          className={`fixed top-0 left-0 md:left-0 md:w-full w-[screen] md:h-full h-screen flex object-cover md:object-cover z-0 ${hideVideo ? 'opacity-0' : showVideo ? 'opacity-80' : 'opacity-100'}`}
+          style={{ x: videoX, objectPosition: videoObjectPosition, willChange: 'transform, object-position' }}
           muted
           playsInline
           autoPlay
@@ -273,7 +315,7 @@ export default function Page() {
           onPlay={() => { if (videoRef.current && videoRef.current.currentTime > 0.1 && !hasPlayedPast127.current) { try { videoRef.current.currentTime = 0; } catch(_) {} } }}
         >
           <source src="/images/bill-transformation_V12.mp4" type="video/mp4" />
-        </motion.video>
+        </motion.video> 
 
         {/* 70% white cover on the left */}
 

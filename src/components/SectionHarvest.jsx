@@ -158,6 +158,11 @@ export default function SectionHarvest({ setHideFinalpage }) {
 
 
   return (
+
+    <>
+    
+    
+
     <div className=" w-full  -z-10 bg-white" ref={sectionRef}>
       <motion.section
         ref={treesRef}
@@ -257,7 +262,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
                     style={{
                       width: useTransform(
                         scrollYProgress,
-                        [0.85, 0.9],
+                        [0.858, 0.9],
                         [0, 600]
                       ),
                     }}
@@ -332,5 +337,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
 
       <div style={{ height: `${isMobile ? 500 : 400}vh` }}></div>
     </div>
+
+    </>
   );
 }

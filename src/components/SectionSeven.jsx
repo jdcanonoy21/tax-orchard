@@ -97,6 +97,7 @@ export default function SectionSeven({ hideFinalpage }) {
   const x = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.85, 0.88] : [0, 0.1, 0.85, 0.9], ["100vw", "0vw", "0vw", "-100vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
   const harvestBgY = useTransform(scrollYProgress, isMobile ? [0.8, 0.84] : [0.78, 0.83], ["-100%", "0%"]);
+  const harvestX = useTransform(scrollYProgress, isMobile ? [0.88, 0.95] : [0.9, 0.97], ["100vw", "0vw"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
@@ -152,7 +153,7 @@ export default function SectionSeven({ hideFinalpage }) {
                 Plant
               </p>
             </div>
-            <div className="flex justify-center gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-6 left-0 !w-full items-center">
+            <div className="flex justify-center gap-4 sm:gap-6 md:gap-20 mb-18 sm:mb-12 md:mb-20 absolute bottom-6 left-0 !w-full items-center">
               <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/calendar-tree-2.svg"
@@ -261,22 +262,22 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-16 left-0 !w-full items-center">
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
+            <div className="grid grid-cols-3 md:flex md:justify-center  gap-4 sm:gap-6 md:gap-20  sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-16 left-0 !w-full md:items-center">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_2.svg"
                   alt="Tree 1"
                   className="opacity-100"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_2.svg"
                   alt="Tree 1"
                   className="opacity-100"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_2.svg"
                   alt="Tree 1"
@@ -315,7 +316,7 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12 md:mb-16 absolute bottom-0 left-0 !w-full items-center">
+            <div className="flex justify-center  gap-4 sm:gap-6 md:gap-20 mb-8 sm:mb-12  absolute bottom-0 md:bottom-32 left-0 !w-full items-center">
               <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center mx-auto">
                 <img
                   src="/images/TaxOrchard_Tree_3.svg"
@@ -369,7 +370,7 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="flex justify-center  gap-4  absolute bottom-0 left-0 !w-full items-center">
+            <div className="flex justify-center  gap-4  absolute bottom-0 md:bottom-14 left-0 !w-full items-center">
               <div className="w-72 h-56 flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_4.svg"
@@ -423,7 +424,7 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="flex justify-center gap-4 absolute bottom-0 left-0 !w-full items-center">
+            <div className="flex justify-center gap-4 absolute bottom-0 md:bottom-36 left-0 !w-full items-center">
               <div className="w-[22rem] h-[12rem] flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_5.svg"
@@ -502,7 +503,7 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 md:flex md:justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-8 sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-6 left-0 !w-full items-center">
+            <div className="grid grid-cols-3 md:flex md:justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-16 sm:mb-12 absolute bottom-0 md:bottom-6 left-0 !w-full items-center">
               <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/calendar-tree-2.svg"
@@ -564,22 +565,22 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 md:flex justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-8 sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-6 left-0 !w-full items-center">
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
+            <div className="grid grid-cols-3 md:flex md:justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-16 sm:mb-12 absolute bottom-0 md:bottom-6 left-0 !w-full items-center">
+              <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
                   className="opacity-10"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
+              <div className="w-full  h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/calendar-tree-1.svg"
                   alt="Tree 1"
                   className="opacity-10"
                 />
               </div>
-              <div className="w-12 h-16 sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center  mx-auto ">
+              <div className="w-full  h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/calendar-tree-2.svg"
                   alt="Tree 1"
@@ -629,7 +630,7 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 md:flex md:justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-8 sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-16 left-0 !w-full md:items-center">
+            <div className="grid grid-cols-3 md:flex md:justify-center  gap-4 sm:gap-6 md:gap-20  sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-16 left-0 !w-full md:items-center">
               <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_2.svg"
@@ -690,7 +691,7 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="grid grid-cols-3  md:flex justify-center  gap-4 sm:gap-6 md:gap-20 md:mb-8 sm:mb-12 md:mb-16 absolute bottom-0 md:bottom-28 left-0 !w-full items-center">
+            <div className="grid grid-cols-3  md:flex justify-center  gap-4 sm:gap-6 md:gap-20  sm:mb-12 md:mb-44 absolute bottom-0  left-0 !w-full items-center">
               <div className="w-full h-full sm:w-14 sm:h-18 md:w-56 md:h-24 flex flex-col items-center ">
                 <img
                   src="/images/TaxOrchard_Tree_3.svg"
@@ -810,7 +811,7 @@ export default function SectionSeven({ hideFinalpage }) {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 md:flex justify-center gap-4 absolute bottom-0 md:bottom-36 left-0 !w-full items-center">
+            <div className="grid grid-cols-3 md:flex justify-center gap-4 absolute bottom-10 md:bottom-36 left-0 !w-full items-center">
               <div className="w-full h-full md:w-[22rem] md:h-[12rem] flex flex-col items-center">
                 <img
                   src="/images/TaxOrchard_Tree_5.svg"
@@ -909,24 +910,6 @@ export default function SectionSeven({ hideFinalpage }) {
             </div>
           </div>
         </div>
-      </div>
-    </div>,
-    <div
-      className={`min-h-100vh !w-full !top-0 flex items-center justify-center relative z-50 transition-colors duration-700 bg-black`}
-    >
-      <div
-        className={` top-0 w-full h-screen absolute items-center justify-center transition-opacity duration-700 z-20`}
-      >
-        <h2
-          className={`text-6xl w-full h-screen flex items-center justify-center absolute top-0 z-20 md:text-[183px] font-proxima-bold  leading-none text-center mix-blend-difference text-white `}
-        >
-          The Harvest
-        </h2>
-        <motion.div
-          ref={harvestRef}
-          className="bg-white absolute w-full h-screen z-10 h-100vh"
-          style={{ bottom: harvestBgY }}
-        />
       </div>
     </div>,
   ];
@@ -1127,7 +1110,7 @@ export default function SectionSeven({ hideFinalpage }) {
     setIsFlipping(true);
 
 
-    const actualPages = [ 4, 9, 14, 19, 24, 29, 31]; // last page of each group
+    const actualPages = [ 4, 9, 14, 19, 24, 29]; // last page of each group
 
     const pageFlips = actualPages[groupIndex];
 
@@ -1396,7 +1379,29 @@ export default function SectionSeven({ hideFinalpage }) {
          
         </div>
       </motion.div>
-   
+
+      
+      <motion.div
+      className={`sticky min-h-100vh !w-full !top-0 flex items-center justify-center  z-50 transition-colors duration-700 bg-black`}
+      style={{ x: harvestX }}
+    >
+      <div
+        className={` top-0 w-full h-screen absolute items-center justify-center transition-opacity duration-700 z-20 bg-black`}
+      >
+        <h2
+          className={`text-6xl w-full h-screen flex items-center justify-center absolute top-0 z-20 md:text-[183px] font-proxima-bold  leading-none text-center mix-blend-difference text-white `}
+        >
+          The Harvest
+        </h2>
+        <motion.div
+          ref={harvestRef}
+          className="bg-white absolute w-full h-screen z-10 h-100vh"
+          style={{ bottom: harvestBgY }}
+        />
+      </div>
+    </motion.div>
+    
+
     </div>
 
     </>

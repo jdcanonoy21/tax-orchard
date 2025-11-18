@@ -12,6 +12,7 @@ import SectionFive from "../components/SectionFive";
 import SectionSix from "../components/SectionSix";
 import SectionSeven from "../components/SectionSeven";
 import SectionHarvest from "../components/SectionHarvest";
+import SectionTwelve from "../components/SectionTwelve";
 
 export default function Page() {
   const mainRef = useRef(null);
@@ -83,7 +84,7 @@ export default function Page() {
 
     return {
       videoInputRange: 
-      [0, 0.073, 0.095, 0.135, 0.15, 0.172,0.185,0.194],
+      [0, 0.073, 0.08, 0.135, 0.15, 0.172,0.185,0.194],
       videoOutputRange: ["200vw", "100vw", "20vw", "20vw", "-13vw", "35vw", "35vw", ".5vw"],
       videoObjectInputRange: [0, 1],
       videoObjectOutputRange: ["50% center", "50% center"],
@@ -123,7 +124,7 @@ export default function Page() {
     setShowVideo(true)
 
     // Hide video when progress >= 0.32
-    if (progress >= 0.323) {
+    if (progress >= 0.309) {
       setHideVideo(true);
     } else {
       setHideVideo(false);
@@ -348,7 +349,7 @@ export default function Page() {
         </div>
 
         <div className="relative">
-          <div className="h-[50vh]"></div>
+          <div className="h-[100vh]"></div>
           <div className="h-[200px]"></div>
           <div className="sticky top-0 z-50 w-full">
             <motion.div
@@ -372,6 +373,7 @@ export default function Page() {
         <SectionFive />
         <SectionSix externalScrollYProgress={scrollYProgress}/>
         <SectionSeven />
+        {/* <SectionTwelve  /> */}
         <SectionHarvest setHideFinalpage={setHideFinalpage} />
       </div>
     </div>

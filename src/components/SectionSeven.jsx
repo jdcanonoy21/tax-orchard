@@ -94,19 +94,22 @@ export default function SectionSeven({ hideFinalpage }) {
     offset: ["start end", "end start"],
   });
 
-  const x = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.85, 0.88] : [0, 0.1, 0.85, 0.9], ["100vw", "0vw", "0vw", "-100vw"]);
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      console.log("scrollYProgress:", latest);
+    });
+    return () => unsubscribe();
+  }, [scrollYProgress]);
+
+  const x = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.85, 0.88] : [0, 0.1, 0.8, 0.85], ["100vw", "0vw", "0vw", "-100vw"]);
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
-  const harvestBgY = useTransform(scrollYProgress, isMobile ? [0.8, 0.84] : [0.78, 0.83], ["-100%", "0%"]);
-  const harvestX = useTransform(scrollYProgress, isMobile ? [0.88, 0.95] : [0.9, 0.97], ["100vw", "0vw"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
   const scrollLock = useRef(false);
   const currentProgress = useRef(0);
   const hasChartAnimated = useRef(false);
   const [shouldAnimate, showAnimateChart] = useState(false);
-  const svgLineChart = useRef(null);
   const isScrolling = useRef(false);
-  const svgAnimationKey = useRef(Math.random());
 
   const blankPagesOneData = [
     {
@@ -949,7 +952,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
   useEffect(() => {
     function handleResize() {
-      console.log("Window resized", window.innerWidth, window.innerHeight);
+      // console.log("Window resized", window.innerWidth, window.innerHeight);
 
       setWindowSize({
         width: window.innerWidth,
@@ -984,7 +987,7 @@ export default function SectionSeven({ hideFinalpage }) {
    */
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
     
-    console.log('scrollYProgress changed:', progress, flipEnabled, canStartFlipping, isFlipping);
+    // console.log('scrollYProgress changed:', progress, flipEnabled, canStartFlipping, isFlipping);
     isScrolling.current = true;
 
     setTimeout(() => {
@@ -1017,12 +1020,12 @@ export default function SectionSeven({ hideFinalpage }) {
     if(progress >= 0.65 )  targetGroup = totalGroups - 2; // prevent going out of bounds
 
     
-    console.log('is forward?', progress, currentProgress.current, progress < currentProgress.current);
+    // console.log('is forward?', progress, currentProgress.current, progress < currentProgress.current);
 
     currentProgress.current = progress;
 
     // if (targetGroup === currentPage) return;
-    console.log("Raw targetGroup:", targetGroup, "from progress:", progress);
+    // console.log("Raw targetGroup:", targetGroup, "from progress:", progress);
 
     if (scrollLock.current) {
       pendingPageRef.current = targetGroup;
@@ -1030,12 +1033,12 @@ export default function SectionSeven({ hideFinalpage }) {
       return;
     }
 
-    console.log(progress >= 0.6, "progress", progress, "→ targetGroup", targetGroup);
+    // console.log(progress >= 0.6, "progress", progress, "→ targetGroup", targetGroup);
 
     // Small debounce to prevent rapid triggers
     setTimeout(() => {
       // Check again before flipping in case things changed
-      console.log('Debounce check - scrollLock:', scrollLock.current, 'isFlipping:', isFlipping, 'canStartFlipping:', canStartFlipping, 'targetGroup:', targetGroup, 'currentPage:', currentPage);
+      // console.log('Debounce check - scrollLock:', scrollLock.current, 'isFlipping:', isFlipping, 'canStartFlipping:', canStartFlipping, 'targetGroup:', targetGroup, 'currentPage:', currentPage);
 
       if (!scrollLock.current && !isFlipping && canStartFlipping && targetGroup !== currentPage && targetGroup >= 0 ) {
         flipToGroup(targetGroup);
@@ -1114,7 +1117,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
     const pageFlips = actualPages[groupIndex];
 
-      console.log('flipToGroup called with groupIndex:', groupIndex, 'currentPage:', currentPage, 'pageFlips:', pageFlips);
+      // console.log('flipToGroup called with groupIndex:', groupIndex, 'currentPage:', currentPage, 'pageFlips:', pageFlips);
 
 
     if(!pageFlips) {
@@ -1153,7 +1156,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
     // After flip sequence and pause, release scroll lock
     setTimeout(() => {
-      console.log('Flip animation complete, releasing scroll lock', groupIndex, currentPage);
+      // console.log('Flip animation complete, releasing scroll lock', groupIndex, currentPage);
      
       scrollLock.current = false;
       setIsFlipping(false);
@@ -1165,7 +1168,7 @@ export default function SectionSeven({ hideFinalpage }) {
   // Only allow flipping when journeyRef is NOT in view
   // Add 1-second delay after journey leaves viewport before enabling flips
   useEffect(() => {
-    console.log("isJourneyInView changed:", isJourneyInView);
+    // console.log("isJourneyInView changed:", isJourneyInView);
 
     if (isJourneyInView) {
 
@@ -1192,17 +1195,17 @@ export default function SectionSeven({ hideFinalpage }) {
           }, 100 + (5 - i) * 75);
         }
       }
-      console.log("Journey in view - flipping disabled");
+      // console.log("Journey in view - flipping disabled");
     } else {
       // Journey just left view - start 1-second delay
-      console.log("Journey out of view - starting 1s delay before enabling flips");
+      // console.log("Journey out of view - starting 1s delay before enabling flips");
       
       if (flipDelayTimer.current) {
         clearTimeout(flipDelayTimer.current);
       }
       
       flipDelayTimer.current = setTimeout(() => {
-        console.log("1-second delay complete - flipping now enabled");
+        // console.log("1-second delay complete - flipping now enabled");
         setCanStartFlipping(true);
         setFlipEnabled(true);
       }, 1000);
@@ -1216,7 +1219,7 @@ export default function SectionSeven({ hideFinalpage }) {
   }, [isJourneyInView]);
 
   useEffect(() => {
-    console.log("isContainerRefInView", isContainerRefInView);
+    // console.log("isContainerRefInView", isContainerRefInView);
   }, [isContainerRefInView]); 
 
 
@@ -1228,7 +1231,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
 
   // console.log("currentPage", currentPage);
-  console.log("totalActualPages", totalActualPages);
+  // console.log("totalActualPages", totalActualPages);
 
   /**
    * Watch flipping and disable scroll interactions during the flip
@@ -1297,7 +1300,7 @@ export default function SectionSeven({ hideFinalpage }) {
    * 
    */
   useEffect(() => {
-  console.log("currentPage changed:", totalActualPages);
+  // console.log("currentPage changed:", totalActualPages);
 
   if(totalActualPages !== 10) {
     showAnimateChart(false);
@@ -1380,10 +1383,10 @@ export default function SectionSeven({ hideFinalpage }) {
         </div>
       </motion.div>
 
-      
+{/*       
       <motion.div
       className={`sticky min-h-100vh !w-full !top-0 flex items-center justify-center  z-50 transition-colors duration-700 bg-black`}
-      style={{ x: harvestX }}
+      style={{ x: harvestX , marginTop: "-200vh"}}
     >
       <div
         className={` top-0 w-full h-screen absolute items-center justify-center transition-opacity duration-700 z-20 bg-black`}
@@ -1399,7 +1402,7 @@ export default function SectionSeven({ hideFinalpage }) {
           style={{ bottom: harvestBgY }}
         />
       </div>
-    </motion.div>
+    </motion.div> */}
     
 
     </div>

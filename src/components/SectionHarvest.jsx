@@ -27,6 +27,8 @@ export default function SectionHarvest({ setHideFinalpage }) {
   const treesContentRef = useRef(null);
   const treesTextOneRef = useRef(null);
   const treesTextTwoRef = useRef(null);
+  const whiteBgRef = useRef(null);
+  const sectionContainerRef = useRef(null);
 
   // Animate when section center hits viewport center
   const { scrollYProgress } = useScroll({
@@ -35,7 +37,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
   });
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    console.log("Section Harvest scroll:", progress);
+    // console.log("Section Harvest scroll:", progress);
 
     if (progress > 0.16) {
       setHideFinalpage(true);
@@ -44,17 +46,20 @@ export default function SectionHarvest({ setHideFinalpage }) {
     }
   });
 
-  const treesOpacity = useTransform(scrollYProgress, [0.25, 0.4], [0, 1]);
-   const treesY = useTransform(scrollYProgress, [0.25, 0.4], [50, 0]);
+  const harvestSectionX = useTransform(scrollYProgress, [0, 0.1, 0.15], ["150vw", "0vw", "0vw"]);
+  const harvestText = useTransform(scrollYProgress, [0.1,0.11,0.35, 0.38], ["10vw","0vw", "0vw", "-100vw"]);
+  const whiteBgOpacity = useTransform(scrollYProgress, [0.35, 0.36], [1, 1]);
+  const treesOpacity = useTransform(scrollYProgress, [0.38, 0.4], [0, 1]);
+   const treesY = useTransform(scrollYProgress, [0.38, 0.4], [50, 0]);
   const treesTextOneX = useTransform(
     scrollYProgress,
-    [0.4, 0.5, 0.55, 0.6],
+    [0.45, 0.5, 0.55, 0.6],
     ["100vw", "0vw", "0vw", "-100vw"]
   );
 
   const treesTextTwoX = useTransform(
     scrollYProgress,
-    [0.55, 0.6, 0.65, 0.7],
+    [0.6, 0.65, 0.7, 0.75],
     ["100vw", "0vw", "0vw", "-100vw"]
   );
 
@@ -164,11 +169,33 @@ export default function SectionHarvest({ setHideFinalpage }) {
     
 
     <div className=" w-full  -z-10 bg-white" ref={sectionRef}>
+
+    <motion.section
+        className="relative bg-black min-h-screen overflow-x-clip z-30"
+        ref={sectionContainerRef}
+        style={{ marginTop: "-200vh", x: harvestSectionX }}
+        transition={{ x: { type: "spring", stiffness: 60, damping: 24 } }}
+      >
+        <div className="sticky -top-40 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-10 pt-64">
+          <motion.h2 className="mix-blend-difference text-white text-[183px] font-proxima-bold leading-none text-center"    
+          style={{  x: harvestText }}>
+            The Harvest
+          </motion.h2>
+        </div>
+        <motion.div className={`h-[110vh]  bg-black `}></motion.div>
+        <motion.div 
+          ref={whiteBgRef}
+          className={`h-[100vh] bg-white `}
+          style={{ opacity: whiteBgOpacity }}
+        ></motion.div>
+      </motion.section>
+
+
       <motion.section
         ref={treesRef}
-        style={{ opacity: treesOpacity,   y: treesY, marginTop: "-200vh" }}
+        style={{ opacity: treesOpacity,   y: treesY, marginTop: "-100vh" }}
         transition={{ opacity: { type: "spring", stiffness: 60, damping: 24 } }}
-        className={`bg-white min-h-screen sticky top-0 flex items-center justify-center p-8 w-full z-0   overflow-hidden`}
+        className={`bg-white min-h-screen sticky top-0 flex items-center justify-center p-8 w-full z-40   overflow-hidden`}
       >
         <motion.div
           className={`text-center max-w-2xl `}

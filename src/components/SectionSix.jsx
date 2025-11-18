@@ -50,8 +50,8 @@ export default function SectionSix({externalScrollYProgress}) {
 
   // Update seed visibility based on externalScrollYProgress
   useMotionValueEvent(externalScrollYProgress, "change", (latest) => {
-    setSeedVisible(latest >= 0.323);
-    setShowVideo(latest >= 0.325);
+    setSeedVisible(latest >= 0.309);
+    setShowVideo(latest >= 0.309);
   });
 
   const SHOW_VIDEO_PROGRESS = 0.1991869918699187;
@@ -60,7 +60,7 @@ export default function SectionSix({externalScrollYProgress}) {
     const video = isMobile ? videoMobileRef.current : videoRef.current;
     const VIDEO_LENGTH = video?.duration || 5; // seconds
 
-    console.log("Video scroll progress:", latest, VIDEO_LENGTH, video?.currentTime);
+    // console.log("Video scroll progress:", latest, VIDEO_LENGTH, video?.currentTime);
 
     const shouldShowVideo = latest >= SHOW_VIDEO_PROGRESS;
         if (!shouldShowVideo) {
@@ -180,10 +180,10 @@ export default function SectionSix({externalScrollYProgress}) {
 
   useEffect(() => {
     const sectionFive = document.querySelector('.sectionFive');
-    console.log(
-      'Section Six mounted, sectionFive element:', sectionFive,
-      rootContainerRef
-    );
+    // console.log(
+    //   'Section Six mounted, sectionFive element:', sectionFive,
+    //   rootContainerRef
+    // );
     sectionFiveRef.current = sectionFive
     setShowGround(true);
   }, [])

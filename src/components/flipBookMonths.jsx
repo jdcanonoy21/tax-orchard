@@ -26,7 +26,7 @@ export default function FlipBookMonths({
             {shouldHighlight ? (
               <div
                 className="absolute top-0 left-0 !w-full h-2 z-20"
-                style={{ backgroundColor: page?.highlightColor || "blue" }}
+                style={{ backgroundColor: page?.highlightColor || "#3974F6" }}
               ></div>
             ) : null}
             <span

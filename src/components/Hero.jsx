@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import Image from 'next/image';
 
 export default function Hero() {
   const { scrollYProgress } = useScroll();
@@ -26,10 +27,13 @@ export default function Hero() {
         style={{ position: "fixed", x: logoX }}
         transition={{ duration: 0.45, ease: [0.4, 0.0, 0.2, 1] }}
       >
-        <img
+        <Image
           src="/images/tax-orchard-logo.svg"
           alt="Tax Orchard Logo"
+          width={200}
+          height={40}
           className="h-10"
+          priority
         />
       </motion.div>
 
@@ -66,9 +70,11 @@ export default function Hero() {
 
       <div className="relative z-20 flex justify-center pb-8">
         <div className="w-14 h-14 rounded-full flex items-center justify-center">
-          <img
+          <Image
             src="/images/down-arrow.svg"
             alt="Scroll down"
+            width={32}
+            height={32}
             className="w-8 h-8"
           />
         </div>

@@ -69,8 +69,8 @@ export default function SectionFour() {
     >
       <div className="text-center max-w-4xl">
         <h2 className="text-4xl md:text-[45px] font-proxima-regular leading-snug text-white">
-          But what if the weight of taxes <br /> could be turned into your{" "}
-          <br /> foundation for{" "}
+          But what if the weight of taxes <br className="hidden md:block" /> could be turned into your{" "}
+          <br className="hidden md:block" /> foundation for{" "}
           <span className="text-blue font-proxima-regular font-extrabold">
             future growth?
           </span>

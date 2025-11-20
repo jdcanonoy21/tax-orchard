@@ -50,8 +50,9 @@ export default function SectionSix({externalScrollYProgress}) {
 
   // Update seed visibility based on externalScrollYProgress
   useMotionValueEvent(externalScrollYProgress, "change", (latest) => {
-    setSeedVisible(latest >= 0.309);
-    setShowVideo(latest >= 0.309);
+    const threshold = isMobile ? 0.288 : 0.309;
+    setSeedVisible(latest >= threshold);
+    setShowVideo(latest >= threshold);
   });
 
   const SHOW_VIDEO_PROGRESS = 0.1991869918699187;
@@ -325,7 +326,7 @@ export default function SectionSix({externalScrollYProgress}) {
                 <motion.img
                   src="/images/seed-new.jpg"
                   alt="Seed"
-                  className={`w-20 md:w-[180px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
+                  className={`w-[200px] md:w-[180px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
                 />
                   <div className="relative">
                     <div
@@ -342,24 +343,11 @@ export default function SectionSix({externalScrollYProgress}) {
                           loop
                           playsInline
                           webkit-playsinline="true"
-                          className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 transition-opacity duration-300"
+                          className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 transition-opacity duration-300 "
                         >
                           <source src="/images/roots.mp4" type="video/mp4" />
                         </video>
                       )}
-
-                      {/* <video
-                      ref={videoRef}
-                      width='100%' height='100%'
-                      src="/images/roots.mp4"
-                      muted
-                      autoPlay
-                      playsInline
-                      webkit-playsinline="true"
-                      preload="auto"
-                      type='video/mp4'
-                      className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 transition-opacity duration-300"
-                    /> */}
                     </div>
 
     
@@ -412,14 +400,14 @@ export default function SectionSix({externalScrollYProgress}) {
  
                 </div>
 
-                 <div className="block md:hidden relative w-[800px] h-[600px] left-2 z-1 mt-0 overflow-clip">
+                 <div className="block md:hidden relative w-[800px] h-[600px] left-2 z-50 mt-0 overflow-clip">
                      <video
                        ref={videoMobileRef}
                        muted
                        playsInline
                        webkit-playsinline="true"
                        preload="metadata"
-                       className="w-full object-cover object-top ml-[150px] -mt-4"
+                       className="w-full object-cover object-top ml-[50px] -mt-4"
                      >
                        <source src="/images/roots.webm" type="video/webm" />
                        <source src="/images/roots.mp4" type="video/mp4" />

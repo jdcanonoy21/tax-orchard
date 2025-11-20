@@ -15,6 +15,7 @@ import {
   motion,
   useTransform,
   useInView,
+  useSpring,
 } from "motion/react";
 import LineChart from "./lineChart";
 import FlipBookMonths from "./flipBookMonths";
@@ -101,7 +102,8 @@ export default function SectionSeven({ hideFinalpage }) {
     return () => unsubscribe();
   }, [scrollYProgress]);
 
-  const x = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.85, 0.88] : [0, 0.1, 0.8, 0.85], ["100vw", "0vw", "0vw", "-100vw"]);
+  const xRaw = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.85, 0.88] : [0, 0.1, 0.8, 0.85], ["100vw", "0vw", "0vw", "-100vw"]);
+  const x = useSpring(xRaw, { stiffness: 100, damping: 30, mass: 1 });
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
@@ -148,7 +150,7 @@ export default function SectionSeven({ hideFinalpage }) {
       key={pageIdx}
       
     >
-      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10">
+      <div className="w-full max-w-7xl mx-auto relative border border-gray-500  overflow-hidden md:mt-10 ">
         <div className="relative">
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 md:px-12 lg:px-16 relative">
             <div className="absolute -left-10 top-16 md:top-24 opacity-60">

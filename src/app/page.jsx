@@ -72,9 +72,9 @@ export default function Page() {
     if (isMobile) {
       return {
         videoInputRange: [0, 0.05, 0.09, 0.13, 0.17, 0.2],
-        videoOutputRange: ["160vw", "90vw", "0vw", "0vw", "0vw", "-20vw"],
-        videoObjectInputRange: [0, 0.2],
-        videoObjectOutputRange: ["30% center", "75% center"],
+        videoOutputRange: ["160vw", "90vw", "0vw", "0vw", "0vw", "0vw"],
+        videoObjectInputRange: [0, 0.05, 0.3],
+        videoObjectOutputRange: ["30% center", "35% center","55% center"],
         overlayInputRange: [0, 0.12, 0.16],
         overlayOutputRange: ["0vw", "0vw", "-12vw"],
       };
@@ -84,12 +84,12 @@ export default function Page() {
 
     return {
       videoInputRange: 
-      [0, 0.073, 0.08, 0.135, 0.15, 0.172,0.185,0.194],
+      [0, 0.07, 0.0835, 0.135, 0.15, 0.172,0.185,0.194],
       videoOutputRange: ["200vw", "100vw", "20vw", "20vw", "-13vw", "35vw", "35vw", ".5vw"],
       videoObjectInputRange: [0, 1],
-      videoObjectOutputRange: ["50% center", "50% center"],
+      videoObjectOutputRange: ["30% center", "30% center"],
       overlayInputRange: [0, 0.138, 0.141],
-      overlayOutputRange: ["0vw", "0vw", "-20vw"],
+      overlayOutputRange: ["0vw", "-10vw", "-20vw"],
     };
   }, [isMobile]);
 
@@ -107,10 +107,27 @@ export default function Page() {
     ["0vw", "0vw", "100vw"]
   );
 
+  const {
+    sectionThreeInputRange,
+    sectionThreeOutputRange,
+  } = useMemo(() => {
+    if (isMobile) {
+      return {
+        sectionThreeInputRange: [0, 0.181, 0.188],
+        sectionThreeOutputRange: ["0vw", "0vw", "-100vw"],
+      };
+    }
+
+    return {
+      sectionThreeInputRange: [0, 0.181, 0.2],
+      sectionThreeOutputRange: ["0vw", "0vw", "-100vw"],
+    };
+  }, [isMobile]);
+
   const sectionThreeX = useTransform(
     scrollYProgress,
-    [0, 0.181, 0.2, ],
-    ["0vw", "0vw", "-100vw"]
+    sectionThreeInputRange,
+    sectionThreeOutputRange
   );
 
   const overlayOpacity = useTransform(
@@ -123,8 +140,9 @@ export default function Page() {
     console.log('progress', progress);
     setShowVideo(true)
 
-    // Hide video when progress >= 0.32
-    if (progress >= 0.309) {
+    // Hide video when progress >= threshold
+    const hideVideoThreshold = isMobile ? 0.288 : 0.309;
+    if (progress >= hideVideoThreshold) {
       setHideVideo(true);
     } else {
       setHideVideo(false);
@@ -137,10 +155,10 @@ export default function Page() {
     if (video.readyState >= 1 && video.duration) {
       // Map progress value (0 to 1) to video duration
       // Adjust the progress range as needed for when video should start/end
-      const startProgress = 0.14; // Video starts at 14% scroll
-      const continueProgress = 0.181; // Resume scrubbing from 0.181 scroll
-      const pauseProgressThreshold = 0.175; // Stop scrubbing at 2.5s when progress reaches 0.175
-      const secondPauseProgress = 0.31; // Video reaches end at 30% scroll
+      const startProgress = isMobile ? 0.14 : 0.14; // Video starts at 14% scroll
+      const continueProgress = isMobile ? 0.181 : 0.181; // Resume scrubbing from 0.181 scroll
+      const pauseProgressThreshold = isMobile ? 0.175 : 0.175; // Stop scrubbing at 2.5s when progress reaches 0.175
+      const secondPauseProgress = isMobile ? 0.27 : 0.31; // Video reaches end at 30% scroll
       
       const pauseTime = 2.5; // Pause at 2.5 seconds of the video
       const resumeStartTime = 3.3; // Resume scrubbing from 3 seconds
@@ -298,7 +316,7 @@ export default function Page() {
 
 
   return (
-    <div className="relative" ref={mainRef}>
+    <div className="relative md:overflow-none overflow-x-clip bg-black"  ref={mainRef}>
       {/* Video Background */}
       <div className="relative ">
         <motion.video
@@ -331,7 +349,7 @@ export default function Page() {
         />
       </div>
 
-      <div className="relative z-20">
+      <div className="relative z-20 ">
         <Hero />
         <div className=" sticky top-0">
           <motion.div 

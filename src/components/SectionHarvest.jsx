@@ -46,9 +46,11 @@ export default function SectionHarvest({ setHideFinalpage }) {
     }
   });
 
-  const harvestSectionX = useTransform(scrollYProgress, [0, 0.1, 0.15], ["150vw", "0vw", "0vw"]);
-  const harvestText = useTransform(scrollYProgress, [0.1,0.11,0.35, 0.38], ["10vw","0vw", "0vw", "-100vw"]);
-  const whiteBgOpacity = useTransform(scrollYProgress, [0.35, 0.36], [1, 1]);
+  const harvestSectionXRaw = useTransform(scrollYProgress, [0, 0.1, 0.15], ["150vw", "0vw", "0vw"]);
+  const harvestSectionX = useSpring(harvestSectionXRaw, { stiffness: 100, damping: 30, mass: 1 });
+  const harvestTextRaw = useTransform(scrollYProgress, [0.1,0.11,0.33, 0.36], ["10vw","0vw", "0vw", "-100vw"]);
+  const harvestText = useSpring(harvestTextRaw, { stiffness: 100, damping: 30, mass: 1 });
+  const whiteBgOpacity = useTransform(scrollYProgress, [0.38, 0.4], [1, 1]);
   const treesOpacity = useTransform(scrollYProgress, [0.38, 0.4], [0, 1]);
    const treesY = useTransform(scrollYProgress, [0.38, 0.4], [50, 0]);
   const treesTextOneX = useTransform(

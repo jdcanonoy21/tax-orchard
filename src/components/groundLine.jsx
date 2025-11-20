@@ -40,8 +40,8 @@ export default function GroundLine({sectionRef}) {
             }
         } else {
             mappedProgress = isMobile 
-                ? Math.min(progress / 0.5, 1) // 0-0.5 maps to 0-1, capped at 1
-                : progress < 0.4 ? 0 : (progress - 0.4) * .7;
+                ? Math.min(progress / 3, 1) // 0-0.2 maps to 0-1, capped at 1
+                : Math.min(progress / 3, 1); // 0-0.2 maps to 0-1, capped at 1
         }
         
         const pathLine = Math.min(Math.max(mappedProgress * screenWdth, 0), screenWdth);

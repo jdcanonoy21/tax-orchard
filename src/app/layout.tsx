@@ -81,6 +81,12 @@ export default function RootLayout({
           type="font/opentype"
           crossOrigin="anonymous"
         />
+        <link
+          rel="preload"
+          href="/images/bill-transformation_V12.mp4"
+          as="video"
+          type="video/mp4"
+        />
       </head>
       <body className={`antialiased relative`}>{children}</body>
     </html>

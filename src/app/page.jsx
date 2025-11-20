@@ -14,15 +14,73 @@ import SectionSeven from "../components/SectionSeven";
 import SectionHarvest from "../components/SectionHarvest";
 import SectionTwelve from "../components/SectionTwelve";
 
+// IndexedDB utility functions for video caching
+const DB_NAME = "videoCache";
+const DB_VERSION = 1;
+const STORE_NAME = "videos";
+
+const openDB = () => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+    
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME);
+      }
+    };
+  });
+};
+
+const getVideoFromCache = async (videoUrl) => {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([STORE_NAME], "readonly");
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.get(videoUrl);
+      
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.warn("Error reading from IndexedDB:", error);
+    return null;
+  }
+};
+
+const storeVideoInCache = async (videoUrl, blob) => {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([STORE_NAME], "readwrite");
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.put(blob, videoUrl);
+      
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.warn("Error storing in IndexedDB:", error);
+  }
+};
+
 export default function Page() {
   const mainRef = useRef(null);
   const videoRef = useRef(null);
   const sectionTwoRef = useRef(null);
   const hasPlayedPast127 = useRef(false);
+  const blobUrlRef = useRef(null);
   const [hideFinalpage, setHideFinalpage] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [hideVideo, setHideVideo] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [cachedVideoUrl, setCachedVideoUrl] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -36,6 +94,170 @@ export default function Page() {
       window.removeEventListener("resize", updateIsMobile);
     };
   }, []);
+
+  // Load video from IndexedDB cache or fetch and store it
+  useEffect(() => {
+    if (typeof window === "undefined" || !("indexedDB" in window)) {
+      // Fallback to original URL if IndexedDB is not available
+      setCachedVideoUrl("/images/bill-transformation_V12.mp4");
+      return;
+    }
+
+    const videoUrl = "/images/bill-transformation_V12.mp4";
+
+    const loadVideo = async () => {
+      try {
+        // First, try to get video from IndexedDB cache
+        const cachedBlob = await getVideoFromCache(videoUrl);
+        
+        if (cachedBlob) {
+          // Video found in cache, create blob URL
+          const blobUrl = URL.createObjectURL(cachedBlob);
+          blobUrlRef.current = blobUrl;
+          setCachedVideoUrl(blobUrl);
+          console.log("Video loaded from IndexedDB cache");
+        } else {
+          // Video not in cache, fetch it
+          console.log("Video not in cache, fetching...");
+          const response = await fetch(videoUrl);
+          
+          if (!response.ok) {
+            throw new Error("Failed to fetch video");
+          }
+          
+          const blob = await response.blob();
+          
+          // Store in IndexedDB for future use
+          await storeVideoInCache(videoUrl, blob);
+          console.log("Video stored in IndexedDB cache");
+          
+          // Create blob URL for immediate use
+          const blobUrl = URL.createObjectURL(blob);
+          blobUrlRef.current = blobUrl;
+          setCachedVideoUrl(blobUrl);
+        }
+      } catch (error) {
+        console.warn("Error loading/caching video:", error);
+        // Fallback to original URL if caching fails
+        setCachedVideoUrl(videoUrl);
+      }
+    };
+
+    loadVideo();
+
+    // Cleanup: revoke blob URL when component unmounts
+    return () => {
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+        blobUrlRef.current = null;
+      }
+    };
+  }, []);
+
+  // Track video readiness and control loading state
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !cachedVideoUrl) return;
+
+    let isReady = false;
+
+    const checkVideoReady = () => {
+      // Video is ready when it can play through without buffering
+      if (video.readyState >= 4 || (video.readyState >= 3 && video.buffered.length > 0)) {
+        if (!isReady) {
+          isReady = true;
+          setVideoReady(true);
+          // Add a small delay to ensure everything is stable
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 300);
+        }
+      }
+    };
+
+    const handleCanPlayThrough = () => {
+      if (!isReady) {
+        isReady = true;
+        setVideoReady(true);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 300);
+      }
+    };
+
+    const handleLoadedData = () => {
+      checkVideoReady();
+    };
+
+    const handleProgress = () => {
+      checkVideoReady();
+    };
+
+    // Check initial state
+    checkVideoReady();
+
+    // Listen for video ready events
+    video.addEventListener('canplaythrough', handleCanPlayThrough);
+    video.addEventListener('loadeddata', handleLoadedData);
+    video.addEventListener('progress', handleProgress);
+
+    // Fallback: if video doesn't fire canplaythrough after a delay, check readyState
+    const fallbackCheck = setTimeout(() => {
+      if (!isReady && video.readyState >= 2) {
+        checkVideoReady();
+      }
+    }, 2000);
+
+    return () => {
+      video.removeEventListener('canplaythrough', handleCanPlayThrough);
+      video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('progress', handleProgress);
+      clearTimeout(fallbackCheck);
+    };
+  }, [cachedVideoUrl]);
+
+  // Disable scrolling when loading
+  useEffect(() => {
+    if (isLoading) {
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+      
+      // Stop Lenis if it exists
+      if (window.lenis) {
+        window.lenis.stop();
+      }
+
+      // Prevent scroll events
+      const preventScroll = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      };
+
+      window.addEventListener('wheel', preventScroll, { passive: false });
+      window.addEventListener('touchmove', preventScroll, { passive: false });
+      window.addEventListener('scroll', preventScroll, { passive: false });
+
+      return () => {
+        document.body.style.overflow = '';
+        
+        if (window.lenis) {
+          window.lenis.start();
+        }
+
+        window.removeEventListener('wheel', preventScroll);
+        window.removeEventListener('touchmove', preventScroll);
+        window.removeEventListener('scroll', preventScroll);
+      };
+    } else {
+      // Re-enable scrolling when loaded
+      document.body.style.overflow = '';
+      
+      if (window.lenis) {
+        window.lenis.start();
+      }
+    }
+  }, [isLoading]);
   
   const resetVideoToStart = React.useCallback(() => {
     const v = videoRef.current;
@@ -254,6 +476,9 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+    // Don't initialize Lenis until loading is complete
+    if (isLoading) return;
+
     const isChrome =
       /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -310,16 +535,53 @@ export default function Page() {
         window.lenis = undefined;
       };
     }
-  }, []);
+  }, [isLoading]);
 
 
 
 
   return (
     <div className="relative md:overflow-none overflow-x-clip bg-black"  ref={mainRef}>
+      {/* Loading Screen */}
+      {isLoading && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          animate={{ opacity: isLoading ? 1 : 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 bg-black z-[9999] flex items-center justify-center"
+          style={{ pointerEvents: isLoading ? 'auto' : 'none' }}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="text-center"
+          >
+            <motion.div
+              className="w-16 h-16 border-4 border-white border-t-transparent rounded-full mx-auto mb-4"
+              animate={{ rotate: 360 }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-white text-lg font-medium"
+            >
+              Loading...
+            </motion.p>
+          </motion.div>
+        </motion.div>
+      )}
+
       {/* Video Background */}
       <div className="relative ">
-       <motion.video
+        <motion.video
           ref={videoRef}
           className={`fixed top-0 left-0 md:left-0 md:w-full w-[screen] md:h-full h-screen flex object-cover md:object-cover z-0 ${hideVideo ? 'opacity-0' : showVideo ? 'opacity-80' : 'opacity-100'}`}
           style={{ x: videoX, objectPosition: videoObjectPosition, willChange: 'transform, object-position' }}
@@ -328,13 +590,28 @@ export default function Page() {
           autoPlay
           loop
           preload="auto"
+          crossOrigin="anonymous"
+          src={cachedVideoUrl || "/images/bill-transformation_V12.mp4"}
           onLoadedMetadata={resetVideoToStart}
           onLoadedData={resetVideoToStart}
           onCanPlay={resetVideoToStart}
+          onCanPlayThrough={() => {
+            resetVideoToStart();
+            if (!videoReady && videoRef.current && videoRef.current.readyState >= 4) {
+              setVideoReady(true);
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 300);
+            }
+          }}
           onPlay={() => { if (videoRef.current && videoRef.current.currentTime > 0.1 && !hasPlayedPast127.current) { try { videoRef.current.currentTime = 0; } catch(_) {} } }}
         >
-          <source src="/images/bill-transformation_V12.mp4" type="video/mp4" />
-        </motion.video>  
+          {cachedVideoUrl ? (
+            <source src={cachedVideoUrl} type="video/mp4" />
+          ) : (
+            <source src="/images/bill-transformation_V12.mp4" type="video/mp4" />
+          )}
+        </motion.video>
 
         {/* 70% white cover on the left */}
 

@@ -65,14 +65,11 @@ import FlipBookMonths from "./flipBookMonths";
  * @returns {JSX.Element} The rendered section with journey intro and interactive flipbook
  */
 export default function SectionSeven({ hideFinalpage }) {
-
-  if(typeof window === "undefined") return null;
-
   const flipBook = useRef();
   const scrollContainerRef = useRef(null);
   const containerRef = useRef(null);
   const [flipDirection, setFlipDirection] = useState(null);
-  const [windowSize, setWindowSize] = useState({ width: window?.innerWidth || 1200, height: window?.innerHeight || 1200 });
+  const [windowSize, setWindowSize] = useState({ width: 1200, height: 1200 });
   const [currentPage, setCurrentPage] = useState(null);
   const [totalActualPages, setTotalActualPages] = useState(0);
 

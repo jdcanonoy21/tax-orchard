@@ -137,7 +137,7 @@ export default function Page() {
   );
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    console.log('progress', progress);
+    // console.log('progress', progress);
     setShowVideo(true)
 
     // Hide video when progress >= threshold
@@ -319,7 +319,7 @@ export default function Page() {
     <div className="relative md:overflow-none overflow-x-clip bg-black"  ref={mainRef}>
       {/* Video Background */}
       <div className="relative ">
-        <motion.video
+       <motion.video
           ref={videoRef}
           className={`fixed top-0 left-0 md:left-0 md:w-full w-[screen] md:h-full h-screen flex object-cover md:object-cover z-0 ${hideVideo ? 'opacity-0' : showVideo ? 'opacity-80' : 'opacity-100'}`}
           style={{ x: videoX, objectPosition: videoObjectPosition, willChange: 'transform, object-position' }}
@@ -334,7 +334,7 @@ export default function Page() {
           onPlay={() => { if (videoRef.current && videoRef.current.currentTime > 0.1 && !hasPlayedPast127.current) { try { videoRef.current.currentTime = 0; } catch(_) {} } }}
         >
           <source src="/images/bill-transformation_V12.mp4" type="video/mp4" />
-        </motion.video> 
+        </motion.video>  
 
         {/* 70% white cover on the left */}
 

@@ -1,4 +1,4 @@
-"user client";
+"use client";
 
 import React, { useState, useEffect, useRef } from "react";
 import {
@@ -13,9 +13,7 @@ import {
 import SectionContact from "./SctionContact";
 
 export default function SectionHarvest({ setHideFinalpage }) {
-  if (typeof window === "undefined") return null;
-  const isMobile = window?.innerWidth < 768;
-
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef(null);
   const treesRef = useRef(null);
   const tree1Ref = useRef(null);
@@ -87,6 +85,17 @@ export default function SectionHarvest({ setHideFinalpage }) {
     [0.95, 0.99],
     ["100%", "0%"]
   );
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth < 768);
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   useEffect(() => {
     const treeRefs = [tree1Ref, tree2Ref, tree3Ref];

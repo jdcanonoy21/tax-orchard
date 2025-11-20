@@ -9,8 +9,6 @@ import {
 import GroundLine from "./groundLine";
 
 export default function SectionSix({externalScrollYProgress}) {
-  if(typeof window === "undefined") return null;
-
   const rootContainerRef = useRef(null);
   const videoRef = useRef(null);
   const videoMobileRef = useRef(null);
@@ -20,7 +18,7 @@ export default function SectionSix({externalScrollYProgress}) {
   const rootTextMobileRef = useRef(null);
   const animationFrameRef = useRef(null);
   const targetVideoTimeRef = useRef(0);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(false);
   const sectionFiveRef = useRef(null);
   const desktopVideoPrimedRef = useRef(false);
   const [showGround,  setShowGround] = useState(false);
@@ -178,6 +176,17 @@ export default function SectionSix({externalScrollYProgress}) {
         }
 
   });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth < 768);
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   useEffect(() => {
     const sectionFive = document.querySelector('.sectionFive');

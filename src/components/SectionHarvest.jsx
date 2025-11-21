@@ -35,7 +35,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
   });
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    // console.log("Section Harvest scroll:", progress);
+    console.log("Section Harvest scroll:", progress);
 
     if (progress > 0.16) {
       setHideFinalpage(true);
@@ -44,20 +44,20 @@ export default function SectionHarvest({ setHideFinalpage }) {
     }
   });
 
-  const harvestSectionXRaw = useTransform(
+  const harvestSectionX = useTransform(
     scrollYProgress, 
     isMobile ? [0, 0.0, 0.1] : [0, 0.1, 0.15], 
     isMobile ? ["150vw", "0vw", "0vw"] : ["150vw", "0vw", "0vw"]
   );
-  const harvestSectionX = useSpring(harvestSectionXRaw, { stiffness: 100, damping: 30, mass: 1 });
-  const harvestTextRaw = useTransform(
+  // const harvestSectionX = useSpring(harvestSectionXRaw, { stiffness: 100, damping: 30, mass: 1 });
+  const harvestText = useTransform(
     scrollYProgress, 
-    isMobile ? [0.1, 0.11, 0.37, 0.39] : [0.1, 0.11, 0.33, 0.36], 
-    isMobile ? ["10vw", "0vw", "0vw", "-100vw"] : ["10vw", "0vw", "0vw", "-100vw"]
+    isMobile ? [0.1, 0.11, 0.37, 0.39] : [0.1, 0.11, 0.34,0.38, 0.42], 
+    isMobile ? ["10vw", "0vw", "0vw", "-100vw"] : ["10vw", "0vw", "0vw", "0vw", "-100vw"]
   );
-  const harvestText = useSpring(harvestTextRaw, { stiffness: 100, damping: 30, mass: 1 });
-  const whiteBgOpacity = useTransform(scrollYProgress, [0.36, 0.39], [1, 1]);
-  const treesOpacity = useTransform(scrollYProgress, [0.36, 0.39], [0, 1]);
+  // const harvestText = useSpring(harvestTextRaw, { stiffness: 100, damping: 30, mass: 1 });
+  const whiteBgOpacity = useTransform(scrollYProgress, [0.39, 0.4], [1, 1]);
+  const treesOpacity = useTransform(scrollYProgress, [0.395, 0.42], [0, 1]);
    const treesY = useTransform(scrollYProgress, [0.3, 0.32], [50, 0]);
   const treesTextOneX = useTransform(
     scrollYProgress,
@@ -204,7 +204,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
         <motion.div className={`md:h-[110vh] h-[250vh]  bg-black `}></motion.div>
         <motion.div 
           ref={whiteBgRef}
-          className={`md:h-[100vh] h-[200vh] bg-white `}
+          className={`md:h-[150vh] h-[200vh] bg-white `}
           style={{ opacity: whiteBgOpacity }}
         ></motion.div>
       </motion.section>

@@ -99,8 +99,8 @@ export default function SectionSeven({ hideFinalpage }) {
     return () => unsubscribe();
   }, [scrollYProgress]);
 
-  const xRaw = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.75, 0.77] : [0, 0.1, 0.8, 0.85], ["100vw", "0vw", "0vw", "-100vw"]);
-  const x = useSpring(xRaw, { stiffness: 100, damping: 30, mass: 1 });
+  const x = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.75, 0.77] : [0, 0.1, 0.8, 0.85], ["100vw", "0vw", "0vw", "-100vw"]);
+  // const x = useSpring(xRaw, { stiffness: 100, damping: 0, mass: 1 });
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
@@ -1105,10 +1105,8 @@ export default function SectionSeven({ hideFinalpage }) {
     // Store scroll position before flipping
     lastScrollPosition.current = window.scrollY;
     // Always clear pendingPageRef before starting a new flip
-    const pausedScrollTime = isMobile 
-      ? (groupIndex > 6 ? 10 : 10)
-      : (groupIndex > 6 ? 10 :10);
-    const totalFlipTime = 200 + 5 * 75 + 300;
+    const pausedScrollTime = 0;
+    const totalFlipTime = 300;
     pendingPageRef.current = null;
     scrollLock.current = true;
     setIsFlipping(true);
@@ -1120,14 +1118,14 @@ export default function SectionSeven({ hideFinalpage }) {
 
       // console.log('flipToGroup called with groupIndex:', groupIndex, 'currentPage:', currentPage, 'pageFlips:', pageFlips);
 
-
-    if(!pageFlips) {
-      setTimeout(() => {
-            setIsFlipping(false);
-            scrollLock.current = false;
-      }, pausedScrollTime);
-      return; // prevent if no sequence found (out of bounds)
-    }
+      console.log("pageFlips", pageFlips)
+    // if(!pageFlips) {
+    //   setTimeout(() => {
+    //         setIsFlipping(false);
+    //         scrollLock.current = false;
+    //   }, pausedScrollTime);
+    //   return; // prevent if no sequence found (out of bounds)
+    // }
 
     const isForward = currentPage == null ? true :  groupIndex > currentPage;
     if(isForward) {
@@ -1209,7 +1207,7 @@ export default function SectionSeven({ hideFinalpage }) {
         // console.log("1-second delay complete - flipping now enabled");
         setCanStartFlipping(true);
         setFlipEnabled(true);
-      }, isMobile ? 500 : 10);
+      }, isMobile ? 500 : 500);
     }
 
     return () => {

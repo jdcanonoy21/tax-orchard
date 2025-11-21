@@ -8,17 +8,33 @@ export default function Hero() {
   const { scrollYProgress } = useScroll();
   const videoRef = useRef(null);
   const [videoError, setVideoError] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
 
 
   // Move logoX from 0 to -250px as soon as scrollYProgress > 0 (very fast, within first 2% of scroll)
-  const logoX = useTransform(scrollYProgress, [0, 0.01], [0, -250]);
+  const logoX = useTransform(
+    scrollYProgress, 
+    isMobile ? [0, 0.0065] : [0, 0.01], 
+    isMobile ? [0, -250] : [0, -250]
+  );
 
   // Animate heading Y position: from 0 to -280px as scroll progresses from 0 to 0.01
   const headingY = useTransform(scrollYProgress, [0, 0.01], [0, -280]);
 
   // Animate paragraph scale: from 1 to 1.15 as scroll progresses from 0 to 0.2
   const paragraphScale = useTransform(scrollYProgress, [0, 0.01], [1, 1.15]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth < 768);
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   return (
     <section className="relative min-h-screen flex flex-col justify-between p-8 ">

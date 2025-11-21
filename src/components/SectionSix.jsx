@@ -37,8 +37,8 @@ export default function SectionSix({externalScrollYProgress}) {
   // Smooth horizontal/vertical scroll transforms
   const delayedProgress = useTransform(xyScrollYProgress, [0.4, 1], [0, 1]);
 
-  const x = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", isMobile ? '-155%' : "-145%"]);
-  const y = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%",  "-55%"]);
+  const x = useTransform(delayedProgress, [0, isMobile ? 0.99 : 1], ["0%", isMobile ? '-175%' : "-145%"]);
+  const y = useTransform(delayedProgress, [0, isMobile ? 0.99 : 1], ["0%",  "-55%"]);
   const yGround = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", "-150%"]);
 
   const isRootTextInView = useInView(rootTextRef, { amount:  0.5, once: false });
@@ -48,7 +48,7 @@ export default function SectionSix({externalScrollYProgress}) {
 
   // Update seed visibility based on externalScrollYProgress
   useMotionValueEvent(externalScrollYProgress, "change", (latest) => {
-    const threshold = isMobile ? 0.288 : 0.309;
+    const threshold = isMobile ? 0.292 : 0.309;
     setSeedVisible(latest >= threshold);
     setShowVideo(latest >= threshold);
   });
@@ -335,7 +335,7 @@ export default function SectionSix({externalScrollYProgress}) {
                 <motion.img
                   src="/images/seed-new.jpg"
                   alt="Seed"
-                  className={`w-[200px] md:w-[180px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
+                  className={`w-[170px] md:w-[180px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
                 />
                   <div className="relative">
                     <div
@@ -352,7 +352,7 @@ export default function SectionSix({externalScrollYProgress}) {
                           loop
                           playsInline
                           webkit-playsinline="true"
-                          className="relative md:absolute top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 transition-opacity duration-300 "
+                          className="relative md:absolute hidden md:block top-0 ml-[100px] left-0 -translate-x-1/4 md:left-1/2 md:ml-[308px] md:-translate-x-1/2 w-[1000px] h-[600px] md:w-[2000px] md:h-[1200px] object-cover object-top z-0 transition-opacity duration-300 "
                         >
                           <source src="/images/roots.mp4" type="video/mp4" />
                         </video>
@@ -395,7 +395,7 @@ export default function SectionSix({externalScrollYProgress}) {
                     style={{ top:  "380px", zIndex: 9999 }}
                   >
                     <div className="flex flex-col gap-4 md:px-28 md:pr-10  w-screen px-8">
-                      <p className="!text-3xl text-base leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
+                      <p className="!text-3xl  leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
                         At Tax Orchard, we help you turn what you owe into
                         something that grows—using a strategy no one else
                         offers.
@@ -409,16 +409,18 @@ export default function SectionSix({externalScrollYProgress}) {
  
                 </div>
 
-                 <div className="block md:hidden relative w-[800px] h-[600px] left-2 z-50 mt-0 overflow-clip">
+                 <div className="block md:hidden relative w-[1400px] h-[600px] left-[240px] z-50 mt-0 overflow-clip">
                      <video
                        ref={videoMobileRef}
                        muted
+                       width='100%' height='100%'
+                       autoPlay
+                       preload="auto"
+                       loop
                        playsInline
                        webkit-playsinline="true"
-                       preload="metadata"
                        className="w-full object-cover object-top ml-[50px] -mt-4"
                      >
-                       <source src="/images/roots.webm" type="video/webm" />
                        <source src="/images/roots.mp4" type="video/mp4" />
                      </video>
                    </div>

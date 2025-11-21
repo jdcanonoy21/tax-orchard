@@ -99,7 +99,7 @@ export default function SectionSeven({ hideFinalpage }) {
     return () => unsubscribe();
   }, [scrollYProgress]);
 
-  const xRaw = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.85, 0.88] : [0, 0.1, 0.8, 0.85], ["100vw", "0vw", "0vw", "-100vw"]);
+  const xRaw = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.75, 0.77] : [0, 0.1, 0.8, 0.85], ["100vw", "0vw", "0vw", "-100vw"]);
   const x = useSpring(xRaw, { stiffness: 100, damping: 30, mass: 1 });
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
@@ -991,7 +991,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
     setTimeout(() => {
       isScrolling.current = false;
-    }, 1000);
+    }, isMobile ? 100 : 1000);
 
     if(isFlipping) {
       /**
@@ -1105,7 +1105,9 @@ export default function SectionSeven({ hideFinalpage }) {
     // Store scroll position before flipping
     lastScrollPosition.current = window.scrollY;
     // Always clear pendingPageRef before starting a new flip
-    const pausedScrollTime = groupIndex > 6 ? 2000 :  500; // 0.5 second
+    const pausedScrollTime = isMobile 
+      ? (groupIndex > 6 ? 10 : 10)
+      : (groupIndex > 6 ? 10 :10);
     const totalFlipTime = 200 + 5 * 75 + 300;
     pendingPageRef.current = null;
     scrollLock.current = true;
@@ -1207,7 +1209,7 @@ export default function SectionSeven({ hideFinalpage }) {
         // console.log("1-second delay complete - flipping now enabled");
         setCanStartFlipping(true);
         setFlipEnabled(true);
-      }, 1000);
+      }, isMobile ? 500 : 10);
     }
 
     return () => {
@@ -1224,9 +1226,10 @@ export default function SectionSeven({ hideFinalpage }) {
 
   useLayoutEffect(() => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.style.height = `${totalGroups * 100}vh`; // 7 scroll zones
+      const heightMultiplier = isMobile ? 100 : 100;
+      scrollContainerRef.current.style.height = `${totalGroups * heightMultiplier}vh`; // 7 scroll zones
     }
-  }, []);
+  }, [isMobile]);
 
 
   // console.log("currentPage", currentPage);
@@ -1342,7 +1345,7 @@ export default function SectionSeven({ hideFinalpage }) {
           x, 
         }}
       >
-        <div className="flipbook-container  sticky left-0 top-0 !z-50 w-full min-h-screen overflow-hidden ">
+        <div className="flipbook-container  sticky left-0 top-0 !z-50 w-full min-h-screen overflow-hidden bg-white ">
           <HTMLFlipBook
             onChangeState={flipping}
             onFlip={(e) => {

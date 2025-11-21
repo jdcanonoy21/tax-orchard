@@ -65,7 +65,7 @@ export default function SectionTwo({ externalScrollYProgress }) {
   // Listen to external scroll progress if provided
   useMotionValueEvent(externalScrollYProgress, "change", (progress) => {
     // Use external progress for highlight logic
-    if (progress > 0.095) {
+    if (progress > 0.0835) {
       if (!highlight) setHighlight(true);
     } else {
       if (highlight) setHighlight(false);

@@ -44,13 +44,21 @@ export default function SectionHarvest({ setHideFinalpage }) {
     }
   });
 
-  const harvestSectionXRaw = useTransform(scrollYProgress, [0, 0.1, 0.15], ["150vw", "0vw", "0vw"]);
+  const harvestSectionXRaw = useTransform(
+    scrollYProgress, 
+    isMobile ? [0, 0.0, 0.1] : [0, 0.1, 0.15], 
+    isMobile ? ["150vw", "0vw", "0vw"] : ["150vw", "0vw", "0vw"]
+  );
   const harvestSectionX = useSpring(harvestSectionXRaw, { stiffness: 100, damping: 30, mass: 1 });
-  const harvestTextRaw = useTransform(scrollYProgress, [0.1,0.11,0.33, 0.36], ["10vw","0vw", "0vw", "-100vw"]);
+  const harvestTextRaw = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.1, 0.11, 0.37, 0.39] : [0.1, 0.11, 0.33, 0.36], 
+    isMobile ? ["10vw", "0vw", "0vw", "-100vw"] : ["10vw", "0vw", "0vw", "-100vw"]
+  );
   const harvestText = useSpring(harvestTextRaw, { stiffness: 100, damping: 30, mass: 1 });
-  const whiteBgOpacity = useTransform(scrollYProgress, [0.38, 0.4], [1, 1]);
-  const treesOpacity = useTransform(scrollYProgress, [0.38, 0.4], [0, 1]);
-   const treesY = useTransform(scrollYProgress, [0.38, 0.4], [50, 0]);
+  const whiteBgOpacity = useTransform(scrollYProgress, [0.36, 0.39], [1, 1]);
+  const treesOpacity = useTransform(scrollYProgress, [0.36, 0.39], [0, 1]);
+   const treesY = useTransform(scrollYProgress, [0.3, 0.32], [50, 0]);
   const treesTextOneX = useTransform(
     scrollYProgress,
     [0.45, 0.5, 0.55, 0.6],
@@ -184,19 +192,19 @@ export default function SectionHarvest({ setHideFinalpage }) {
     <motion.section
         className="relative bg-black min-h-screen overflow-x-clip z-30"
         ref={sectionContainerRef}
-        style={{ marginTop: "-200vh", x: harvestSectionX }}
+        style={{ marginTop: isMobile ? "-400vh" : "-200vh", x: harvestSectionX }}
         transition={{ x: { type: "spring", stiffness: 60, damping: 24 } }}
       >
         <div className="sticky -top-40 w-full mix-blend-difference h-screen flex items-center justify-center isolate z-10 pt-64">
-          <motion.h2 className="mix-blend-difference text-white text-[183px] font-proxima-bold leading-none text-center"    
+          <motion.h2 className="mix-blend-difference text-white text-5xl md:text-[183px] font-proxima-bold leading-none text-center"    
           style={{  x: harvestText }}>
             The Harvest
           </motion.h2>
         </div>
-        <motion.div className={`h-[110vh]  bg-black `}></motion.div>
+        <motion.div className={`md:h-[110vh] h-[250vh]  bg-black `}></motion.div>
         <motion.div 
           ref={whiteBgRef}
-          className={`h-[100vh] bg-white `}
+          className={`md:h-[100vh] h-[200vh] bg-white `}
           style={{ opacity: whiteBgOpacity }}
         ></motion.div>
       </motion.section>

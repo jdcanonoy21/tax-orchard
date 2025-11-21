@@ -87,6 +87,12 @@ export default function RootLayout({
           as="video"
           type="video/mp4"
         />
+        <link
+          rel="preload"
+          href="/images/roots.mp4"
+          as="video"
+          type="video/mp4"
+        />
       </head>
       <body className={`antialiased relative`}>{children}</body>
     </html>

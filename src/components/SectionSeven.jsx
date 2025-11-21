@@ -991,7 +991,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
     setTimeout(() => {
       isScrolling.current = false;
-    }, isMobile ? 100 : 1000);
+    }, isMobile ? 100 : 100);
 
     if(isFlipping) {
       /**
@@ -1106,7 +1106,7 @@ export default function SectionSeven({ hideFinalpage }) {
     lastScrollPosition.current = window.scrollY;
     // Always clear pendingPageRef before starting a new flip
     const pausedScrollTime = 0;
-    const totalFlipTime = 300;
+    const totalFlipTime = 200;
     pendingPageRef.current = null;
     scrollLock.current = true;
     setIsFlipping(true);
@@ -1135,7 +1135,7 @@ export default function SectionSeven({ hideFinalpage }) {
           setTimeout(() => {
             console.log('Flipping to page:', i);
             flipBook.current?.pageFlip().flip(i);
-          }, 200 + i * 75);
+          }, 10 + i * 75);
         }
     } else {
         const backActualPage =  (pageFlips + 1)
@@ -1147,7 +1147,7 @@ export default function SectionSeven({ hideFinalpage }) {
           setTimeout(() => {
             console.log('Flipping to page back:', i);
             flipBook.current?.pageFlip().flip(i);
-          }, 200 + (startPage - i) * 75);
+          }, 100 + (startPage - i) * 75);
         }
     }
     
@@ -1191,7 +1191,7 @@ export default function SectionSeven({ hideFinalpage }) {
         for (let i = 5; i >= 0; i--) {
           setTimeout(() => {
             flipBook?.current?.pageFlip?.().flipPrev?.();
-          }, 100 + (5 - i) * 75);
+          }, 10 + (5 - i) * 75);
         }
       }
       // console.log("Journey in view - flipping disabled");
@@ -1207,7 +1207,7 @@ export default function SectionSeven({ hideFinalpage }) {
         // console.log("1-second delay complete - flipping now enabled");
         setCanStartFlipping(true);
         setFlipEnabled(true);
-      }, isMobile ? 500 : 500);
+      }, isMobile ? 500 : 10);
     }
 
     return () => {

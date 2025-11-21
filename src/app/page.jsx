@@ -306,7 +306,7 @@ export default function Page() {
 
     return {
       videoInputRange: 
-      [0, 0.07, 0.0835, 0.135, 0.15, 0.1785,0.189,0.194],
+      [0, 0.07, 0.0832, 0.135, 0.15, 0.1745,0.189,0.194],
       videoOutputRange: ["200vw", "100vw", "20vw", "20vw", "-13vw", "35vw", "35vw", ".5vw"],
       videoObjectInputRange: [0, 1],
       videoObjectOutputRange: ["30% center", "30% center"],
@@ -363,7 +363,7 @@ export default function Page() {
     setShowVideo(true)
 
     // Hide video when progress >= threshold
-    const hideVideoThreshold = isMobile ? 0.292 : 0.309;
+    const hideVideoThreshold = isMobile ? 0.292 : 0.305;
     if (progress >= hideVideoThreshold) {
       setHideVideo(true);
     } else {

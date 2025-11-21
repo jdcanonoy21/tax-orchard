@@ -48,7 +48,7 @@ export default function SectionSix({externalScrollYProgress}) {
 
   // Update seed visibility based on externalScrollYProgress
   useMotionValueEvent(externalScrollYProgress, "change", (latest) => {
-    const threshold = isMobile ? 0.292 : 0.309;
+    const threshold = isMobile ? 0.292 : 0.305;
     setSeedVisible(latest >= threshold);
     setShowVideo(latest >= threshold);
   });
@@ -339,7 +339,7 @@ export default function SectionSix({externalScrollYProgress}) {
                 />
                   <div className="relative">
                     <div
-                      className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black hidden md:block "
+                      className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black md:bg-transparent hidden md:block "
                       id="rootContainer"
                     >
                       {showVideo && (

@@ -35,7 +35,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
   });
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    console.log("Section Harvest scroll:", progress);
+    // console.log("Section Harvest scroll:", progress);
 
     if (progress > 0.16) {
       setHideFinalpage(true);
@@ -52,27 +52,43 @@ export default function SectionHarvest({ setHideFinalpage }) {
   // const harvestSectionX = useSpring(harvestSectionXRaw, { stiffness: 100, damping: 30, mass: 1 });
   const harvestText = useTransform(
     scrollYProgress, 
-    isMobile ? [0.1, 0.11, 0.37, 0.39] : [0.1, 0.11, 0.34,0.38, 0.42], 
+    isMobile ? [0.1, 0.11, 0.4, 0.45] : [0.1, 0.11, 0.34,0.38, 0.42], 
     isMobile ? ["10vw", "0vw", "0vw", "-100vw"] : ["10vw", "0vw", "0vw", "0vw", "-100vw"]
   );
   // const harvestText = useSpring(harvestTextRaw, { stiffness: 100, damping: 30, mass: 1 });
-  const whiteBgOpacity = useTransform(scrollYProgress, [0.39, 0.4], [1, 1]);
-  const treesOpacity = useTransform(scrollYProgress, [0.395, 0.42], [0, 1]);
+  const whiteBgOpacity = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.4, 0.45] : [0.39, 0.4], 
+    isMobile ? [1, 1] : [1, 1]
+  );
+  const treesOpacity = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.42, 0.44] : [0.395, 0.42], 
+    isMobile ? [0, 1] : [0, 1]
+  );
    const treesY = useTransform(scrollYProgress, [0.3, 0.32], [50, 0]);
   const treesTextOneX = useTransform(
     scrollYProgress,
-    [0.45, 0.5, 0.55, 0.6],
-    ["100vw", "0vw", "0vw", "-100vw"]
+    isMobile ? [0.45, 0.5, 0.55, 0.6] : [0.45, 0.5, 0.55, 0.6],
+    isMobile ? ["100vw", "0vw", "0vw", "-100vw"] : ["100vw", "0vw", "0vw", "-100vw"]
   );
 
   const treesTextTwoX = useTransform(
     scrollYProgress,
-    [0.6, 0.65, 0.7, 0.75],
-    ["100vw", "0vw", "0vw", "-100vw"]
+    isMobile ? [0.6, 0.65, 0.7, 0.75] : [0.6, 0.65, 0.7, 0.75],
+    isMobile ? ["100vw", "0vw", "0vw", "-100vw"] : ["100vw", "0vw", "0vw", "-100vw"]
   );
 
-  const tree1X = useTransform(scrollYProgress, [0.7, 0.75], ["0vw",isMobile ? '80%' :  "190px"]);
-  const tree3X = useTransform(scrollYProgress, [0.7, 0.75], ["0vw", isMobile ? '-80%' : "-190px"]);
+  const tree1X = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.72, 0.77] : [0.7, 0.75], 
+    isMobile ? ["0vw", '80%'] : ["0vw", "190px"]
+  );
+  const tree3X = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.72, 0.77] : [0.7, 0.75], 
+    isMobile ? ["0vw", '-80%'] : ["0vw", "-190px"]
+  );
 
   const tree1Opacity = useTransform(scrollYProgress, [0.8, 0.85], [1, 0]);
   const svgLogoOpacity = useTransform(scrollYProgress, [0.8, 0.87, 0.95, isMobile ? 0.98 : 1], [0, 1, 1, 0]);
@@ -212,7 +228,7 @@ export default function SectionHarvest({ setHideFinalpage }) {
 
       <motion.section
         ref={treesRef}
-        style={{ opacity: treesOpacity,   y: treesY, marginTop: "-100vh" }}
+        style={{ opacity: treesOpacity,   y: treesY, marginTop: isMobile ? "-200vh" : "-100vh" }}
         transition={{ opacity: { type: "spring", stiffness: 60, damping: 24 } }}
         className={`bg-white min-h-screen sticky top-0 flex items-center justify-center p-8 w-full z-40   overflow-hidden`}
       >

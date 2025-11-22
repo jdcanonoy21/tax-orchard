@@ -114,24 +114,24 @@ export default function SectionSeven({ hideFinalpage }) {
     {
       highlightMonth: "APR",
       highlightIndex: 3,
-      highlightColor: "blue",
+      highlightColor: "#3974F6",
     },
     {
       highlightMonth: "JUN",
       highlightIndex: 5,
-      highlightColor: "blue",
+      highlightColor: "#3974F6",
     },
 
     {
       highlightMonth: "OCT",
       highlightIndex: 9,
-      highlightColor: "blue",
+      highlightColor: "#3974F6",
     },
 
     {
       highlightMonth: "DEC",
       highlightIndex: 11,
-      highlightColor: "blue",
+      highlightColor: "#3974F6",
     },
   ];
 
@@ -1317,14 +1317,14 @@ export default function SectionSeven({ hideFinalpage }) {
 }, [totalActualPages]);
 
   return (
-    <>
+    <div className="mt-72 md:mt-auto">
       <div className="overflow-x-clip ">
       <motion.div
         className="sticky top-0 snap-start snap-always  h-screen"
         ref={journeyRef}
         style={{ x: journeyX }}
       >
-        <div className=" min-h-[100dvh] bg-black !w-full flex items-center justify-center relative z-50">
+        <div className=" min-h-[100dvh] md:bg-black !w-full flex items-center justify-center relative z-50">
           <div className="w-full mx-auto flex flex-col items-center justify-center h-full overflow-hidden ">
             <h2 className="text-5xl md:text-9xl font-proxima-bold leading-none font-black text-white text-center">
               The Journey
@@ -1407,6 +1407,6 @@ export default function SectionSeven({ hideFinalpage }) {
 
     </div>
 
-    </>
+    </div>
   );
 }

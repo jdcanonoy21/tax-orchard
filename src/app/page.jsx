@@ -293,12 +293,12 @@ export default function Page() {
   } = useMemo(() => {
     if (isMobile) {
       return {
-        videoInputRange: [0, 0.05, 0.08, 0.11, 0.17, 0.2],
+        videoInputRange: [0, 0.05, 0.08, 0.071, 0.072, 0.2],
         videoOutputRange: ["160vw", "140vw", "0vw", "0vw", "0vw", "0vw"],
-        videoObjectInputRange: [0, 0.05, 0.3],
-        videoObjectOutputRange: ["30% center", "35% center","55% center"],
-        overlayInputRange: [0, 0.12, 0.16],
-        overlayOutputRange: ["0vw", "0vw", "-12vw"],
+        videoObjectInputRange: [0, 0.05, 0.08, 0.081, 0.28],
+        videoObjectOutputRange: ["30% center", "center center","35% center","40% center","50% center"],
+        overlayInputRange: [0, 0.12, 0.14],
+        overlayOutputRange: ["0vw", "0vw", "-100vw"],
       };
     }
 
@@ -363,7 +363,7 @@ export default function Page() {
     setShowVideo(true)
 
     // Hide video when progress >= threshold
-    const hideVideoThreshold = isMobile ? 0.292 : 0.305;
+    const hideVideoThreshold = isMobile ? 0.3 : 0.305;
     if (progress >= hideVideoThreshold) {
       setHideVideo(true);
     } else {
@@ -377,7 +377,7 @@ export default function Page() {
     if (video.readyState >= 1 && video.duration) {
       // Map progress value (0 to 1) to video duration
       // Adjust the progress range as needed for when video should start/end
-      const startProgress = isMobile ? 0.14 : 0.14; // Video starts at 14% scroll
+      const startProgress = isMobile ? 0.12 : 0.14; // Video starts at 14% scroll
       const continueProgress = isMobile ? 0.181 : 0.189; // Resume scrubbing from 0.181 scroll
       const pauseProgressThreshold = isMobile ? 0.175 : 0.175; // Stop scrubbing at 2.5s when progress reaches 0.175
       const secondPauseProgress = isMobile ? 0.27 : 0.31; // Video reaches end at 30% scroll

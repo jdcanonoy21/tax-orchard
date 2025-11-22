@@ -35,7 +35,7 @@ export default function SectionSix({externalScrollYProgress}) {
   });
 
   // Smooth horizontal/vertical scroll transforms
-  const delayedProgress = useTransform(xyScrollYProgress, [0.5, 1], [0, 1]);
+  const delayedProgress = useTransform(xyScrollYProgress, [isMobile ? 0.5 : 0.4, 1], [0, 1]);
 
   const x = useTransform(delayedProgress, [0, isMobile ? 0.99 : 1], ["0%", isMobile ? '-155%' : "-145%"]);
   const y = useTransform(delayedProgress, [0, isMobile ? 0.99 : 1], ["0%",  "-55%"]);

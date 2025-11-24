@@ -1055,11 +1055,6 @@ export default function SectionSeven({ hideFinalpage }) {
    * @returns {void}
    */
   const stopScrollMomentum = () => {
-  // Stop Lenis if available
-  if (window.lenis) {
-    window.lenis.stop();
-  }
-  
   // Kill native scroll momentum
   const currentScroll = window.scrollY;
   window.scrollTo({
@@ -1207,7 +1202,7 @@ export default function SectionSeven({ hideFinalpage }) {
         // console.log("1-second delay complete - flipping now enabled");
         setCanStartFlipping(true);
         setFlipEnabled(true);
-      }, isMobile ? 500 : 10);
+      }, isMobile ? 500 : 1000);
     }
 
     return () => {
@@ -1242,16 +1237,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
   useEffect(() => {
     if (!isFlipping) {
-      // Re-enable Lenis when not flipping
-      if (window.lenis) {
-        window.lenis.start();
-      }
       return;
-    }
-
-    // Stop Lenis during flip
-    if (window.lenis) {
-      window.lenis.stop();
     }
 
     const preventScroll = (e) => {

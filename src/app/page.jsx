@@ -366,7 +366,7 @@ export default function Page() {
   );
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    console.log('progress', progress);
+    // console.log('progress', progress);
     setShowVideo(true)
 
     // Hide video when progress >= threshold
@@ -532,6 +532,52 @@ export default function Page() {
     };
   }, []);
 
+
+  useEffect(() => {
+    // Don't initialize Lenis until loading is complete
+    if (isLoading) return;
+
+    const lenis = new Lenis({
+      smooth: true,
+      lerp: 0.1,
+      duration: 1.2,
+    });
+
+    window.lenis = lenis; // Make Lenis globally accessible
+    console.log('Lenis initialized:', lenis);
+
+    function raf(time) {
+      lenis.raf(time);
+      // Log scrollY value
+      console.log('Lenis scrollY:', lenis.scroll);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Also listen to scroll events
+    lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
+      console.log('Lenis scroll event - scrollY:', scroll, 'progress:', progress);
+    });
+
+    // Observe body overflow changes
+    const observer = new MutationObserver(() => {
+      if (document.body.style.overflow === "hidden") {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    });
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+
+    return () => {
+      lenis.destroy();
+      observer.disconnect();
+      window.lenis = undefined;
+    };
+  }, [isLoading]);
 
 
   return (

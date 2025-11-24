@@ -370,7 +370,7 @@ export default function Page() {
     setShowVideo(true)
 
     // Hide video when progress >= threshold
-    const hideVideoThreshold = isMobile ? 0.3 : 0.305;
+    const hideVideoThreshold = isMobile ? 0.2895 : 0.305;
     if (progress >= hideVideoThreshold) {
       setHideVideo(true);
     } else {

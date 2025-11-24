@@ -48,7 +48,7 @@ export default function SectionSix({externalScrollYProgress}) {
 
   // Update seed visibility based on externalScrollYProgress
   useMotionValueEvent(externalScrollYProgress, "change", (latest) => {
-    const threshold = isMobile ? 0.3 : 0.305;
+    const threshold = isMobile ? 0.2895 : 0.305;
     setSeedVisible(latest >= threshold);
     setShowVideo(latest >= threshold);
   });
@@ -335,7 +335,7 @@ export default function SectionSix({externalScrollYProgress}) {
                 <motion.img
                   src="/images/seed-new.jpg"
                   alt="Seed"
-                  className={`w-[185px] md:w-[180px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
+                  className={`w-[220px] md:w-[180px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
                 />
                   <div className="relative">
                     <div

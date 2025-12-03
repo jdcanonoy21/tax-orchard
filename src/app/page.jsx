@@ -365,7 +365,7 @@ export default function Page() {
     [1, 1, 0]
   );
 
-  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+  function setVideoTime(progress) {
     // console.log('progress', progress);
     setShowVideo(true)
 
@@ -432,7 +432,7 @@ export default function Page() {
         
         video.currentTime = Math.min(videoTime, endVideoTime);
         video.playbackRate = 1.0; // Normal speed
-        if (!video.paused) video.pause(); // Keep paused during scrubbing
+        // if (!video.paused) video.pause(); // Keep paused during scrubbing
         hasPlayedPast127.current = true;
       } else if (progress >= secondPauseProgress) {
         // Pause the video at the end
@@ -441,6 +441,10 @@ export default function Page() {
         if (!video.paused) video.pause();
       }
     }
+  }
+
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+      setVideoTime(progress);
   });
 
   // Prime the video for Chrome - play once then pause to allow scrubbing
@@ -549,12 +553,12 @@ export default function Page() {
     function raf(time) {
       lenis.raf(time);
       // Log scrollY value
-      console.log('Lenis scrollY:', lenis.scroll);
+      // console.log('Lenis scrollY:', lenis.scroll);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
 
-    // Also listen to scroll events
+    // // Also listen to scroll events
     lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
       console.log('Lenis scroll event - scrollY:', scroll, 'progress:', progress);
     });
@@ -630,11 +634,11 @@ export default function Page() {
           preload="auto"
           crossOrigin="anonymous"
           src={cachedVideoUrl || "/images/bill-transformation_V12.mp4"}
-          onLoadedMetadata={resetVideoToStart}
-          onLoadedData={resetVideoToStart}
-          onCanPlay={resetVideoToStart}
+          // onLoadedMetadata={resetVideoToStart}
+          // onLoadedData={resetVideoToStart}
+          // onCanPlay={resetVideoToStart}
           onCanPlayThrough={() => {
-            resetVideoToStart();
+            // resetVideoToStart();
             if (!videoReady && videoRef.current && videoRef.current.readyState >= 4) {
               setVideoReady(true);
               setTimeout(() => {

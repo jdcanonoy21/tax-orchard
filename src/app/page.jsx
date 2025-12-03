@@ -74,6 +74,8 @@ export default function Page() {
   const sectionTwoRef = useRef(null);
   const hasPlayedPast127 = useRef(false);
   const blobUrlRef = useRef(null);
+  const videoPrimedRef = useRef(false);
+  const isScrubbingRef = useRef(false);
   const [hideFinalpage, setHideFinalpage] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [hideVideo, setHideVideo] = useState(false);
@@ -260,7 +262,9 @@ export default function Page() {
   }, [isLoading]);
   
   const resetVideoToStart = React.useCallback(() => {
-    console.log('Resetting video to start');
+    // Don't reset if we're actively scrubbing
+    if (isScrubbingRef.current) return;
+    
     const v = videoRef.current;
     if (!v) return;
     try {
@@ -269,7 +273,9 @@ export default function Page() {
         v.currentTime = 0;
       } else {
         const once = () => {
-          try { v.currentTime = 0; } catch (_) {}
+          if (!isScrubbingRef.current) {
+            try { v.currentTime = 0; } catch (_) {}
+          }
           v.removeEventListener('loadedmetadata', once);
         };
         v.addEventListener('loadedmetadata', once);
@@ -294,12 +300,12 @@ export default function Page() {
   } = useMemo(() => {
     if (isMobile) {
       return {
-        videoInputRange: [0, 0.05, 0.08, 0.11, 0.17, 0.2],
+        videoInputRange: [0, 0.05, 0.08, 0.071, 0.072, 0.2],
         videoOutputRange: ["160vw", "140vw", "0vw", "0vw", "0vw", "0vw"],
-        videoObjectInputRange: [0, 0.05, 0.3],
-        videoObjectOutputRange: ["30% center", "35% center","55% center"],
-        overlayInputRange: [0, 0.12, 0.16],
-        overlayOutputRange: ["0vw", "0vw", "-12vw"],
+        videoObjectInputRange: [0, 0.05, 0.08, 0.081, 0.28],
+        videoObjectOutputRange: ["30% center", "center center","35% center","40% center","50% center"],
+        overlayInputRange: [0, 0.12, 0.14],
+        overlayOutputRange: ["0vw", "0vw", "-100vw"],
       };
     }
 
@@ -307,7 +313,7 @@ export default function Page() {
 
     return {
       videoInputRange: 
-      [0, 0.07, 0.0835, 0.135, 0.15, 0.1785,0.189,0.194],
+      [0, 0.07, 0.0832, 0.135, 0.15, 0.1745,0.189,0.194],
       videoOutputRange: ["200vw", "100vw", "20vw", "20vw", "-13vw", "35vw", "35vw", ".5vw"],
       videoObjectInputRange: [0, 1],
       videoObjectOutputRange: ["30% center", "30% center"],
@@ -359,12 +365,12 @@ export default function Page() {
     [1, 1, 0]
   );
 
-  useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    console.log('progress', progress);
+  function setVideoTime(progress) {
+    // console.log('progress', progress);
     setShowVideo(true)
 
     // Hide video when progress >= threshold
-    const hideVideoThreshold = isMobile ? 0.292 : 0.309;
+    const hideVideoThreshold = isMobile ? 0.2895 : 0.305;
     if (progress >= hideVideoThreshold) {
       setHideVideo(true);
     } else {
@@ -374,11 +380,11 @@ export default function Page() {
     const video = videoRef.current;
     if (!video) return;
 
-    // Ensure video metadata is loaded
-    if (video.readyState >= 1 && video.duration) {
+    // Ensure video metadata is loaded and primed
+    if (video.readyState >= 1 && video.duration && videoPrimedRef.current) {
       // Map progress value (0 to 1) to video duration
       // Adjust the progress range as needed for when video should start/end
-      const startProgress = isMobile ? 0.14 : 0.14; // Video starts at 14% scroll
+      const startProgress = isMobile ? 0.12 : 0.14; // Video starts at 14% scroll
       const continueProgress = isMobile ? 0.181 : 0.189; // Resume scrubbing from 0.181 scroll
       const pauseProgressThreshold = isMobile ? 0.175 : 0.175; // Stop scrubbing at 2.5s when progress reaches 0.175
       const secondPauseProgress = isMobile ? 0.27 : 0.31; // Video reaches end at 30% scroll
@@ -390,14 +396,16 @@ export default function Page() {
       
       if (progress < startProgress) {
         // Before video range - reset to start and pause
+        isScrubbingRef.current = false;
         video.currentTime = 0;
-        video.pause();
+        if (!video.paused) video.pause();
         video.playbackRate = 1.0; // Normal speed
       } else if (progress >= startProgress && progress < continueProgress) {
+        isScrubbingRef.current = true;
         if (progress >= pauseProgressThreshold) {
           video.currentTime = pauseTime;
           video.playbackRate = 0.1;
-          video.pause();
+          if (!video.paused) video.pause();
           return;
         }
         // Scrub video from startProgress to continueProgress, mapping to 0-2.5 seconds
@@ -415,31 +423,81 @@ export default function Page() {
         video.currentTime = normalizedProgress * pauseTime;
         video.playbackRate = 0.1; // Slower playback rate
         
-        video.pause(); // Keep paused during scrubbing for smoother control
+        if (!video.paused) video.pause(); // Keep paused during scrubbing for smoother control
       } else if (progress >= continueProgress && progress < secondPauseProgress) {
         // Continue scrubbing video from 3 seconds based on scroll
+        isScrubbingRef.current = true;
         const normalizedProgress = (progress - continueProgress) / (secondPauseProgress - continueProgress);
         const videoTime = resumeStartTime + (normalizedProgress * (endVideoTime - resumeStartTime));
         
         video.currentTime = Math.min(videoTime, endVideoTime);
         video.playbackRate = 1.0; // Normal speed
-        video.pause(); // Keep paused during scrubbing
+        // if (!video.paused) video.pause(); // Keep paused during scrubbing
         hasPlayedPast127.current = true;
       } else if (progress >= secondPauseProgress) {
         // Pause the video at the end
+        isScrubbingRef.current = false;
         video.currentTime = endVideoTime;
-        video.pause();
+        if (!video.paused) video.pause();
       }
     }
+  }
+
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+      setVideoTime(progress);
   });
 
-  // Ensure the background video always starts from the beginning
+  // Prime the video for Chrome - play once then pause to allow scrubbing
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !cachedVideoUrl || videoPrimedRef.current) return;
+
+    const primeVideo = async () => {
+      if (videoPrimedRef.current) return;
+      
+      try {
+        // Wait for video to be ready
+        if (video.readyState < 2) {
+          video.load();
+          await new Promise((resolve) => {
+            const onCanPlay = () => {
+              video.removeEventListener('canplay', onCanPlay);
+              resolve();
+            };
+            video.addEventListener('canplay', onCanPlay);
+          });
+        }
+
+        // Prime the video by playing once then immediately pausing
+        // This allows Chrome to scrub the video smoothly
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          await playPromise;
+        }
+        
+        // Immediately pause and reset to start
+        video.pause();
+        video.currentTime = 0;
+        videoPrimedRef.current = true;
+      } catch (error) {
+        console.warn('Video priming failed:', error);
+        // Still mark as primed to avoid retry loops
+        videoPrimedRef.current = true;
+      }
+    };
+
+    primeVideo();
+  }, [cachedVideoUrl]);
+
+  // Ensure the background video always starts from the beginning (only when not scrubbing)
   useEffect(() => {
     const el = videoRef.current;
-    if (!el) return;
+    if (!el || isScrubbingRef.current) return;
 
     const handleLoadedMetadata = () => {
-      try { el.currentTime = 0; } catch (_) {}
+      if (!isScrubbingRef.current) {
+        try { el.currentTime = 0; } catch (_) {}
+      }
     };
     el.addEventListener('loadedmetadata', handleLoadedMetadata);
     return () => {
@@ -448,12 +506,14 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    if (showVideo && videoRef.current) {
+    if (showVideo && videoRef.current && !isScrubbingRef.current) {
       try { videoRef.current.currentTime = 0; } catch (_) {}
     }
   }, [showVideo]);
 
-  // Pause the video even though autoplay is enabled
+
+
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -476,69 +536,52 @@ export default function Page() {
     };
   }, []);
 
+
   useEffect(() => {
     // Don't initialize Lenis until loading is complete
     if (isLoading) return;
 
-    const isChrome =
-      /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const lenis = new Lenis({
+      smooth: true,
+      lerp: 0.1,
+      duration: 1.2,
+    });
 
-    if (isChrome) {
-      const lenis = new Lenis({
-        smooth: true,
-        lerp: 1,
-        duration: 0,
-      });
+    window.lenis = lenis; // Make Lenis globally accessible
+    console.log('Lenis initialized:', lenis);
 
-      function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
+    function raf(time) {
+      lenis.raf(time);
+      // Log scrollY value
+      // console.log('Lenis scrollY:', lenis.scroll);
       requestAnimationFrame(raf);
-
-      return () => {
-        lenis.destroy();
-      };
     }
+    requestAnimationFrame(raf);
 
-    if (isSafari) {
-      const lenis = new Lenis({
-        smooth: true,
-        lerp: 0.09,
-        duration: 1.2,
-      });
+    // // Also listen to scroll events
+    lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
+      console.log('Lenis scroll event - scrollY:', scroll, 'progress:', progress);
+    });
 
-      window.lenis = lenis; // Make Lenis globally accessible
-
-      function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
+    // Observe body overflow changes
+    const observer = new MutationObserver(() => {
+      if (document.body.style.overflow === "hidden") {
+        lenis.stop();
+      } else {
+        lenis.start();
       }
-      requestAnimationFrame(raf);
+    });
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
 
-      // Observe body overflow changes
-      const observer = new MutationObserver(() => {
-        if (document.body.style.overflow === "hidden") {
-          lenis.stop();
-        } else {
-          lenis.start();
-        }
-      });
-      observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ["style"],
-      });
-
-      return () => {
-        lenis.destroy();
-        observer.disconnect();
-        window.lenis = undefined;
-      };
-    }
+    return () => {
+      lenis.destroy();
+      observer.disconnect();
+      window.lenis = undefined;
+    };
   }, [isLoading]);
-
-
 
 
   return (
@@ -588,8 +631,6 @@ export default function Page() {
           style={{ x: videoX, objectPosition: videoObjectPosition, willChange: 'transform, object-position' }}
           muted
           playsInline
-          autoPlay
-          loop
           preload="auto"
           crossOrigin="anonymous"
           src={cachedVideoUrl || "/images/bill-transformation_V12.mp4"}
@@ -605,7 +646,6 @@ export default function Page() {
               }, 300);
             }
           }}
-          onPlay={() => { if (videoRef.current && videoRef.current.currentTime > 0.1 && !hasPlayedPast127.current) { try { videoRef.current.currentTime = 0; } catch(_) {} } }}
         >
           {cachedVideoUrl ? (
             <source src={cachedVideoUrl} type="video/mp4" />

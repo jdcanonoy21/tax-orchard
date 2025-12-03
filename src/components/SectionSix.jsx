@@ -35,9 +35,9 @@ export default function SectionSix({externalScrollYProgress}) {
   });
 
   // Smooth horizontal/vertical scroll transforms
-  const delayedProgress = useTransform(xyScrollYProgress, [0.4, 1], [0, 1]);
+  const delayedProgress = useTransform(xyScrollYProgress, [isMobile ? 0.5 : 0.4, 1], [0, 1]);
 
-  const x = useTransform(delayedProgress, [0, isMobile ? 0.99 : 1], ["0%", isMobile ? '-175%' : "-145%"]);
+  const x = useTransform(delayedProgress, [0, isMobile ? 0.99 : 1], ["0%", isMobile ? '-155%' : "-145%"]);
   const y = useTransform(delayedProgress, [0, isMobile ? 0.99 : 1], ["0%",  "-55%"]);
   const yGround = useTransform(delayedProgress, [0, isMobile ? 0.4 : 1], ["0%", "-150%"]);
 
@@ -48,7 +48,7 @@ export default function SectionSix({externalScrollYProgress}) {
 
   // Update seed visibility based on externalScrollYProgress
   useMotionValueEvent(externalScrollYProgress, "change", (latest) => {
-    const threshold = isMobile ? 0.292 : 0.309;
+    const threshold = isMobile ? 0.2895 : 0.305;
     setSeedVisible(latest >= threshold);
     setShowVideo(latest >= threshold);
   });
@@ -319,7 +319,7 @@ export default function SectionSix({externalScrollYProgress}) {
           />
         </motion.div>
       )}
-      <div className="sticky top-0 flex md:items-center overflow-visible h-[50vh] md:h-[500px]">
+      <div className="sticky top-0  flex md:items-center overflow-visible h-[50vh] md:h-[500px]">
         {/* Apply smooth scroll transforms to .track */}
         <motion.div
           className="track w-full"
@@ -335,11 +335,11 @@ export default function SectionSix({externalScrollYProgress}) {
                 <motion.img
                   src="/images/seed-new.jpg"
                   alt="Seed"
-                  className={`w-[170px] md:w-[180px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
+                  className={`w-[220px] md:w-[180px] md:h-[235px] h-auto relative z-10  js-fade-right ${seedVisible ? 'opacity-100' : 'opacity-0'}`}
                 />
                   <div className="relative">
                     <div
-                      className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black hidden md:block "
+                      className=" h-[1000px] md:w-[1500px] md:h-[1000px] bg-black md:bg-transparent hidden md:block "
                       id="rootContainer"
                     >
                       {showVideo && (
@@ -391,11 +391,11 @@ export default function SectionSix({externalScrollYProgress}) {
                     initial={{ x: '200%', opacity: 0 }}
                     animate={mobileVideoFinished ? { x: '105%', opacity: 1 } : { x: '200%', opacity: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="absolute md:-right-[700px]  md:mt-auto -mt-20  transform   max-w-3xl md:pr-20 md:w-full  block md:hidden "
+                    className="absolute -right-[330px]  md:mt-auto -mt-32  transform   max-w-2xl  md:w-full  block md:hidden "
                     style={{ top:  "380px", zIndex: 9999 }}
                   >
                     <div className="flex flex-col gap-4 md:px-28 md:pr-10  w-screen px-8">
-                      <p className="!text-3xl  leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
+                      <p className="!text-2xl  leading-snug md:text-[40px] font-proxima-regular md:leading-none text-white">
                         At Tax Orchard, we help you turn what you owe into
                         something that grows—using a strategy no one else
                         offers.
@@ -409,7 +409,7 @@ export default function SectionSix({externalScrollYProgress}) {
  
                 </div>
 
-                 <div className="block md:hidden relative w-[1400px] h-[600px] left-[240px] z-50 mt-0 overflow-clip">
+                 <div className="block md:hidden relative w-[1000px] h-[600px] left-[150px] z-50 mt-0 overflow-clip">
                      <video
                        ref={videoMobileRef}
                        muted

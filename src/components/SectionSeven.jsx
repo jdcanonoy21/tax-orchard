@@ -99,8 +99,8 @@ export default function SectionSeven({ hideFinalpage }) {
     return () => unsubscribe();
   }, [scrollYProgress]);
 
-  const xRaw = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.75, 0.77] : [0, 0.1, 0.8, 0.85], ["100vw", "0vw", "0vw", "-100vw"]);
-  const x = useSpring(xRaw, { stiffness: 100, damping: 30, mass: 1 });
+  const x = useTransform(scrollYProgress, isMobile ? [0, 0.1, 0.75, 0.77] : [0, 0.1, 0.8, 0.85], ["100vw", "0vw", "0vw", "-100vw"]);
+  // const x = useSpring(xRaw, { stiffness: 100, damping: 0, mass: 1 });
   const journeyX = useTransform(scrollYProgress, [0, 0.1], ["0vw", "-100vw"]);
   const isJourneyInView = useInView(journeyRef, { amount: 0.0001 });
   const isContainerRefInView = useInView(containerRef, { amount: 0.5 });
@@ -114,24 +114,24 @@ export default function SectionSeven({ hideFinalpage }) {
     {
       highlightMonth: "APR",
       highlightIndex: 3,
-      highlightColor: "blue",
+      highlightColor: "#3974F6",
     },
     {
       highlightMonth: "JUN",
       highlightIndex: 5,
-      highlightColor: "blue",
+      highlightColor: "#3974F6",
     },
 
     {
       highlightMonth: "OCT",
       highlightIndex: 9,
-      highlightColor: "blue",
+      highlightColor: "#3974F6",
     },
 
     {
       highlightMonth: "DEC",
       highlightIndex: 11,
-      highlightColor: "blue",
+      highlightColor: "#3974F6",
     },
   ];
 
@@ -991,7 +991,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
     setTimeout(() => {
       isScrolling.current = false;
-    }, isMobile ? 100 : 1000);
+    }, isMobile ? 100 : 100);
 
     if(isFlipping) {
       /**
@@ -1055,11 +1055,6 @@ export default function SectionSeven({ hideFinalpage }) {
    * @returns {void}
    */
   const stopScrollMomentum = () => {
-  // Stop Lenis if available
-  if (window.lenis) {
-    window.lenis.stop();
-  }
-  
   // Kill native scroll momentum
   const currentScroll = window.scrollY;
   window.scrollTo({
@@ -1105,10 +1100,8 @@ export default function SectionSeven({ hideFinalpage }) {
     // Store scroll position before flipping
     lastScrollPosition.current = window.scrollY;
     // Always clear pendingPageRef before starting a new flip
-    const pausedScrollTime = isMobile 
-      ? (groupIndex > 6 ? 10 : 10)
-      : (groupIndex > 6 ? 10 :10);
-    const totalFlipTime = 200 + 5 * 75 + 300;
+    const pausedScrollTime = 0;
+    const totalFlipTime = 200;
     pendingPageRef.current = null;
     scrollLock.current = true;
     setIsFlipping(true);
@@ -1120,14 +1113,14 @@ export default function SectionSeven({ hideFinalpage }) {
 
       // console.log('flipToGroup called with groupIndex:', groupIndex, 'currentPage:', currentPage, 'pageFlips:', pageFlips);
 
-
-    if(!pageFlips) {
-      setTimeout(() => {
-            setIsFlipping(false);
-            scrollLock.current = false;
-      }, pausedScrollTime);
-      return; // prevent if no sequence found (out of bounds)
-    }
+      console.log("pageFlips", pageFlips)
+    // if(!pageFlips) {
+    //   setTimeout(() => {
+    //         setIsFlipping(false);
+    //         scrollLock.current = false;
+    //   }, pausedScrollTime);
+    //   return; // prevent if no sequence found (out of bounds)
+    // }
 
     const isForward = currentPage == null ? true :  groupIndex > currentPage;
     if(isForward) {
@@ -1137,7 +1130,7 @@ export default function SectionSeven({ hideFinalpage }) {
           setTimeout(() => {
             console.log('Flipping to page:', i);
             flipBook.current?.pageFlip().flip(i);
-          }, 200 + i * 75);
+          }, 10 + i * 75);
         }
     } else {
         const backActualPage =  (pageFlips + 1)
@@ -1149,7 +1142,7 @@ export default function SectionSeven({ hideFinalpage }) {
           setTimeout(() => {
             console.log('Flipping to page back:', i);
             flipBook.current?.pageFlip().flip(i);
-          }, 200 + (startPage - i) * 75);
+          }, 100 + (startPage - i) * 75);
         }
     }
     
@@ -1193,7 +1186,7 @@ export default function SectionSeven({ hideFinalpage }) {
         for (let i = 5; i >= 0; i--) {
           setTimeout(() => {
             flipBook?.current?.pageFlip?.().flipPrev?.();
-          }, 100 + (5 - i) * 75);
+          }, 10 + (5 - i) * 75);
         }
       }
       // console.log("Journey in view - flipping disabled");
@@ -1209,7 +1202,7 @@ export default function SectionSeven({ hideFinalpage }) {
         // console.log("1-second delay complete - flipping now enabled");
         setCanStartFlipping(true);
         setFlipEnabled(true);
-      }, isMobile ? 500 : 10);
+      }, isMobile ? 500 : 1000);
     }
 
     return () => {
@@ -1244,16 +1237,7 @@ export default function SectionSeven({ hideFinalpage }) {
 
   useEffect(() => {
     if (!isFlipping) {
-      // Re-enable Lenis when not flipping
-      if (window.lenis) {
-        window.lenis.start();
-      }
       return;
-    }
-
-    // Stop Lenis during flip
-    if (window.lenis) {
-      window.lenis.stop();
     }
 
     const preventScroll = (e) => {
@@ -1319,14 +1303,14 @@ export default function SectionSeven({ hideFinalpage }) {
 }, [totalActualPages]);
 
   return (
-    <>
+    <div className="mt-72 md:mt-auto">
       <div className="overflow-x-clip ">
       <motion.div
         className="sticky top-0 snap-start snap-always  h-screen"
         ref={journeyRef}
         style={{ x: journeyX }}
       >
-        <div className=" min-h-[100dvh] bg-black !w-full flex items-center justify-center relative z-50">
+        <div className=" min-h-[100dvh] md:bg-black !w-full flex items-center justify-center relative z-50">
           <div className="w-full mx-auto flex flex-col items-center justify-center h-full overflow-hidden ">
             <h2 className="text-5xl md:text-9xl font-proxima-bold leading-none font-black text-white text-center">
               The Journey
@@ -1409,6 +1393,6 @@ export default function SectionSeven({ hideFinalpage }) {
 
     </div>
 
-    </>
+    </div>
   );
 }

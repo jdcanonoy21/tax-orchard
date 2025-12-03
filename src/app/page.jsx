@@ -260,6 +260,7 @@ export default function Page() {
   }, [isLoading]);
   
   const resetVideoToStart = React.useCallback(() => {
+    console.log('Resetting video to start');
     const v = videoRef.current;
     if (!v) return;
     try {
@@ -592,11 +593,11 @@ export default function Page() {
           preload="auto"
           crossOrigin="anonymous"
           src={cachedVideoUrl || "/images/bill-transformation_V12.mp4"}
-          onLoadedMetadata={resetVideoToStart}
-          onLoadedData={resetVideoToStart}
-          onCanPlay={resetVideoToStart}
+          // onLoadedMetadata={resetVideoToStart}
+          // onLoadedData={resetVideoToStart}
+          // onCanPlay={resetVideoToStart}
           onCanPlayThrough={() => {
-            resetVideoToStart();
+            // resetVideoToStart();
             if (!videoReady && videoRef.current && videoRef.current.readyState >= 4) {
               setVideoReady(true);
               setTimeout(() => {
